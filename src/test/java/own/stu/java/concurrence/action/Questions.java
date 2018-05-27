@@ -61,4 +61,32 @@ public class Questions {
         print();
     }
 
+    public static void main(String[] args) {
+        /*int p, i, s = 0;
+        for (int x = 1; x < 4; x++) {
+            for (p = i = 1; i < x; i++) {
+                p *= x;
+            }
+            System.out.println(p);
+            s += p;
+        }
+        System.out.println(s);*/
+
+        Classz c1 = new Classz();
+        Classz c2 = new Classz();
+
+        c1.a = (c1.a++) + (c2.b++);
+        System.out.println(c1.a + "," + c1.b);
+    }
+
+}
+
+class Classz {
+    public static int a = 0;
+    public int b = 0;
+
+    public Classz() {
+        a++;
+        b++;
+    }
 }
