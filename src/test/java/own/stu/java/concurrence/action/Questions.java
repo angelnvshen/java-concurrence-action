@@ -72,15 +72,60 @@ public class Questions {
         }
         System.out.println(s);*/
 
-        Classz c1 = new Classz();
+        /*Classz c1 = new Classz();
         Classz c2 = new Classz();
 
         c1.a = (c1.a++) + (c2.b++);
-        System.out.println(c1.a + "," + c1.b);
+        System.out.println(c1.a + "," + c1.b);*/
+
+        /*C c1 = new C();
+        c1.i = 1;
+        change(c1);
+        System.out.println(c1.i)*/;
+
+        /*int [] array = {0, 4 ,10, 12, 21, 83, 100};
+        System.out.println(index(array, -1));*/
+
+        System.out.println(fibonacci3(6));
+    }
+
+    private static int fibonacci3(int n) {
+        if (n == 0 || n == 1)
+            return n;
+        else
+            return fibonacci3(n - 1) + fibonacci3(n - 2);
+    }
+
+    private static int index(int [] array, int target){
+        if(array == null  || array.length == 0 )
+            return -1;
+        return index(array, target, 0, array.length - 1);
+    }
+
+    private static int index(int[] array, int target, int low, int high) {
+        if (low <= high) {
+            int middle = (low + high) / 2;
+            if (array[middle] == target)
+                return middle;
+            else if (array[middle] > target)
+                return index(array, target, low, middle - 1);
+            else
+                return index(array, target, middle + 1, high);
+        }
+
+        return -1;
+    }
+
+    private static void change(C c){
+        c.i = 2;
+        c = new C();
+        c.i = 3;
     }
 
 }
-
+class C{
+    public int i = 0;
+}
 class Classz {
     public static int a = 0;
     public int b = 0;
