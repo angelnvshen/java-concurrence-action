@@ -35,6 +35,14 @@
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
 		</dependency>
+
+		<dependency>
+			<groupId>edu.princeton.cs</groupId>
+			<artifactId>algs4</artifactId>
+			<version>1.0.0.0</version>
+			<scope>system</scope>
+			<systemPath>${project.basedir}/src/main/resources/lib/algs4.jar</systemPath>
+		</dependency>
 	</dependencies>
 
 	<build>
