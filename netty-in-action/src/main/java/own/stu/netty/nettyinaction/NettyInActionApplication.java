@@ -1,14 +1,12 @@
-package own.stu.algorithms_4th;
+package own.stu.netty.nettyinaction;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class AlgorithmsApplication {
+public class NettyInActionApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(AlgorithmsApplication.class, args);
-		
-		String xx = "";
+		SpringApplication.run(NettyInActionApplication.class, args);
 	}
 }
