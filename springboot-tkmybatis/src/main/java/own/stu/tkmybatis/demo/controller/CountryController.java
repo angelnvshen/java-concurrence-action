@@ -39,7 +39,13 @@ public class CountryController {
   public List<Country> getByExample(
       @RequestParam(value = "pageNum", defaultValue = "1")Integer pageNum,
       @RequestParam(value = "pageSize", defaultValue = "10")Integer pageSize,
-      Country country){
-    return countryService.selectByCountry(country, pageNum, pageSize);
+      Country country,
+      @RequestParam(value = "callType", defaultValue = "1")String callType){
+    if("1".equals(callType)) {
+      return countryService.selectByCountry(country, pageNum, pageSize);
+    }else if("2".equals(callType)) {
+      return countryService.selectByCountryTwo(country, pageNum, pageSize);
+    }else
+      return countryService.selectByCountryThree(country, pageNum, pageSize);
   }
 }

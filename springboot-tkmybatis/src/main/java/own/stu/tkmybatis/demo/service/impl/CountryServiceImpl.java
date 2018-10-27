@@ -8,6 +8,9 @@ import org.springframework.util.StringUtils;
 import own.stu.tkmybatis.demo.common.service.impl.BaseServiceImpl;
 import own.stu.tkmybatis.demo.dao.CountryDao;
 import own.stu.tkmybatis.demo.model.Country;
+import own.stu.tkmybatis.demo.model.CountryExample;
+import own.stu.tkmybatis.demo.model.OwnExample;
+import own.stu.tkmybatis.demo.model.OwnExample.OwnExampleCriteria;
 import own.stu.tkmybatis.demo.service.CountryService;
 import tk.mybatis.mapper.entity.Example;
 
@@ -25,6 +28,8 @@ public class CountryServiceImpl extends BaseServiceImpl<Country> implements Coun
   /**
    * 查询country信息
    *
+   * tk-mybatis 内置的 example 查询
+   *
    * @param country 查询实体
    * @param page    页码
    * @param rows    行数
@@ -32,6 +37,7 @@ public class CountryServiceImpl extends BaseServiceImpl<Country> implements Coun
    */
   @Override
   public List<Country> selectByCountry(Country country, int page, int rows) {
+
     Example example = new Example(Country.class);
     Example.Criteria criteria = example.createCriteria();
     if (!StringUtils.isEmpty(country.getCountryName())) {
@@ -46,6 +52,52 @@ public class CountryServiceImpl extends BaseServiceImpl<Country> implements Coun
     //分页查询
     PageHelper.startPage(page, rows);
     return selectByExample(example);
+  }
+
+  /**
+   * 查询country信息
+   *
+   * generator 自动生成 example 查询
+   *
+   * @param country 查询实体
+   * @param page    页码
+   * @param rows    行数
+   * @return
+   */
+  @Override
+  public List<Country> selectByCountryTwo(Country country, int page, int rows) {
+    CountryExample example = new CountryExample();
+    CountryExample.Criteria criteria = example.createCriteria();
+    if (!StringUtils.isEmpty(country.getCountryName())) {
+      criteria.andCountryNameLike("%" +  country.getCountryName() + "%");
+    }
+    if (!StringUtils.isEmpty(country.getCountryCode())) {
+      criteria.andCountryCodeLike("%" + country.getCountryCode() + "%");
+    }
+    if (country.getId() != null) {
+      criteria.andIdEqualTo(country.getId());
+    }
+    //分页查询
+    PageHelper.startPage(page, rows);
+    return selectByExample(example);
+  }
+
+  @Override
+  public List<Country> selectByCountryThree(Country country, int page, int rows) {
+    OwnExample example = new OwnExample(Country.class);
+    OwnExample.OwnExampleCriteria criteria = (OwnExampleCriteria) example.createCriteria();
+    if (!StringUtils.isEmpty(country.getCountryName())) {
+      criteria.andCountryNameLike("%" +  country.getCountryName() + "%");
+    }
+    if (!StringUtils.isEmpty(country.getCountryCode())) {
+      criteria.andCountryCodeLike("%" + country.getCountryCode() + "%");
+    }
+    if (country.getId() != null) {
+      criteria.andIdEqualTo(country.getId());
+    }
+    //分页查询
+    PageHelper.startPage(page, rows);
+    return selectByExample((Example)example);
   }
 
 }

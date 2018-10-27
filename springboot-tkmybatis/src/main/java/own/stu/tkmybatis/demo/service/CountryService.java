@@ -7,4 +7,8 @@ import own.stu.tkmybatis.demo.model.Country;
 public interface CountryService extends BaseService<Country> {
   List<Country> findAll();
   List<Country> selectByCountry(Country country, int page, int rows);
+
+  List<Country> selectByCountryTwo(Country country, int page, int rows);
+
+  List<Country> selectByCountryThree(Country country, int page, int rows);
 }

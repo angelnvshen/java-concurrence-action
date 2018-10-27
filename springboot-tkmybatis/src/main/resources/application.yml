@@ -21,3 +21,8 @@ mapper:
     - own.stu.tkmybatis.demo.common.dao.MyMapper
     - tk.mybatis.mapper.common.Mapper
     - tk.mybatis.mapper.common.MySqlMapper
+
+#日志显示SQL
+logging:
+  level:
+    own.stu.tkmybatis.demo: debug
