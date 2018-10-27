@@ -1,41 +1,53 @@
 package own.stu.generator.generator.model;
 
 import java.io.Serializable;
+import javax.annotation.Generated;
 
 public class Country implements Serializable {
-    private Integer id;
+    @Generated("org.mybatis.generator.api.MyBatisGenerator")
+    private Long id;
 
+    @Generated("org.mybatis.generator.api.MyBatisGenerator")
     private String countryName;
 
+    @Generated("org.mybatis.generator.api.MyBatisGenerator")
     private String countryCode;
 
+    @Generated("org.mybatis.generator.api.MyBatisGenerator")
     private static final long serialVersionUID = 1L;
 
-    public Integer getId() {
+    @Generated("org.mybatis.generator.api.MyBatisGenerator")
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    @Generated("org.mybatis.generator.api.MyBatisGenerator")
+    public void setId(Long id) {
         this.id = id;
     }
 
+    @Generated("org.mybatis.generator.api.MyBatisGenerator")
     public String getCountryName() {
         return countryName;
     }
 
+    @Generated("org.mybatis.generator.api.MyBatisGenerator")
     public void setCountryName(String countryName) {
         this.countryName = countryName == null ? null : countryName.trim();
     }
 
+    @Generated("org.mybatis.generator.api.MyBatisGenerator")
     public String getCountryCode() {
         return countryCode;
     }
 
+    @Generated("org.mybatis.generator.api.MyBatisGenerator")
     public void setCountryCode(String countryCode) {
         this.countryCode = countryCode == null ? null : countryCode.trim();
     }
 
     @Override
+    @Generated("org.mybatis.generator.api.MyBatisGenerator")
     public String toString() {
         StringBuilder sb = new StringBuilder();
         sb.append(getClass().getSimpleName());
