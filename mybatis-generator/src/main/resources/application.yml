@@ -9,7 +9,7 @@ spring:
 # mybatis包的扫描，还有就是映射文件设置 mybatis tk插件的使用
 mybatis:
     type-aliases-package: package own.stu.tkmybatis.demo.model
-    mapper-locations: classpath:mapper/*.xml
+    mapper-locations: classpath:mappers/*.xml
     #配置驼峰下划线
     configuration:
       map-underscore-to-camel-case: true
@@ -19,5 +19,5 @@ mapper:
   before: true
   mappers:
     - own.stu.tkmybatis.demo.common.dao.MyMapper
-    - tk.mybatis.mapper.common.Mapper
-    - tk.mybatis.mapper.common.MySqlMapper
+    - tk.mybatis.mappers.common.Mapper
+    - tk.mybatis.mappers.common.MySqlMapper
