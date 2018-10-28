@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="own.stu.tkmybatis.demo.dao.AreaMapper">
+  <resultMap id="BaseResultMap" type="own.stu.tkmybatis.demo.model.Area">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="ID" jdbcType="SMALLINT" property="id" />
+    <result column="CITY_NAME" jdbcType="VARCHAR" property="cityName" />
+    <result column="PARENT_ID" jdbcType="SMALLINT" property="parentId" />
+    <result column="INITIAL" jdbcType="CHAR" property="initial" />
+    <result column="INITIALS" jdbcType="VARCHAR" property="initials" />
+    <result column="PINYIN" jdbcType="VARCHAR" property="pinyin" />
+    <result column="EXTRA" jdbcType="VARCHAR" property="extra" />
+    <result column="SUFFIX" jdbcType="VARCHAR" property="suffix" />
+    <result column="CODE" jdbcType="CHAR" property="code" />
+    <result column="AREA_CODE" jdbcType="VARCHAR" property="areaCode" />
+    <result column="ORDER_ID" jdbcType="TINYINT" property="orderId" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    ID, CITY_NAME, PARENT_ID, INITIAL, INITIALS, PINYIN, EXTRA, SUFFIX, CODE, AREA_CODE, 
+    ORDER_ID
+  </sql>
+  <select id="selectByExample" parameterType="own.stu.tkmybatis.demo.model.AreaExample" resultMap="BaseResultMap">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from area
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <delete id="deleteByExample" parameterType="own.stu.tkmybatis.demo.model.AreaExample">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    delete from area
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <select id="countByExample" parameterType="own.stu.tkmybatis.demo.model.AreaExample" resultType="java.lang.Long">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    select count(*) from area
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    update area
+    <set>
+      <if test="record.id != null">
+        ID = #{record.id,jdbcType=SMALLINT},
+      </if>
+      <if test="record.cityName != null">
+        CITY_NAME = #{record.cityName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.parentId != null">
+        PARENT_ID = #{record.parentId,jdbcType=SMALLINT},
+      </if>
+      <if test="record.initial != null">
+        INITIAL = #{record.initial,jdbcType=CHAR},
+      </if>
+      <if test="record.initials != null">
+        INITIALS = #{record.initials,jdbcType=VARCHAR},
+      </if>
+      <if test="record.pinyin != null">
+        PINYIN = #{record.pinyin,jdbcType=VARCHAR},
+      </if>
+      <if test="record.extra != null">
+        EXTRA = #{record.extra,jdbcType=VARCHAR},
+      </if>
+      <if test="record.suffix != null">
+        SUFFIX = #{record.suffix,jdbcType=VARCHAR},
+      </if>
+      <if test="record.code != null">
+        CODE = #{record.code,jdbcType=CHAR},
+      </if>
+      <if test="record.areaCode != null">
+        AREA_CODE = #{record.areaCode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.orderId != null">
+        ORDER_ID = #{record.orderId,jdbcType=TINYINT},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    update area
+    set ID = #{record.id,jdbcType=SMALLINT},
+      CITY_NAME = #{record.cityName,jdbcType=VARCHAR},
+      PARENT_ID = #{record.parentId,jdbcType=SMALLINT},
+      INITIAL = #{record.initial,jdbcType=CHAR},
+      INITIALS = #{record.initials,jdbcType=VARCHAR},
+      PINYIN = #{record.pinyin,jdbcType=VARCHAR},
+      EXTRA = #{record.extra,jdbcType=VARCHAR},
+      SUFFIX = #{record.suffix,jdbcType=VARCHAR},
+      CODE = #{record.code,jdbcType=CHAR},
+      AREA_CODE = #{record.areaCode,jdbcType=VARCHAR},
+      ORDER_ID = #{record.orderId,jdbcType=TINYINT}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+</mapper>
