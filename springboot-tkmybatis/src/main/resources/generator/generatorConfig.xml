@@ -30,7 +30,10 @@
       targetProject="src/main/java"
       type="XMLMAPPER"/>
 
-    <table tableName="area">
+    <table tableName="ls_app"
+      enableSelectByExample="false" enableDeleteByExample="false" enableCountByExample  ="false"
+      enableUpdateByExample="false"
+    >
       <generatedKey column="id" sqlStatement="JDBC"/>
     </table>
   </context>
