@@ -1,0 +1,16 @@
+spring:
+  datasource:
+    schema: classpath:import.sql
+
+# mybatis包的扫描，还有就是映射文件设置 mybatis tk插件的使用
+mybatis:
+    type-aliases-package: package own.stu.tkmybatis.demo.model
+    mapper-locations: classpath:mapper/*.xml
+    #配置驼峰下划线
+    configuration:
+      map-underscore-to-camel-case: true
+
+#日志显示SQL
+logging:
+  level:
+    own.stu.tkmybatis.demo: debug
