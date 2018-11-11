@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head>
+  <meta charset="UTF-8" />
+  <title>Insert title here</title>
+  <script src="https://cdn.staticfile.org/jquery/1.10.2/jquery.min.js"></script>
+  <script src="https://ssl.captcha.qq.com/TCaptcha.js"></script>
+</head>
+<body>
+<h2 th:inlines="text">休息休息</h2>
+<button id="TencentCaptcha"
+        data-appid="2055559515"
+        data-cbfn="callback">验证</button>
+<Script Language="JavaScript">
+
+  window.callback = function(res){
+    console.log(res)
+    // res（未通过验证）= {ret: 1, ticket: null}
+    // res（验证成功） = {ret: 0, ticket: "String", randstr: "String"}
+    if(res.ret === 0){
+      console.log(res.ticket)   // 票据
+      var url = "check?ticket="+res.ticket+"&randstr="+res.randstr;
+      $.get(url, function(data){
+        alert("数据: " + data);
+      });
+    }
+  }
+</Script>
+</body>
+</html>

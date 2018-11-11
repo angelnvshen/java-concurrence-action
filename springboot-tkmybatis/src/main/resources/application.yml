@@ -6,6 +6,9 @@ spring:
 #    username: lsdev
 #    password: hcblihiNRqiy58rp
 
+  thymeleaf:
+      cache: false
+
 # mybatis包的扫描，还有就是映射文件设置 mybatis tk插件的使用
 mybatis:
     type-aliases-package: package own.stu.tkmybatis.demo.model
