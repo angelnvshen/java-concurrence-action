@@ -23,13 +23,19 @@ public class TCaptchaVerify {
     public static int verifyTicket(String ticket, String rand, String userIp) {
 
         try{
-        String url = String.format(VERIFY_URI_WITH_PARAM, APP_ID, APP_SECRET, ticket, rand, userIp);
 
         RestTemplate restTemplate = getRestTemplate();
 
+        Map<String, String> params = new HashMap<>();
+        params.put("aid", APP_ID);
+        params.put("AppSecretKey", APP_SECRET);
+        params.put("Ticket",  URLEncoder.encode(ticket, "UTF-8"));
+        params.put("Randstr", URLEncoder.encode(rand, "UTF-8"));
+        params.put("UserIP", URLEncoder.encode(userIp, "UTF-8"));
+
         //返回格式 text/json
         ResponseEntity<WaterWallResponseEntity> responseEntity =
-            restTemplate.getForEntity(url, WaterWallResponseEntity.class, new HashMap<>());
+            restTemplate.getForEntity(VERIFY_URI, WaterWallResponseEntity.class, params);
         if(responseEntity.getStatusCode().equals(HttpStatus.OK)){
             WaterWallResponseEntity data = responseEntity.getBody();
             if(data.getResponse() == 1){
@@ -47,7 +53,7 @@ public class TCaptchaVerify {
         }
     }
 
-    private static RestTemplate getRestTemplate() {
+    public static RestTemplate getRestTemplate() {
         RestTemplate restTemplate = new RestTemplate();
         MappingJackson2HttpMessageConverter converter = new MappingJackson2HttpMessageConverter();
         converter.setSupportedMediaTypes(Arrays.asList(APPLICATION_JSON_UTF8, MediaType.valueOf("text/json")));
@@ -85,6 +91,15 @@ public class TCaptchaVerify {
         }
 
         public WaterWallResponseEntity() {
+        }
+
+        @Override
+        public String toString() {
+            return "WaterWallResponseEntity{" +
+                "response=" + response +
+                ", evil_level=" + evil_level +
+                ", err_msg='" + err_msg + '\'' +
+                '}';
         }
     }
 }
