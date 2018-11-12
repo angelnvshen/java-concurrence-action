@@ -29,3 +29,6 @@ mapper:
 logging:
   level:
     own.stu.tkmybatis.demo: debug
+
+server:
+  port: 8090

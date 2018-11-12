@@ -1,18 +1,17 @@
 package own.stu.tkmybatis.demo.common.util;
 
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONObject;
-import java.net.URLEncoder;
+import static org.springframework.http.MediaType.APPLICATION_JSON_UTF8;
+
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
-import org.apache.http.HttpEntity;
-import org.apache.http.client.methods.CloseableHttpResponse;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.CloseableHttpClient;
-import org.apache.http.impl.client.HttpClients;
-import org.apache.http.util.EntityUtils;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
+import org.springframework.util.MimeType;
 import org.springframework.web.client.RestTemplate;
 
 public class TCaptchaVerify {
@@ -24,12 +23,16 @@ public class TCaptchaVerify {
     public static int verifyTicket(String ticket, String rand, String userIp) {
 
         RestTemplate restTemplate = new RestTemplate();
+        MappingJackson2HttpMessageConverter converter = new MappingJackson2HttpMessageConverter();
+        converter.setSupportedMediaTypes(Arrays.asList(APPLICATION_JSON_UTF8, MediaType.valueOf("text/json")));
+        restTemplate.setMessageConverters(Collections.singletonList(converter));
         Map<String, String> params = new HashMap<>();
         params.put("aid", APP_ID);
         params.put("AppSecretKey", APP_SECRET);
         params.put("Ticket", ticket);
         params.put("Randstr", rand);
         params.put("UserIP", userIp);
+        //返回格式 text/json
         ResponseEntity<WaterWallResponseEntity> responseEntity =
             restTemplate.getForEntity(VERIFY_URI, WaterWallResponseEntity.class, params);
         if(responseEntity.getStatusCode().equals(HttpStatus.OK)){
@@ -48,35 +51,5 @@ public class TCaptchaVerify {
 
     public static void main(String[] args) throws Exception {
         verifyTicket("112", "111", "127.0.0.1");
-    }
-
-    static class WaterWallResponseEntity{
-        private int response;
-        private int evil_level;
-        private String err_msg;
-
-        public int getResponse() {
-            return response;
-        }
-
-        public void setResponse(int response) {
-            this.response = response;
-        }
-
-        public int getEvil_level() {
-            return evil_level;
-        }
-
-        public void setEvil_level(int evil_level) {
-            this.evil_level = evil_level;
-        }
-
-        public String getErr_msg() {
-            return err_msg;
-        }
-
-        public void setErr_msg(String err_msg) {
-            this.err_msg = err_msg;
-        }
     }
 }
