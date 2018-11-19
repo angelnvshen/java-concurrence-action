@@ -31,4 +31,4 @@ logging:
     own.stu.tkmybatis.demo: debug
 
 server:
-  port: 8090
+  port: 8088
