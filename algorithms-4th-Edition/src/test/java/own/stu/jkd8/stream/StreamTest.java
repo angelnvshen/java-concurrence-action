@@ -4,7 +4,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
+import java.util.TreeMap;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import org.junit.Test;
@@ -110,22 +112,59 @@ public class StreamTest {
     System.out.println(result.get());
   }
 
-  @Test
-  public void test10(){
+  static List<Transaction> list;
 
+  static {
     Trader ronaldo = new Trader("Ronaldo", "SH");
     Trader mario = new Trader("Mario", "BJ");
     Trader adole = new Trader("Adole", "XH");
     Trader beyoncé = new Trader("Beyoncé", "XH");
 
-    List<Transaction> list = Arrays.asList(
-        new Transaction(beyoncé, 2011, 2000),
+    /*list = Arrays.asList(
+        new Transaction(adole, 2014, 6000),
+        new Transaction(mario, 2013, 7000),
+        new Transaction(beyoncé, 2012, 2000),
         new Transaction(ronaldo, 2012, 1000),
         new Transaction(ronaldo, 2011, 4000),
-        new Transaction(mario, 2013, 7000),
-        new Transaction(mario, 2011, 1000),
-        new Transaction(adole, 2014, 6000)
+        new Transaction(mario, 2011, 3000),
+        new Transaction(mario, 2011, 1000)
     );
+
+    Map<Integer, List<Transaction>> map = list.stream()
+        .collect(Collectors.groupingBy(Transaction::getYear,LinkedHashMap::new, Collectors.toList()));
+    System.out.println(map);*/
+
+    list = Arrays.asList(
+        new Transaction(mario, 2013, 7000),
+        new Transaction(adole, 2014, 6000),
+        new Transaction(ronaldo, 2011, 4000),
+        new Transaction(mario, 2011, 3000),
+        new Transaction(beyoncé, 2012, 2000),
+        new Transaction(ronaldo, 2012, 1000),
+        new Transaction(mario, 2011, 1000)
+    );
+  }
+  @Test
+  public void test13(){
+    Map<Integer, List<Transaction>> map = list.stream()
+        .collect(Collectors.groupingBy(Transaction::getYear));
+    System.out.println(map);
+  }
+
+  // TODO key 升序
+  @Test
+  public void test12(){
+    TreeMap<Integer, List<Transaction>> map = list.stream()
+        .collect(Collectors.groupingBy(Transaction::getYear,TreeMap::new, Collectors.toList()));
+
+//    map.navigableKeySet();
+    map.descendingKeySet();
+    System.out.println(map);
+  }
+
+
+  @Test
+  public void test10(){
 
     List<Transaction> result =
     list.stream()
@@ -183,5 +222,25 @@ public class StreamTest {
     list.stream()
         .min(Comparator.comparingInt(Transaction::getValue));
     System.out.println(min.get());
+  }
+
+  @Test
+  public void test11(){
+    List<Transaction> result = list.stream()
+        .filter((t) -> {
+          t.setValue(t.getValue() + 500);
+          return t.getYear() == 2011;
+        })
+        .collect(Collectors.toList());
+
+    System.out.println(result);
+
+    List<Integer> yearList = list.stream()
+        .map((t) -> t.getYear())
+        .collect(Collectors.toList());
+
+    System.out.println(yearList);
+
+    System.out.println(list);
   }
 }
