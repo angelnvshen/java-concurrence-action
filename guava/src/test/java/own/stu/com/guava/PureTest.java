@@ -7,12 +7,21 @@ import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
 import java.util.Objects;
+import java.util.Random;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 import org.junit.Test;
 
 public class PureTest {
+
+  @Test
+  public void test3() {
+    Random random = new Random(100);
+    for (int i = 0; i < 20; i++) {
+      System.out.println(random.nextInt(10));
+    }
+  }
 
   @Test
   public void test() {
@@ -69,5 +78,25 @@ public class PureTest {
     System.out.println(loadingCache.getUnchecked("111"));
     /**打印缓存命中率*/
     System.out.println(loadingCache.stats().toString());
+  }
+
+  @Test
+  public void testCallableCache()throws Exception{
+    Cache<String, String> cache = CacheBuilder.newBuilder().maximumSize(1000).build();
+    String resultVal = cache.get("jerry", new Callable<String>() {
+      public String call() {
+        String strProValue="hello "+"jerry"+"!";
+        return strProValue;
+      }
+    });
+    System.out.println("jerry value : " + resultVal);
+
+    resultVal = cache.get("peida", new Callable<String>() {
+      public String call() {
+        String strProValue="hello "+"peida"+"!";
+        return strProValue;
+      }
+    });
+    System.out.println("peida value : " + resultVal);
   }
 }
