@@ -144,8 +144,19 @@ public class StreamTest {
         new Transaction(mario, 2011, 1000)
     );
   }
+
   @Test
-  public void test13(){
+  public void test14() {
+    List<Integer> yearList = list.stream()
+        .map((t) -> t.getYear())
+        .collect(Collectors.toList());
+
+    System.out.println(list);
+    System.out.println(yearList);
+  }
+
+  @Test
+  public void test13() {
     Map<Integer, List<Transaction>> map = list.stream()
         .collect(Collectors.groupingBy(Transaction::getYear));
     System.out.println(map);
@@ -153,9 +164,9 @@ public class StreamTest {
 
   // TODO key 升序
   @Test
-  public void test12(){
+  public void test12() {
     TreeMap<Integer, List<Transaction>> map = list.stream()
-        .collect(Collectors.groupingBy(Transaction::getYear,TreeMap::new, Collectors.toList()));
+        .collect(Collectors.groupingBy(Transaction::getYear, TreeMap::new, Collectors.toList()));
 
 //    map.navigableKeySet();
     map.descendingKeySet();
@@ -164,47 +175,47 @@ public class StreamTest {
 
 
   @Test
-  public void test10(){
+  public void test10() {
 
     List<Transaction> result =
-    list.stream()
-        .filter((t) -> t.getYear() == 2011)
-        .sorted(Comparator.comparingInt(Transaction::getValue))
-        .collect(Collectors.toList());
+        list.stream()
+            .filter((t) -> t.getYear() == 2011)
+            .sorted(Comparator.comparingInt(Transaction::getValue))
+            .collect(Collectors.toList());
     System.out.println(result);
 
     List<String> cityList =
-    list.stream()
-        .map((t) -> t.getTrader().getCity())
-        .distinct()
-        .collect(Collectors.toList());
+        list.stream()
+            .map((t) -> t.getTrader().getCity())
+            .distinct()
+            .collect(Collectors.toList());
     System.out.println(cityList);
 
     List<Trader> traderList =
-    list.stream()
-        .map((t) -> t.getTrader())
-        .collect(Collectors.toList())
-        .stream()
-        .filter((t) -> t.getCity().equals("XH"))
-        .sorted(Comparator.comparing(Trader::getName))
-        .collect(Collectors.toList());
+        list.stream()
+            .map((t) -> t.getTrader())
+            .collect(Collectors.toList())
+            .stream()
+            .filter((t) -> t.getCity().equals("XH"))
+            .sorted(Comparator.comparing(Trader::getName))
+            .collect(Collectors.toList());
 
     System.out.println(traderList);
 
     List<String> nameList =
-    list.stream()
-        .map((t) -> t.getTrader().getName())
-        .collect(Collectors.toList())
-        .stream()
-        .distinct()
-        .sorted(Comparator.comparing(t->t))
-        .collect(Collectors.toList());
+        list.stream()
+            .map((t) -> t.getTrader().getName())
+            .collect(Collectors.toList())
+            .stream()
+            .distinct()
+            .sorted(Comparator.comparing(t -> t))
+            .collect(Collectors.toList());
 
     System.out.println(nameList);
 
     Boolean booleanResult =
-    list.stream()
-        .anyMatch((t) -> t.getTrader().getCity().equals("BJ"));
+        list.stream()
+            .anyMatch((t) -> t.getTrader().getCity().equals("BJ"));
 
     System.out.println(booleanResult);
 
@@ -213,19 +224,19 @@ public class StreamTest {
         .forEach((t) -> System.out.println(t.getValue()));
 
     Optional<Integer> maxValue =
-    list.stream()
-        .map((t) -> t.getValue())
-        .max(Integer::compareTo);
+        list.stream()
+            .map((t) -> t.getValue())
+            .max(Integer::compareTo);
     System.out.println(maxValue.get());
 
     Optional<Transaction> min =
-    list.stream()
-        .min(Comparator.comparingInt(Transaction::getValue));
+        list.stream()
+            .min(Comparator.comparingInt(Transaction::getValue));
     System.out.println(min.get());
   }
 
   @Test
-  public void test11(){
+  public void test11() {
     List<Transaction> result = list.stream()
         .filter((t) -> {
           t.setValue(t.getValue() + 500);

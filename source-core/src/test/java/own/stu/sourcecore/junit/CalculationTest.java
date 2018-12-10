@@ -1,10 +1,8 @@
 package own.stu.sourcecore.junit;
 
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import junit.framework.Assert;
 import junit.framework.TestCase;
-//import org.junit.Assert;
 import own.stu.sourcecore.junit.Calculation.Calculation;
 
 public class CalculationTest extends TestCase {
@@ -69,5 +67,4 @@ public class CalculationTest extends TestCase {
     // cal = null;// 在每个测试方法执行后主动销毁对象
     System.out.println("在每个测试方法执行后执行--tearDown...\n");
   }
-
 }
