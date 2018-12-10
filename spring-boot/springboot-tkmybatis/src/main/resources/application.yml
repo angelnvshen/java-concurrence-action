@@ -1,0 +1,34 @@
+spring:
+  datasource:
+    schema: classpath:import.sql
+#    driverClassName: com.mysql.jdbc.Driver
+#    url: jdbc:mysql://mysqldev.lsfash.cn:3307/test2?useUnicode=true&characterEncoding=utf8&useSSL=false
+#    username: lsdev
+#    password: hcblihiNRqiy58rp
+
+  thymeleaf:
+      cache: false
+
+# mybatis包的扫描，还有就是映射文件设置 mybatis tk插件的使用
+mybatis:
+    type-aliases-package: package own.stu.tkmybatis.demo.model
+    mapper-locations: classpath:mapper/*.xml
+    #配置驼峰下划线
+    configuration:
+      map-underscore-to-camel-case: true
+
+mapper:
+  not-empty:  true
+  before: true
+  mappers:
+    - own.stu.tkmybatis.demo.common.dao.MyMapper
+    - tk.mybatis.mapper.common.Mapper
+    - tk.mybatis.mapper.common.MySqlMapper
+
+#日志显示SQL
+logging:
+  level:
+    own.stu.tkmybatis.demo: debug
+
+server:
+  port: 8088
