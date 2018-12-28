@@ -11,7 +11,7 @@ public class GenericTypeTest {
 
   @Test
   public void test(){
-
+    System.out.println("123456789012345678901234567890123456789012345678901234567890".length());
   }
 
   @Test
@@ -56,7 +56,4 @@ public class GenericTypeTest {
     }
     return newUsr;
   }
-
-
-
 }
