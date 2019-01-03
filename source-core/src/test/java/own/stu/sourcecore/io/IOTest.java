@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.nio.ByteBuffer;
 import java.nio.channels.FileChannel;
+import java.nio.channels.SelectionKey;
 import org.junit.Test;
 
 public class IOTest {
@@ -50,7 +51,8 @@ public class IOTest {
 
   @Test
   public void testServer(){
-    Server.ioServer();
+//    Server.ioServer();
+    Server.nioServer();
   }
 
   @Test
@@ -60,9 +62,14 @@ public class IOTest {
 
   @Test
   public void test4(){
-    String info = "I'm 1-th information from client";
-    byte[] bytes = info.getBytes();
-    System.out.println(new String(bytes));
+    System.out.println(SelectionKey.OP_ACCEPT);
+    System.out.println(SelectionKey.OP_CONNECT);
+    System.out.println(SelectionKey.OP_READ);
+    System.out.println(SelectionKey.OP_WRITE);
+  }
 
+
+  public static void main(String[] args) {
+    Server.ioServer();
   }
 }
