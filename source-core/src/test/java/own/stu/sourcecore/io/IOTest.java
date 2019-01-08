@@ -67,9 +67,4 @@ public class IOTest {
     System.out.println(SelectionKey.OP_READ);
     System.out.println(SelectionKey.OP_WRITE);
   }
-
-
-  public static void main(String[] args) {
-    Server.ioServer();
-  }
 }
