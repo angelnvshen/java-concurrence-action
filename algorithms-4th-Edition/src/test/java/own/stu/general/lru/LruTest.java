@@ -14,5 +14,8 @@ public class LruTest {
       cache.set(value + "", value);
       cache.print();
     }
+
   }
+
+
 }
