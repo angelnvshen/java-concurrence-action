@@ -9,6 +9,7 @@ import org.junit.Test;
 import own.stu.algorithms_4th.graph.AbstractSearch;
 import own.stu.algorithms_4th.graph.BreadthFirstSearch;
 import own.stu.algorithms_4th.graph.ConnectedComponent;
+import own.stu.algorithms_4th.graph.Cycle;
 import own.stu.algorithms_4th.graph.DeepFirstPaths;
 import own.stu.algorithms_4th.graph.DeepFirstSearch;
 import own.stu.algorithms_4th.graph.Graph;
@@ -16,7 +17,18 @@ import own.stu.algorithms_4th.graph.Graph;
 public class GraphTest {
 
   @Test
-  public void dfs(){
+  public void graphToString() {
+    for (int s = 0; s < graph.V(); s++) {
+      System.out.print(s + " -> ");
+      for (int w : graph.adj(s)) {
+        System.out.print(w + " ");
+      }
+      System.out.println();
+    }
+  }
+
+  @Test
+  public void dfs() {
     String file = "/Users/ScorpionKing/IdeaProject_cl/core/algorithms-4th-Edition/src/main/resources/tmp/data-graph.txt";
 
     Graph graph = new Graph(new In(file));
@@ -24,20 +36,20 @@ public class GraphTest {
 
     DeepFirstSearch deepFirstSearch = new DeepFirstSearch(graph, s);
 
-    for(int v = 0 ;v<graph.V();v++){
-      if(deepFirstSearch.marked(v)){
+    for (int v = 0; v < graph.V(); v++) {
+      if (deepFirstSearch.marked(v)) {
         System.out.print(v + " ");
       }
     }
     System.out.println();
-    if(deepFirstSearch.count() != graph.V()){
+    if (deepFirstSearch.count() != graph.V()) {
       System.out.print("NOT ");
     }
     System.out.println("connected");
   }
 
   @Test
-  public void dfs_path(){
+  public void dfs_path() {
     String file = "/Users/ScorpionKing/IdeaProject_cl/core/algorithms-4th-Edition/src/main/resources/tmp/data-graph.txt";
 
     Graph graph = new Graph(new In(file));
@@ -50,7 +62,7 @@ public class GraphTest {
   }
 
   @Test
-  public void bfs(){
+  public void bfs() {
     String file = "/Users/ScorpionKing/IdeaProject_cl/core/algorithms-4th-Edition/src/main/resources/tmp/data-graph-2.txt";
 
     Graph graph = new Graph(new In(file));
@@ -59,29 +71,29 @@ public class GraphTest {
 
     List<Integer> vlist = Lists.newArrayList(0, 1, 2, 3, 4, 5);
 
-    for(int w : vlist){
+    for (int w : vlist) {
       printPath(bfs, w);
     }
   }
 
-  private void printPath(AbstractSearch abstractSearch, int w){
-    if(abstractSearch.hasPathsTo(w)){
+  private void printPath(AbstractSearch abstractSearch, int w) {
+    if (abstractSearch.hasPathsTo(w)) {
       System.out.print("hasPathsTo : " + w + ", the path is : ");
-      for(int t : abstractSearch.pathTo(w)){
+      for (int t : abstractSearch.pathTo(w)) {
         System.out.print(t + " ");
       }
-    }else {
+    } else {
       System.out.println("hasNoPath");
     }
     System.out.println();
   }
 
-  Graph graph;
+  private Graph graph;
 
   @Before
-  public void before(){
+  public void before() {
 
-    String file = "/Users/ScorpionKing/IdeaProject_cl/core/algorithms-4th-Edition/src/main/resources/tmp/data-graph-2.txt";
+    String file = "/Users/ScorpionKing/IdeaProject_cl/core/algorithms-4th-Edition/src/main/resources/tmp/data-graph.txt";
     graph = new Graph(new In(file));
   }
 
@@ -92,10 +104,28 @@ public class GraphTest {
     int m = cc.count();
     System.out.println("count : " + m);
 
-    Bag<Integer>[] bags = new Bag[m];
+    Bag<Integer>[] components = new Bag[m];
     for (int i = 0; i < m; i++) {
-      bags[i] = new Bag<>();
+      components[i] = new Bag<>();
     }
-    // TODO
+
+    for (int v = 0; v < graph.V(); v++) {
+      components[cc.id(v)].add(v);
+    }
+
+    for (int i = 0; i < m; i++) {
+      System.out.print("component[" + i + "] : ");
+      for (int v : components[i]) {
+        System.out.print(v + " ");
+      }
+      System.out.println();
+    }
+  }
+
+  @Test
+  public void testCycle() {
+
+    Cycle cycle = new Cycle(graph);
+    System.out.println(cycle.isHasCycle());
   }
 }

@@ -2,21 +2,48 @@ package own.stu.algorithms_4th.graph;
 
 public class ConnectedComponent implements CC {
 
+  private boolean marked[];
+
+  private int[] id;
+
+  private int count;
+
   public ConnectedComponent(Graph graph) {
+    marked = new boolean[graph.V()];
+
+    id = new int[graph.V()];
+
+    for (int s = 0; s < graph.V(); s++) {
+      if (!marked[s]) {
+        dfs(graph, s);
+        count++;
+      }
+    }
+  }
+
+  private void dfs(Graph graph, int v) {
+    marked[v] = true;
+    id[v] = count;
+
+    for (int w : graph.adj(v)) {
+      if (!marked[w]) {
+        dfs(graph, w);
+      }
+    }
   }
 
   @Override
   public boolean connected(int v, int w) {
-    return false;
+    return id[v] == id[w];
   }
 
   @Override
   public int count() {
-    return 0;
+    return count;
   }
 
   @Override
   public int id(int v) {
-    return 0;
+    return id[v];
   }
 }
