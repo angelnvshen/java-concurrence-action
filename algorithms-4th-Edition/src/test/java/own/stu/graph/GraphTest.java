@@ -2,6 +2,7 @@ package own.stu.graph;
 
 import edu.princeton.cs.algs4.Bag;
 import edu.princeton.cs.algs4.In;
+import edu.princeton.cs.algs4.StdIn;
 import java.util.List;
 import org.assertj.core.util.Lists;
 import org.junit.Before;
@@ -13,6 +14,8 @@ import own.stu.algorithms_4th.graph.Cycle;
 import own.stu.algorithms_4th.graph.DeepFirstPaths;
 import own.stu.algorithms_4th.graph.DeepFirstSearch;
 import own.stu.algorithms_4th.graph.Graph;
+import own.stu.algorithms_4th.graph.SymbolGraph;
+import own.stu.algorithms_4th.graph.TwoColor;
 
 public class GraphTest {
 
@@ -127,5 +130,29 @@ public class GraphTest {
 
     Cycle cycle = new Cycle(graph);
     System.out.println(cycle.isHasCycle());
+  }
+
+  @Test
+  public void testTwoColor() {
+
+    TwoColor twoColor = new TwoColor(graph);
+    System.out.println(twoColor.isBipartite());
+  }
+
+  @Test
+  public void testSymbolGraph() {
+    String fileName = "";
+    String delim = "";
+
+    SymbolGraph symbolGraph = new SymbolGraph(fileName, delim);
+
+    Graph g = symbolGraph.G();
+
+    while (StdIn.hasNextLine()){
+      String source = StdIn.readLine();
+      for(int w : g.adj(symbolGraph.index(source))){
+        System.out.println(" " + symbolGraph.name(w));
+      }
+    }
   }
 }
