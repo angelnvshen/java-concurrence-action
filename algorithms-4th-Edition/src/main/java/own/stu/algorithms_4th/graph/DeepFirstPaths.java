@@ -1,14 +1,14 @@
 package own.stu.algorithms_4th.graph;
 
-public class DeepFirstSearch {
-
-  boolean[] marked;
+public class DeepFirstPaths extends AbstractSearch {
 
   int count;
 
-  public DeepFirstSearch(Graph graph, int v) {
+  public DeepFirstPaths(Graph graph, int s) {
     marked = new boolean[graph.V()];
-    dfs(graph, v);
+    edgeTo = new int[graph.V()];
+    this.start = s;
+    dfs(graph, s);
   }
 
   public void dfs(Graph graph, int v) {
@@ -16,16 +16,9 @@ public class DeepFirstSearch {
     count++;
     for (int w : graph.adj(v)) {
       if (!marked[w]) {
+        edgeTo[w] = v;
         dfs(graph, w);
       }
     }
-  }
-
-  public boolean marked(int w) {
-    return marked[w];
-  }
-
-  public int count() {
-    return count;
   }
 }
