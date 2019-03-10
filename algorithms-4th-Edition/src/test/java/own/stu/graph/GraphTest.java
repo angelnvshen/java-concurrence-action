@@ -93,7 +93,7 @@ public class GraphTest {
 
   private Graph graph;
 
-  @Before
+//  @Before
   public void before() {
 
     String file = "/Users/ScorpionKing/IdeaProject_cl/core/algorithms-4th-Edition/src/main/resources/tmp/data-graph.txt";
@@ -141,18 +141,29 @@ public class GraphTest {
 
   @Test
   public void testSymbolGraph() {
-    String fileName = "";
-    String delim = "";
+    String fileName = "C:\\Users\\CHANEL\\Desktop\\movies.txt";
+    String delim = "/";
 
     SymbolGraph symbolGraph = new SymbolGraph(fileName, delim);
 
     Graph g = symbolGraph.G();
 
-    while (StdIn.hasNextLine()){
-      String source = StdIn.readLine();
+    List<String> list = Lists.newArrayList("Mercurio, Gus", "Blue Chips (1994)");
+    list.stream().forEach(source -> {
+
+      System.out.println(source + " : ");
       for(int w : g.adj(symbolGraph.index(source))){
-        System.out.println(" " + symbolGraph.name(w));
+        System.out.println("    " + symbolGraph.name(w));
       }
+    });
+  }
+
+  @Test
+  public void testStdIn() {
+    while (StdIn.hasNextLine()){
+      System.out.println("start:");
+      System.out.println(StdIn.readLine());
     }
+    System.out.println("end");
   }
 }
