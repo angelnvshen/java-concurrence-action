@@ -5,7 +5,6 @@ import edu.princeton.cs.algs4.In;
 import edu.princeton.cs.algs4.StdIn;
 import java.util.List;
 import org.assertj.core.util.Lists;
-import org.junit.Before;
 import org.junit.Test;
 import own.stu.algorithms_4th.graph.AbstractSearch;
 import own.stu.algorithms_4th.graph.BreadthFirstSearch;
@@ -93,7 +92,7 @@ public class GraphTest {
 
   private Graph graph;
 
-//  @Before
+  //  @Before
   public void before() {
 
     String file = "/Users/ScorpionKing/IdeaProject_cl/core/algorithms-4th-Edition/src/main/resources/tmp/data-graph.txt";
@@ -152,7 +151,7 @@ public class GraphTest {
     list.stream().forEach(source -> {
 
       System.out.println(source + " : ");
-      for(int w : g.adj(symbolGraph.index(source))){
+      for (int w : g.adj(symbolGraph.index(source))) {
         System.out.println("    " + symbolGraph.name(w));
       }
     });
@@ -160,10 +159,48 @@ public class GraphTest {
 
   @Test
   public void testStdIn() {
-    while (StdIn.hasNextLine()){
+    while (StdIn.hasNextLine()) {
       System.out.println("start:");
       System.out.println(StdIn.readLine());
     }
     System.out.println("end");
+  }
+
+  @Test
+  public void degreeOfSeparation() {
+
+    String fileName = "/Users/ScorpionKing/Desktop/routes.txt";
+    SymbolGraph symbolGraph = new SymbolGraph(fileName, " ");
+
+    String start = "MCO";
+
+    boolean startExisted = symbolGraph.contains(start);
+    if (!startExisted) {
+      System.out.println(String.format("start point[%s] not Exist In DB", start));
+    }
+
+    int s = symbolGraph.index(start);
+
+    Graph g = symbolGraph.G();
+    BreadthFirstSearch bfs = new BreadthFirstSearch(g, s);
+
+    List<String> destination = Lists.newArrayList("LAX", "LAS", "DFW", "SH");
+    destination.stream().forEach(str -> {
+      boolean destExisted = symbolGraph.contains(str);
+      if (!destExisted) {
+        System.out.println(String.format("dest point[%s] not Exist In DB", str));
+        return;
+      }
+
+      int w = symbolGraph.index(str);
+      boolean hasPaths = bfs.hasPathsTo(w);
+      if (!hasPaths) {
+        System.out.println(String.format("start point [%s] has no path to dest point [%s]", start, str));
+      }
+      System.out.println(start);
+      for (int v : bfs.pathTo(w)) {
+        System.out.println("  " + symbolGraph.name(v));
+      }
+    });
   }
 }
