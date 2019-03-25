@@ -1,4 +1,4 @@
-package own.stu.algorithms_4th.graph;
+package own.stu.algorithms_4th.graph.undirected;
 
 public class DeepFirstPaths extends AbstractSearch {
 

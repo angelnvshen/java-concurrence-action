@@ -2,19 +2,25 @@ package own.stu.graph;
 
 import edu.princeton.cs.algs4.Bag;
 import edu.princeton.cs.algs4.In;
+import edu.princeton.cs.algs4.Stack;
 import edu.princeton.cs.algs4.StdIn;
+import edu.princeton.cs.algs4.StdOut;
 import java.util.List;
 import org.assertj.core.util.Lists;
+import org.junit.Before;
 import org.junit.Test;
-import own.stu.algorithms_4th.graph.AbstractSearch;
-import own.stu.algorithms_4th.graph.BreadthFirstSearch;
-import own.stu.algorithms_4th.graph.ConnectedComponent;
-import own.stu.algorithms_4th.graph.Cycle;
-import own.stu.algorithms_4th.graph.DeepFirstPaths;
-import own.stu.algorithms_4th.graph.DeepFirstSearch;
-import own.stu.algorithms_4th.graph.Graph;
-import own.stu.algorithms_4th.graph.SymbolGraph;
-import own.stu.algorithms_4th.graph.TwoColor;
+import own.stu.algorithms_4th.graph.directed.DiGraph;
+import own.stu.algorithms_4th.graph.directed.DirectedCycle;
+import own.stu.algorithms_4th.graph.undirected.AbstractSearch;
+import own.stu.algorithms_4th.graph.undirected.BreadthFirstSearch;
+import own.stu.algorithms_4th.graph.undirected.ConnectedComponent;
+import own.stu.algorithms_4th.graph.undirected.Cycle;
+import own.stu.algorithms_4th.graph.undirected.DeepFirstPaths;
+import own.stu.algorithms_4th.graph.undirected.DeepFirstSearch;
+import own.stu.algorithms_4th.graph.undirected.DepthFirstOrder;
+import own.stu.algorithms_4th.graph.undirected.Graph;
+import own.stu.algorithms_4th.graph.undirected.SymbolGraph;
+import own.stu.algorithms_4th.graph.undirected.TwoColor;
 
 public class GraphTest {
 
@@ -27,6 +33,9 @@ public class GraphTest {
       }
       System.out.println();
     }
+
+    System.out.println(graph.hasEdge(0, 2));
+    System.out.println(graph.hasEdge(0, 3));
   }
 
   @Test
@@ -75,6 +84,8 @@ public class GraphTest {
 
     for (int w : vlist) {
       printPath(bfs, w);
+
+      System.out.println(bfs.distTo(w));
     }
   }
 
@@ -91,12 +102,15 @@ public class GraphTest {
   }
 
   private Graph graph;
+  private DiGraph diGraph;
 
-  //  @Before
+  @Before
   public void before() {
 
-    String file = "/Users/ScorpionKing/IdeaProject_cl/core/algorithms-4th-Edition/src/main/resources/tmp/data-graph.txt";
+    String file = "/Users/ScorpionKing/IdeaProject_cl/core/algorithms-4th-Edition/src/main/resources/tmp/data-graph-3.txt";
     graph = new Graph(new In(file));
+    String file_digraph = "/Users/ScorpionKing/IdeaProject_cl/core/algorithms-4th-Edition/src/main/resources/tmp/data-tinyDAG.txt";
+    diGraph = new DiGraph(new In(file_digraph));
   }
 
   @Test
@@ -202,5 +216,66 @@ public class GraphTest {
         System.out.println("  " + symbolGraph.name(v));
       }
     });
+  }
+
+  @Test
+  public void test() {
+
+    List<Integer> list = Lists.newArrayList(90, 1, 2, 3, 4, 5, 10, 32);
+    System.out.println(list);
+    Stack<Integer> reverse = new Stack<>();
+//    for(int i = )
+//    reverse.push();
+  }
+
+  // ----------------------------------
+
+  @Test
+  public void testDirectGraphPrint() {
+
+    for(int i = 0; i<diGraph.V();i++){
+      System.out.print(i + " : ");
+      for(int v : diGraph.adj(i)){
+        System.out.print(v + " ");
+      }
+      System.out.println();
+    }
+  }
+
+  @Test
+  public void testDirectGraphHasCycle() {
+    DirectedCycle finder = new DirectedCycle(diGraph);
+    if (finder.hasCycle()) {
+      StdOut.print("Directed cycle: ");
+      for (int v : finder.cycle()) {
+        StdOut.print(v + " ");
+      }
+      StdOut.println();
+    } else {
+      StdOut.println("No directed cycle");
+    }
+    StdOut.println();
+  }
+
+  @Test
+  public void testDepthFirstOrder() {
+    DepthFirstOrder depthFirstOrder = new DepthFirstOrder(diGraph);
+    System.out.print("pre: ");
+    for(int v : depthFirstOrder.pre()){
+      System.out.print(v + " ");
+    }
+    System.out.println();
+
+    System.out.print("post: ");
+    for(int v : depthFirstOrder.post()){
+      System.out.print(v + " ");
+    }
+    System.out.println();
+
+    System.out.print("reversePost: ");
+    for(int v : depthFirstOrder.reversePost()){
+      System.out.print(v + " ");
+    }
+    System.out.println();
   }
 }

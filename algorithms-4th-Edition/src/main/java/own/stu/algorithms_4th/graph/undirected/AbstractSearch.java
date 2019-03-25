@@ -1,4 +1,4 @@
-package own.stu.algorithms_4th.graph;
+package own.stu.algorithms_4th.graph.undirected;
 
 import java.util.Stack;
 

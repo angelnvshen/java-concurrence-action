@@ -1,11 +1,11 @@
-package own.stu.algorithms_4th.graph;
+package own.stu.algorithms_4th.graph.undirected;
 
 /**
  * 是否是无环图
  */
 public class Cycle {
 
-  private boolean[] marked;
+  private boolean[] marked; // marked[v] = is there an s-v path?
 
   private boolean hasCycle;
 

@@ -1,10 +1,10 @@
-package own.stu.algorithms_4th.graph;
+package own.stu.algorithms_4th.graph.undirected;
 
 public class DeepFirstSearch {
 
   boolean[] marked;
 
-  int count;
+  int count; // number of vertices connected to s
 
   public DeepFirstSearch(Graph graph, int v) {
     marked = new boolean[graph.V()];

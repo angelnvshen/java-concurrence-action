@@ -1,4 +1,4 @@
-package own.stu.algorithms_4th.graph;
+package own.stu.algorithms_4th.graph.undirected;
 
 import edu.princeton.cs.algs4.In;
 import edu.princeton.cs.algs4.ST;
