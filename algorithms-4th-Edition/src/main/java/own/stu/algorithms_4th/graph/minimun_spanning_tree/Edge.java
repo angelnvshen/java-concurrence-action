@@ -1,6 +1,6 @@
 package own.stu.algorithms_4th.graph.minimun_spanning_tree;
 
-public class Edge {
+public class Edge implements Comparable<Edge> {
 
   private int v;
   private int w;
