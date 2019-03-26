@@ -11,6 +11,7 @@ import org.junit.Before;
 import org.junit.Test;
 import own.stu.algorithms_4th.graph.directed.DiGraph;
 import own.stu.algorithms_4th.graph.directed.DirectedCycle;
+import own.stu.algorithms_4th.graph.directed.KosarajuSharirSCC;
 import own.stu.algorithms_4th.graph.undirected.AbstractSearch;
 import own.stu.algorithms_4th.graph.undirected.BreadthFirstSearch;
 import own.stu.algorithms_4th.graph.undirected.ConnectedComponent;
@@ -109,7 +110,7 @@ public class GraphTest {
 
     String file = "/Users/ScorpionKing/IdeaProject_cl/core/algorithms-4th-Edition/src/main/resources/tmp/data-graph-3.txt";
     graph = new Graph(new In(file));
-    String file_digraph = "/Users/ScorpionKing/IdeaProject_cl/core/algorithms-4th-Edition/src/main/resources/tmp/data-tinyDAG.txt";
+    String file_digraph = "/Users/ScorpionKing/IdeaProject_cl/core/algorithms-4th-Edition/src/main/resources/tmp/data-tinyDAG-2.txt";
     diGraph = new DiGraph(new In(file_digraph));
   }
 
@@ -259,7 +260,7 @@ public class GraphTest {
 
   @Test
   public void testDepthFirstOrder() {
-    DepthFirstOrder depthFirstOrder = new DepthFirstOrder(diGraph);
+    DepthFirstOrder depthFirstOrder = new DepthFirstOrder(diGraph.reverse());
     System.out.print("pre: ");
     for(int v : depthFirstOrder.pre()){
       System.out.print(v + " ");
@@ -277,5 +278,30 @@ public class GraphTest {
       System.out.print(v + " ");
     }
     System.out.println();
+  }
+
+  @Test
+  public void testDirectConnectComponent(){
+
+    KosarajuSharirSCC scc = new KosarajuSharirSCC(diGraph);
+    int count = scc.count();
+    System.out.println(count);
+
+    Bag<Integer>[] components = new Bag[count];
+    for (int i = 0; i < count; i++) {
+      components[i] = new Bag<>();
+    }
+
+    for (int v = 0; v < diGraph.V(); v++) {
+      components[scc.id(v)].add(v);
+    }
+
+    for (int i = 0; i < count; i++) {
+      System.out.print("component[" + i + "] : ");
+      for (int v : components[i]) {
+        System.out.print(v + " ");
+      }
+      System.out.println();
+    }
   }
 }

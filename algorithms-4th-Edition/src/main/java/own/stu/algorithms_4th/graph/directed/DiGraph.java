@@ -73,7 +73,7 @@ public class DiGraph {
 
   public DiGraph reverse() {
     DiGraph reverse = new DiGraph(V);
-    for (int v = 0; v < V; V++) {
+    for (int v = 0; v < V; v++) {
       for (int w : adj[v]) {
         reverse.addEdge(w, v);
       }
