@@ -12,6 +12,9 @@ import org.junit.Test;
 import own.stu.algorithms_4th.graph.directed.DiGraph;
 import own.stu.algorithms_4th.graph.directed.DirectedCycle;
 import own.stu.algorithms_4th.graph.directed.KosarajuSharirSCC;
+import own.stu.algorithms_4th.graph.minimun_spanning_tree.EdgWeightedGraph;
+import own.stu.algorithms_4th.graph.minimun_spanning_tree.Edge;
+import own.stu.algorithms_4th.graph.minimun_spanning_tree.LazyPrimMST;
 import own.stu.algorithms_4th.graph.undirected.AbstractSearch;
 import own.stu.algorithms_4th.graph.undirected.BreadthFirstSearch;
 import own.stu.algorithms_4th.graph.undirected.ConnectedComponent;
@@ -104,6 +107,7 @@ public class GraphTest {
 
   private Graph graph;
   private DiGraph diGraph;
+  private EdgWeightedGraph edgWeightedGraph;
 
   @Before
   public void before() {
@@ -112,6 +116,10 @@ public class GraphTest {
     graph = new Graph(new In(file));
     String file_digraph = "/Users/ScorpionKing/IdeaProject_cl/core/algorithms-4th-Edition/src/main/resources/tmp/data-tinyDAG-2.txt";
     diGraph = new DiGraph(new In(file_digraph));
+
+    String file_weightGraph = "/Users/ScorpionKing/IdeaProject_cl/core/algorithms-4th-Edition/src/main/resources/tmp/data-tinyEWG.txt";
+    String file_weightGraph_large = "/Users/ScorpionKing/Desktop/largeEWG.txt";
+    edgWeightedGraph = new EdgWeightedGraph(new In(file_weightGraph_large));
   }
 
   @Test
@@ -234,9 +242,9 @@ public class GraphTest {
   @Test
   public void testDirectGraphPrint() {
 
-    for(int i = 0; i<diGraph.V();i++){
+    for (int i = 0; i < diGraph.V(); i++) {
       System.out.print(i + " : ");
-      for(int v : diGraph.adj(i)){
+      for (int v : diGraph.adj(i)) {
         System.out.print(v + " ");
       }
       System.out.println();
@@ -262,26 +270,26 @@ public class GraphTest {
   public void testDepthFirstOrder() {
     DepthFirstOrder depthFirstOrder = new DepthFirstOrder(diGraph.reverse());
     System.out.print("pre: ");
-    for(int v : depthFirstOrder.pre()){
+    for (int v : depthFirstOrder.pre()) {
       System.out.print(v + " ");
     }
     System.out.println();
 
     System.out.print("post: ");
-    for(int v : depthFirstOrder.post()){
+    for (int v : depthFirstOrder.post()) {
       System.out.print(v + " ");
     }
     System.out.println();
 
     System.out.print("reversePost: ");
-    for(int v : depthFirstOrder.reversePost()){
+    for (int v : depthFirstOrder.reversePost()) {
       System.out.print(v + " ");
     }
     System.out.println();
   }
 
   @Test
-  public void testDirectConnectComponent(){
+  public void testDirectConnectComponent() {
 
     KosarajuSharirSCC scc = new KosarajuSharirSCC(diGraph);
     int count = scc.count();
@@ -303,5 +311,15 @@ public class GraphTest {
       }
       System.out.println();
     }
+  }
+
+  @Test
+  public void testLazyPrimMST() {
+
+    LazyPrimMST mst = new LazyPrimMST(edgWeightedGraph);
+    for (Edge edge : mst.edges()) {
+      System.out.println(edge);
+    }
+    System.out.println(mst.weight());
   }
 }
