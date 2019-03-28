@@ -1,4 +1,4 @@
-package own.stu.graph;
+package own.stu.algorithms_4th.graph;
 
 import edu.princeton.cs.algs4.Bag;
 import edu.princeton.cs.algs4.In;
@@ -15,6 +15,7 @@ import own.stu.algorithms_4th.graph.directed.KosarajuSharirSCC;
 import own.stu.algorithms_4th.graph.minimun_spanning_tree.EdgWeightedGraph;
 import own.stu.algorithms_4th.graph.minimun_spanning_tree.Edge;
 import own.stu.algorithms_4th.graph.minimun_spanning_tree.LazyPrimMST;
+import own.stu.algorithms_4th.graph.minimun_spanning_tree.PrimMST;
 import own.stu.algorithms_4th.graph.undirected.AbstractSearch;
 import own.stu.algorithms_4th.graph.undirected.BreadthFirstSearch;
 import own.stu.algorithms_4th.graph.undirected.ConnectedComponent;
@@ -118,6 +119,7 @@ public class GraphTest {
     diGraph = new DiGraph(new In(file_digraph));
 
     String file_weightGraph = "/Users/ScorpionKing/IdeaProject_cl/core/algorithms-4th-Edition/src/main/resources/tmp/data-tinyEWG.txt";
+    String file_weightGraph_10000 = "/Users/ScorpionKing/Desktop/10000EWG.txt";
     String file_weightGraph_large = "/Users/ScorpionKing/Desktop/largeEWG.txt";
     edgWeightedGraph = new EdgWeightedGraph(new In(file_weightGraph_large));
   }
@@ -322,4 +324,15 @@ public class GraphTest {
     }
     System.out.println(mst.weight());
   }
+
+  @Test
+  public void testPrimMST() {
+
+    PrimMST mst = new PrimMST(edgWeightedGraph);
+    for (Edge edge : mst.edges()) {
+      System.out.println(edge);
+    }
+    System.out.println(mst.weight());
+  }
+
 }
