@@ -42,11 +42,11 @@ public class DiGraph {
     if (V < 0) {
       throw new IllegalArgumentException("Number of vertices must be nonnegative");
     }
-    int E = in.readInt();
-    if (E < 0) {
+    int e = in.readInt();
+    if (e < 0) {
       throw new IllegalArgumentException("number of edges in a Graph must be nonnegative");
     }
-    for (int i = 0; i < E; i++) {
+    for (int i = 0; i < e; i++) {
       // 添加一条边
       int v = in.readInt();
       int w = in.readInt();

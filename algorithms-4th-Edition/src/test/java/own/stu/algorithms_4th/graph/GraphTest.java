@@ -7,15 +7,15 @@ import edu.princeton.cs.algs4.StdIn;
 import edu.princeton.cs.algs4.StdOut;
 import java.util.List;
 import org.assertj.core.util.Lists;
-import org.junit.Before;
 import org.junit.Test;
-import own.stu.algorithms_4th.graph.directed.DiGraph;
 import own.stu.algorithms_4th.graph.directed.DirectedCycle;
 import own.stu.algorithms_4th.graph.directed.KosarajuSharirSCC;
-import own.stu.algorithms_4th.graph.minimun_spanning_tree.EdgWeightedGraph;
 import own.stu.algorithms_4th.graph.minimun_spanning_tree.Edge;
 import own.stu.algorithms_4th.graph.minimun_spanning_tree.LazyPrimMST;
 import own.stu.algorithms_4th.graph.minimun_spanning_tree.PrimMST;
+import own.stu.algorithms_4th.graph.shortest_path_tree.DijkstraSP;
+import own.stu.algorithms_4th.graph.shortest_path_tree.DirectedEdge;
+import own.stu.algorithms_4th.graph.shortest_path_tree.EdgeWeightedDigraph;
 import own.stu.algorithms_4th.graph.undirected.AbstractSearch;
 import own.stu.algorithms_4th.graph.undirected.BreadthFirstSearch;
 import own.stu.algorithms_4th.graph.undirected.ConnectedComponent;
@@ -27,7 +27,7 @@ import own.stu.algorithms_4th.graph.undirected.Graph;
 import own.stu.algorithms_4th.graph.undirected.SymbolGraph;
 import own.stu.algorithms_4th.graph.undirected.TwoColor;
 
-public class GraphTest {
+public class GraphTest extends Init{
 
   @Test
   public void graphToString() {
@@ -104,24 +104,6 @@ public class GraphTest {
       System.out.println("hasNoPath");
     }
     System.out.println();
-  }
-
-  private Graph graph;
-  private DiGraph diGraph;
-  private EdgWeightedGraph edgWeightedGraph;
-
-  @Before
-  public void before() {
-
-    String file = "/Users/ScorpionKing/IdeaProject_cl/core/algorithms-4th-Edition/src/main/resources/tmp/data-graph-3.txt";
-    graph = new Graph(new In(file));
-    String file_digraph = "/Users/ScorpionKing/IdeaProject_cl/core/algorithms-4th-Edition/src/main/resources/tmp/data-tinyDAG-2.txt";
-    diGraph = new DiGraph(new In(file_digraph));
-
-    String file_weightGraph = "/Users/ScorpionKing/IdeaProject_cl/core/algorithms-4th-Edition/src/main/resources/tmp/data-tinyEWG.txt";
-    String file_weightGraph_10000 = "/Users/ScorpionKing/Desktop/10000EWG.txt";
-    String file_weightGraph_large = "/Users/ScorpionKing/Desktop/largeEWG.txt";
-    edgWeightedGraph = new EdgWeightedGraph(new In(file_weightGraph_large));
   }
 
   @Test
@@ -334,5 +316,42 @@ public class GraphTest {
     }
     System.out.println(mst.weight());
   }
+
+  @Test
+  public void testDijkstraSP() {
+
+    DijkstraSP sp = new DijkstraSP(edgeWeightedDigraph);
+
+    printDijkstraSP(sp, edgeWeightedDigraph);
+
+    DijkstraSP sp2 = new DijkstraSP(edgeWeightedDigraph, 0);
+    printDijkstraSP(sp2, edgeWeightedDigraph);
+  }
+
+  private void printDijkstraSP(DijkstraSP sp, EdgeWeightedDigraph edgeWeightedDigraph) {
+    for (int t = 0; t < edgeWeightedDigraph.V(); t++) {
+      if (sp.hasPathTo(t)) {
+        StdOut.printf("%d to %d (%.2f)  ", 0, t, sp.distTo(t));
+        for (DirectedEdge e : sp.pathTo(t)) {
+          StdOut.print(e + "   ");
+        }
+        StdOut.println();
+      } else {
+        StdOut.printf("%d to %d         no path\n", 0, t);
+      }
+    }
+  }
+
+  // cyclic inheritance 循环继承
+  /*public static class A extends B{
+
+  }
+  public static class B extends C{
+
+  }
+  public static class C extends A{
+
+  }*/
+
 
 }
