@@ -3,10 +3,15 @@ package own.stu.algorithms_4th.graph;
 import com.alibaba.fastjson.JSON;
 import edu.princeton.cs.algs4.StdOut;
 import java.util.ArrayList;
+import java.util.List;
 import org.assertj.core.util.Lists;
 import org.junit.Test;
 import own.stu.algorithms_4th.graph.directed.BreadthFirstDirectedPaths;
 import own.stu.algorithms_4th.graph.directed.DepthFirstDirectedPaths;
+import own.stu.algorithms_4th.graph.directed.DiGraph;
+import own.stu.algorithms_4th.graph.directed.SymbolDigraph;
+import own.stu.algorithms_4th.graph.undirected.Graph;
+import own.stu.algorithms_4th.graph.undirected.SymbolGraph;
 
 public class DiGraphTest extends Init {
 
@@ -76,5 +81,45 @@ public class DiGraphTest extends Init {
         StdOut.printf("%d to %d:  not connected\n", s, v);
       }
     }
+  }
+
+  @Test
+  public void testSymbolGraph() {
+    String fileName = "/Users/ScorpionKing/Desktop/routes.txt";
+    SymbolGraph symbolGraph = new SymbolGraph(fileName, " ");
+    Graph graph = symbolGraph.G();
+    List<String> list = Lists.newArrayList("HOU", "MCO", "LAS", "PHX");
+
+    list.stream().forEach(source -> {
+
+      if (symbolGraph.contains(source)) {
+        System.out.println(source + " : ");
+        for (int w : graph.adj(symbolGraph.index(source))) {
+          System.out.println("    " + symbolGraph.name(w));
+        }
+      } else {
+        StdOut.println("input not contain '" + source + "'");
+      }
+    });
+  }
+
+  @Test
+  public void testSymbolDiGraph() {
+    String fileName = "/Users/ScorpionKing/Desktop/routes.txt";
+    SymbolDigraph symbolGraph = new SymbolDigraph(fileName, " ");
+    DiGraph graph = symbolGraph.digraph();
+    List<String> list = Lists.newArrayList("HOU", "MCO", "LAS", "PHX");
+
+    list.stream().forEach(source -> {
+
+      if (symbolGraph.contains(source)) {
+        System.out.println(source + " : ");
+        for (int w : graph.adj(symbolGraph.indexOf(source))) {
+          System.out.println("    " + symbolGraph.nameOf(w));
+        }
+      } else {
+        StdOut.println("input not contain '" + source + "'");
+      }
+    });
   }
 }
