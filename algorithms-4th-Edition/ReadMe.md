@@ -1,4 +1,9 @@
 ## 1:algorithms 4th:
+###graph: 
+#### direct
+#### un-direct
+#### minimum-spanning-tree
+#### shortest-path-tree
 
 
 ## 2:jdk1.8 new (test : own.sut.jkd8):
