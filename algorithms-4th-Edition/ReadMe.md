@@ -1,4 +1,12 @@
 ## 1:algorithms 4th:
+
+###graph: 
+#### direct
+#### un-direct
+#### minimum-spanning-tree
+#### shortest-path-tree
+
+
 ### fundaments
 #### 内存
       分析内存的使用会比分析程序的运行时间简单的多，主要原因是它涉及的程序语句较少（只有申明语句）
@@ -54,10 +62,14 @@
     这是除字符数组之外的字符串所需的内存空间。
       一个长度为N的String对象一般需要使用40字节（Stringd对象本身）加上（24+2N）字节（字符数组），总共（64+2N）字节。
     
+<<<<<<< HEAD
 ### graph    
 ### string
 #### lsd 地位优先排序
     
+=======
+
+>>>>>>> 0fd944859895ed1d9bde6577912ca34e3775f35f
 ## 2:jdk1.8 new (test : own.sut.jkd8):
 ### lambda
 ### stream
