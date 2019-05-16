@@ -54,6 +54,10 @@
     这是除字符数组之外的字符串所需的内存空间。
       一个长度为N的String对象一般需要使用40字节（Stringd对象本身）加上（24+2N）字节（字符数组），总共（64+2N）字节。
     
+### graph    
+### string
+#### lsd 地位优先排序
+    
 ## 2:jdk1.8 new (test : own.sut.jkd8):
 ### lambda
 ### stream

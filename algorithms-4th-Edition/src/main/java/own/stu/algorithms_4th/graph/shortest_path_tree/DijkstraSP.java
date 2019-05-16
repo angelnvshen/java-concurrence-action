@@ -17,7 +17,7 @@ public class DijkstraSP {
     }
     distTo[0] = 0;
 
-    pq = new IndexMinPQ<Double>(graph.V());
+    pq = new IndexMinPQ<>(graph.V());
     pq.insert(0, distTo[0]);
     while (!pq.isEmpty()) {
       relax(graph, pq.delMin());
@@ -82,7 +82,7 @@ public class DijkstraSP {
     if (!hasPathTo(v)) {
       return null;
     }
-    Stack<DirectedEdge> path = new Stack<DirectedEdge>();
+    Stack<DirectedEdge> path = new Stack<>();
     for (DirectedEdge edge = edgeTo[v]; edge != null; edge = edgeTo[edge.from()]) {
       path.push(edge);
     }

@@ -90,7 +90,7 @@ public class DiGraphTest extends Init {
     Graph graph = symbolGraph.G();
     List<String> list = Lists.newArrayList("HOU", "MCO", "LAS", "PHX");
 
-    list.stream().forEach(source -> {
+    list.forEach(source -> {
 
       if (symbolGraph.contains(source)) {
         System.out.println(source + " : ");
@@ -110,7 +110,7 @@ public class DiGraphTest extends Init {
     DiGraph graph = symbolGraph.digraph();
     List<String> list = Lists.newArrayList("HOU", "MCO", "LAS", "PHX");
 
-    list.stream().forEach(source -> {
+    list.forEach(source -> {
 
       if (symbolGraph.contains(source)) {
         System.out.println(source + " : ");

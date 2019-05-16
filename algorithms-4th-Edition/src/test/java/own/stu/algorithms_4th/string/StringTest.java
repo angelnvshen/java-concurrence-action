@@ -10,7 +10,7 @@ import org.junit.Test;
 
 public class StringTest {
 
-  String str = "";
+  private String str = "";
 
   @Before
   public void init() {
@@ -102,8 +102,8 @@ public class StringTest {
   }
 
   private <T> void printArray(T[] t) {
-    for (int i = 0; i < t.length; i++) {
-      System.out.print(t[i] + " ");
+    for (T aT : t) {
+      System.out.print(aT + " ");
     }
     System.out.println();
   }
@@ -114,7 +114,7 @@ public class StringTest {
     private String name;
     private int group;
 
-    public Student(String name, int group) {
+    Student(String name, int group) {
       this.name = name;
       this.group = group;
     }
@@ -124,4 +124,3 @@ public class StringTest {
     }
   }
 }
-
