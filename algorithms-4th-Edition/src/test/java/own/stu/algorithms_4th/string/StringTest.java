@@ -93,6 +93,13 @@ public class StringTest {
   }
 
   @Test
+  public void test_LSD2() {
+    String[] str = {"BDC", "AEB"};
+    LSD.sort(str, 3);
+    printArray(str);
+  }
+
+  @Test
   public void test2() {
     int[] nums = new int[2];
     for (int i = 0; i < 10; i++) {
