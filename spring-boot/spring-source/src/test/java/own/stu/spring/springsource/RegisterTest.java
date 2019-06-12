@@ -3,6 +3,7 @@ package own.stu.spring.springsource;
 import org.junit.Test;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
+import org.springframework.stereotype.Controller;
 import own.stu.spring.springsource.config.BeanRegisterConfig;
 import own.stu.spring.springsource.less.controller.BookController;
 import own.stu.spring.springsource.model.Person;
@@ -54,10 +55,21 @@ public class RegisterTest {
     AnnotationConfigApplicationContext configApplicationContext = new AnnotationConfigApplicationContext(
         BeanRegisterConfig.class);
 
-    BookController bookController = configApplicationContext.getBean(BookController.class);
-    System.out.println(bookController);
+    for(String name : configApplicationContext.getBeanDefinitionNames()){
+      System.out.println(name);
+    }
 
     Person person = configApplicationContext.getBean(Person.class);
     System.out.println(person);
+
+    BookController bookController = configApplicationContext.getBean(BookController.class);
+    System.out.println(bookController);
+
+  }
+
+  @Test
+  public void test(){
+    System.out.println(Controller.class.getSimpleName());
+    System.out.println(Controller.class.getCanonicalName());
   }
 }
