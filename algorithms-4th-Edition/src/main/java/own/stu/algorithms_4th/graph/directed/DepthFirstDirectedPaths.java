@@ -4,7 +4,7 @@ import edu.princeton.cs.algs4.Stack;
 
 /**
  * Single-source directed paths: given a digraph and source s, is there a directed path from s to v? If so, find such a
- * path. DepthFirstDirectedPaths.java uses depth-first search to solve this problem.
+ * path. DepthFirstDirectedPaths.java uses depth-first search_one to solve this problem.
  */
 public class DepthFirstDirectedPaths {
 

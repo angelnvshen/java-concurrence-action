@@ -2,6 +2,7 @@ package own.stu.algorithms_4th.string;
 
 public class Alphabet {
 
+<<<<<<< HEAD
 
     private char[] alphabet;     // the characters in the alphabet
 
@@ -162,4 +163,15 @@ public class Alphabet {
             System.out.println(i);
         }
     }
+=======
+  char[] chars;
+
+  public Alphabet(String s) {
+  }
+
+  char toChar(int index) {
+
+    return '\u2323';
+  }
+>>>>>>> 1fb40f3817e055048eb7634f1016e0a461d6a02f
 }

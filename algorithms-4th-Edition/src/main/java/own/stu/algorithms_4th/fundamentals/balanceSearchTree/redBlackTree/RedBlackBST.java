@@ -119,7 +119,7 @@ public class RedBlackBST<Key extends Comparable<Key>, Value> {
 
 
    /***************************************************************************
-    *  Standard BST search.
+    *  Standard BST search_one.
     ***************************************************************************/
 
     /**
@@ -660,7 +660,7 @@ public class RedBlackBST<Key extends Comparable<Key>, Value> {
     } 
 
    /***************************************************************************
-    *  Range count and range search.
+    *  Range count and range search_one.
     ***************************************************************************/
 
     /**

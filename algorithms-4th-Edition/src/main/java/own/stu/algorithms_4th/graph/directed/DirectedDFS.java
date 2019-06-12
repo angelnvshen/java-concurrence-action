@@ -5,7 +5,7 @@ import own.stu.algorithms_4th.graph.undirected.Graph;
 /**
  * Single-source reachability and Multiple-source reachability:
  *  Given a digraph and source s, is there a directed path from s to v?
- *  If so, find such a path. DirectedDFS.java uses depth-first search to solve this problem
+ *  If so, find such a path. DirectedDFS.java uses depth-first search_one to solve this problem
  */
 public class DirectedDFS {
 
