@@ -1,6 +1,7 @@
 package own.stu.tkmybatis.demo.service.impl;
 
 import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -51,7 +52,11 @@ public class CountryServiceImpl extends BaseServiceImpl<Country> implements Coun
     }
     //分页查询
     PageHelper.startPage(page, rows);
-    return selectByExample(example);
+    List<Country> list = selectByExample(example);
+
+    PageInfo<Country> pageInfo = new PageInfo<>(list);
+
+    return list;
   }
 
   /**
