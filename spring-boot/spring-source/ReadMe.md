@@ -11,3 +11,6 @@ source
    @Lazy 容器启动时不会创建对象，调用时才创建
   ### @Conditional 按条件注册组件 
   ### @Import 导入组件，默认组件的名称是类的全类名  
+    @ImportSelector 以数组的行式返回需要导入的组件
+    @ImoprtBeanDefinitionRegisterar 可以引用 BeanDefineRegister 来导入需要引入的组件
+  ### FactoryBean 导入组件，如果需要引用factoryBean 本身，需要加 &。

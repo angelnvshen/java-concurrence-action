@@ -6,6 +6,7 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.core.env.ConfigurableEnvironment;
 import org.springframework.stereotype.Controller;
 import own.stu.spring.springsource.config.BeanRegisterConfig;
+import own.stu.spring.springsource.config.MyFactoryBean;
 import own.stu.spring.springsource.less.controller.BookController;
 import own.stu.spring.springsource.model.City;
 import own.stu.spring.springsource.model.Person;
@@ -110,5 +111,20 @@ public class RegisterTest {
 
       System.out.println(name);
     }
+  }
+
+  @Test
+  public void test_factoryBean() {
+    AnnotationConfigApplicationContext configApplicationContext = new AnnotationConfigApplicationContext(
+            BeanRegisterConfig.class);
+
+    MyFactoryBean myFactoryBean = configApplicationContext.getBean(MyFactoryBean.class);
+    System.out.println(myFactoryBean);
+
+    Object bean = configApplicationContext.getBean("myFactoryBean");
+    System.out.println(bean.getClass());
+
+    Object bean2 = configApplicationContext.getBean("&myFactoryBean");
+    System.out.println(bean2.getClass());
   }
 }

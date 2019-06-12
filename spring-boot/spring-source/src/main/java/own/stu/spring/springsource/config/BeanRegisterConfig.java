@@ -22,7 +22,7 @@ import own.stu.spring.springsource.model.Person;
         @Filter(type = FilterType.CUSTOM, classes = {MyTypeFilter.class})
     }, useDefaultFilters = false)
 
-@Import(Color.class)
+@Import({Color.class, MyImportSelector.class, MyImportBeanDefinitionRegistrar.class})
 public class BeanRegisterConfig {
 
   @Bean
@@ -53,5 +53,10 @@ public class BeanRegisterConfig {
   @Bean("mac")
   public Person person03() {
     return new Person("mac", 10);
+  }
+
+  @Bean("myFactoryBean")
+  public MyFactoryBean myFactoryBean(){
+    return new MyFactoryBean();
   }
 }
