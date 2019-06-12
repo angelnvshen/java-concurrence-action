@@ -6,6 +6,7 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.stereotype.Controller;
 import own.stu.spring.springsource.config.BeanRegisterConfig;
 import own.stu.spring.springsource.less.controller.BookController;
+import own.stu.spring.springsource.model.City;
 import own.stu.spring.springsource.model.Person;
 
 public class RegisterTest {
@@ -71,5 +72,19 @@ public class RegisterTest {
   public void test(){
     System.out.println(Controller.class.getSimpleName());
     System.out.println(Controller.class.getCanonicalName());
+  }
+
+  @Test
+  public void test_scope(){
+    AnnotationConfigApplicationContext configApplicationContext = new AnnotationConfigApplicationContext(
+        BeanRegisterConfig.class);
+
+    System.out.println("start");
+
+    City city = configApplicationContext.getBean(City.class);
+    System.out.println(city);
+
+    city = configApplicationContext.getBean(City.class);
+    city = configApplicationContext.getBean(City.class);
   }
 }
