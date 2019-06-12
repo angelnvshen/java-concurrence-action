@@ -1,16 +1,19 @@
 package own.stu.spring.springsource.config;
 
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.ComponentScan.Filter;
 import org.springframework.context.annotation.Conditional;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.FilterType;
+import org.springframework.context.annotation.Import;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.context.annotation.Scope;
 import own.stu.spring.springsource.config.condition.MacCondition;
 import own.stu.spring.springsource.config.condition.WindowsCondition;
 import own.stu.spring.springsource.model.City;
+import own.stu.spring.springsource.model.Color;
 import own.stu.spring.springsource.model.Person;
 
 @Configuration
@@ -18,6 +21,8 @@ import own.stu.spring.springsource.model.Person;
     includeFilters = {
         @Filter(type = FilterType.CUSTOM, classes = {MyTypeFilter.class})
     }, useDefaultFilters = false)
+
+@Import(Color.class)
 public class BeanRegisterConfig {
 
   @Bean

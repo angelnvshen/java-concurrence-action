@@ -100,4 +100,15 @@ public class RegisterTest {
       System.out.println(name);
     }
   }
+
+  @Test
+  public void test_import() {
+    AnnotationConfigApplicationContext configApplicationContext = new AnnotationConfigApplicationContext(
+        BeanRegisterConfig.class);
+
+    for (String name : configApplicationContext.getBeanDefinitionNames()) {
+
+      System.out.println(name);
+    }
+  }
 }
