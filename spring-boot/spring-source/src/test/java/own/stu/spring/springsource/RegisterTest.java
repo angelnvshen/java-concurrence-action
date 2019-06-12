@@ -3,6 +3,7 @@ package own.stu.spring.springsource;
 import org.junit.Test;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
+import org.springframework.core.env.ConfigurableEnvironment;
 import org.springframework.stereotype.Controller;
 import own.stu.spring.springsource.config.BeanRegisterConfig;
 import own.stu.spring.springsource.less.controller.BookController;
@@ -56,7 +57,7 @@ public class RegisterTest {
     AnnotationConfigApplicationContext configApplicationContext = new AnnotationConfigApplicationContext(
         BeanRegisterConfig.class);
 
-    for(String name : configApplicationContext.getBeanDefinitionNames()){
+    for (String name : configApplicationContext.getBeanDefinitionNames()) {
       System.out.println(name);
     }
 
@@ -69,13 +70,13 @@ public class RegisterTest {
   }
 
   @Test
-  public void test(){
+  public void test() {
     System.out.println(Controller.class.getSimpleName());
     System.out.println(Controller.class.getCanonicalName());
   }
 
   @Test
-  public void test_scope(){
+  public void test_scope() {
     AnnotationConfigApplicationContext configApplicationContext = new AnnotationConfigApplicationContext(
         BeanRegisterConfig.class);
 
@@ -86,5 +87,17 @@ public class RegisterTest {
 
     city = configApplicationContext.getBean(City.class);
     city = configApplicationContext.getBean(City.class);
+  }
+
+  @Test
+  public void test_conditional() {
+
+    AnnotationConfigApplicationContext configApplicationContext = new AnnotationConfigApplicationContext(
+        BeanRegisterConfig.class);
+
+    for (String name : configApplicationContext.getBeanNamesForType(Person.class)) {
+
+      System.out.println(name);
+    }
   }
 }

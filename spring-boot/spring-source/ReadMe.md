@@ -4,5 +4,9 @@ source
   ### @configuration @bean 注册组件
   ### @componentScan 扫描指定包下的组件,组件上有（@Controller， @Service @Repository @Component）注解。
   ### @componentScan with customerTypeFilter (注意 useDefaultFilters = false ) 
-  
+  ### @Scope 
+  默认 singleton，容器启动时创建对象，后续调用同一个对象时，从map中获取。
+       prototype ,容器启动时不会创建对象，调用时再创建对象，多次调用，创建多次。
+  ### @Lazy 
+   @Lazy 容器启动时不会创建对象，调用时才创建
    

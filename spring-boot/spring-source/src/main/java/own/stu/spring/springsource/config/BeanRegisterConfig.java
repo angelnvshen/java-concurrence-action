@@ -3,10 +3,13 @@ package own.stu.spring.springsource.config;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.ComponentScan.Filter;
+import org.springframework.context.annotation.Conditional;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.FilterType;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.context.annotation.Scope;
+import own.stu.spring.springsource.config.condition.MacCondition;
+import own.stu.spring.springsource.config.condition.WindowsCondition;
 import own.stu.spring.springsource.model.City;
 import own.stu.spring.springsource.model.Person;
 
@@ -18,7 +21,7 @@ import own.stu.spring.springsource.model.Person;
 public class BeanRegisterConfig {
 
   @Bean
-  public Person person01(){
+  public Person person01() {
     return new Person("qin", 10);
   }
 
@@ -30,8 +33,20 @@ public class BeanRegisterConfig {
   @Scope("singleton")
   @Lazy
   @Bean
-  public City city(){
+  public City city() {
     System.out.println("创建对象");
     return new City("多罗");
+  }
+
+  @Conditional({WindowsCondition.class})
+  @Bean("bill")
+  public Person person02() {
+    return new Person("bill", 10);
+  }
+
+  @Conditional({MacCondition.class})
+  @Bean("mac")
+  public Person person03() {
+    return new Person("mac", 10);
   }
 }
