@@ -14,3 +14,11 @@ source
     @ImportSelector 以数组的行式返回需要导入的组件
     @ImoprtBeanDefinitionRegisterar 可以引用 BeanDefineRegister 来导入需要引入的组件
   ### FactoryBean 导入组件，如果需要引用factoryBean 本身，需要加 &。
+  
+## 2 生命周期
+  ### xml - bean 节点 init-method or destroy-method | @Bean 注解的 initMethod destroyMethod 指定节点的初始化和销毁方法
+  ### InitializingBean ,DisposableBean 
+  ### @PostConstruct @PreDestroy 
+  ### BeanPostProcessor 后置处理器
+  spring 底层处理 @AutoWire， 生命周期注解功能，@Async，applicationContextAware 会使用到BeanPostProcessor
+  

@@ -1,6 +1,5 @@
 package own.stu.spring.springsource.config;
 
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.ComponentScan.Filter;
@@ -59,4 +58,5 @@ public class BeanRegisterConfig {
   public MyFactoryBean myFactoryBean(){
     return new MyFactoryBean();
   }
+
 }
