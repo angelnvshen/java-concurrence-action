@@ -8,6 +8,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.FilterType;
 import org.springframework.context.annotation.Import;
 import org.springframework.context.annotation.Lazy;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.context.annotation.Scope;
 import own.stu.spring.springsource.config.condition.MacCondition;
 import own.stu.spring.springsource.config.condition.WindowsCondition;
@@ -16,7 +17,8 @@ import own.stu.spring.springsource.model.Color;
 import own.stu.spring.springsource.model.Person;
 
 @Configuration
-@Import({MyBeanPostProcessor.class})
+@Import({MyBeanPostProcessor.class, Color.class})
+@PropertySource("classpath:property/keys.properties")
 public class BeanScopeConfig {
 
   @Bean(initMethod="init", destroyMethod = "destroy_1")

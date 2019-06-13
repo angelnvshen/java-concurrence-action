@@ -22,3 +22,10 @@ source
   ### BeanPostProcessor 后置处理器
   spring 底层处理 @AutoWire， 生命周期注解功能，@Async，applicationContextAware 会使用到BeanPostProcessor
   
+## 3 自动装配
+  ### @AutoWire @Qualifier（指定装配名称的组件） @Primary(优先装配有注解的组件) 
+  ### @Resource @Inject(需要引入jar包) jsr 标准
+  
+  @Inject 可以配合 @Qualifier 和 @Primary注解使用。@Resource 则不能。两者都是 JSR标准
+  @AutoWire 则是spring 提供
+  
