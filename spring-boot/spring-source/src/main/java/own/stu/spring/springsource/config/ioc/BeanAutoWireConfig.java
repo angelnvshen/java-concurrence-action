@@ -1,4 +1,4 @@
-package own.stu.spring.springsource.config;
+package own.stu.spring.springsource.config.ioc;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;

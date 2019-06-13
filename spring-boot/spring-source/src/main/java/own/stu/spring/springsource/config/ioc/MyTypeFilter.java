@@ -1,4 +1,4 @@
-package own.stu.spring.springsource.config;
+package own.stu.spring.springsource.config.ioc;
 
 import java.beans.Transient;
 import java.io.IOException;

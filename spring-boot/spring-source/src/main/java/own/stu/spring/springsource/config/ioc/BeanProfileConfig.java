@@ -1,4 +1,4 @@
-package own.stu.spring.springsource.config;
+package own.stu.spring.springsource.config.ioc;
 
 import com.alibaba.druid.pool.DruidDataSource;
 import org.springframework.beans.factory.annotation.Value;

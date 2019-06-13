@@ -1,4 +1,4 @@
-package own.stu.spring.springsource.config;
+package own.stu.spring.springsource.config.ioc;
 
 import org.springframework.beans.factory.FactoryBean;
 import own.stu.spring.springsource.model.Color;

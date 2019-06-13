@@ -1,4 +1,4 @@
-package own.stu.spring.springsource.config.condition;
+package own.stu.spring.springsource.config.ioc.condition;
 
 import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
 import org.springframework.beans.factory.support.BeanDefinitionRegistry;

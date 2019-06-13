@@ -1,4 +1,4 @@
-package own.stu.spring.springsource.config.condition;
+package own.stu.spring.springsource.config.ioc.condition;
 
 import org.springframework.context.annotation.Condition;
 import org.springframework.context.annotation.ConditionContext;

@@ -1,12 +1,11 @@
-package own.stu.spring.springsource;
+package own.stu.spring.springsource.ioc;
 
 import org.junit.Test;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
-import org.springframework.core.env.ConfigurableEnvironment;
 import org.springframework.stereotype.Controller;
-import own.stu.spring.springsource.config.BeanRegisterConfig;
-import own.stu.spring.springsource.config.MyFactoryBean;
+import own.stu.spring.springsource.config.ioc.BeanRegisterConfig;
+import own.stu.spring.springsource.config.ioc.MyFactoryBean;
 import own.stu.spring.springsource.less.controller.BookController;
 import own.stu.spring.springsource.model.City;
 import own.stu.spring.springsource.model.Person;

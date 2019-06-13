@@ -1,10 +1,8 @@
-package own.stu.spring.springsource;
+package own.stu.spring.springsource.ioc;
 
-import com.alibaba.druid.pool.DruidDataSource;
 import org.junit.Test;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
-import own.stu.spring.springsource.config.BeanAutoWireConfig;
-import own.stu.spring.springsource.config.BeanProfileConfig;
+import own.stu.spring.springsource.config.ioc.BeanProfileConfig;
 
 public class ProfileTest {
 

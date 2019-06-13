@@ -1,5 +1,6 @@
 source
 
+#IOC
 ## 1 组件注册
   ### @configuration @bean 注册组件
   ### @componentScan 扫描指定包下的组件,组件上有（@Controller， @Service @Repository @Component）注解。
@@ -33,4 +34,11 @@ source
   
   @Profile 根据环境装配组件
   
+#AOP
+## 1测试实例
+  A 切面类和被切的类
+  B 将切面类添加 @Aspect 注解
+  C 将两者添加到容器
+  D 容器添加 @EnableAspectAutoProxy 注解，开始切面自动代理
   
+   

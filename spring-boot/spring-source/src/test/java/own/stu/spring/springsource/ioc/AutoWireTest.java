@@ -1,12 +1,9 @@
-package own.stu.spring.springsource;
+package own.stu.spring.springsource.ioc;
 
 import org.junit.Test;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
-import own.stu.spring.springsource.config.BeanAutoWireConfig;
-import own.stu.spring.springsource.config.BeanScopeConfig;
+import own.stu.spring.springsource.config.ioc.BeanAutoWireConfig;
 import own.stu.spring.springsource.less.controller.BookController;
-import own.stu.spring.springsource.less.service.BookService;
-import own.stu.spring.springsource.model.Color;
 
 public class AutoWireTest {
 
