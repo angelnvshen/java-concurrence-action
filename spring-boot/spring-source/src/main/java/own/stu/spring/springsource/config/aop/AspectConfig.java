@@ -1,6 +1,7 @@
 package own.stu.spring.springsource.config.aop;
 
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import own.stu.spring.springsource.config.aop.aspect.LogAspect;
@@ -8,6 +9,7 @@ import own.stu.spring.springsource.less.service.MathCalculation;
 
 @EnableAspectJAutoProxy
 @Configuration
+@ComponentScan("own.stu.spring.springsource.less.service")
 public class AspectConfig {
 
   @Bean
