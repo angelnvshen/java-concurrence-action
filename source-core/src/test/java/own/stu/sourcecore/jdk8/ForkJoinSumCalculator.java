@@ -3,6 +3,7 @@ package own.stu.sourcecore.jdk8;
 import java.util.concurrent.ForkJoinPool;
 import java.util.concurrent.ForkJoinTask;
 import java.util.concurrent.RecursiveTask;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.LongStream;
 
 public class ForkJoinSumCalculator extends RecursiveTask<Long> {
@@ -53,12 +54,14 @@ public class ForkJoinSumCalculator extends RecursiveTask<Long> {
     return new ForkJoinPool().invoke(task);
   }
 
-  public static void main(String[] args) {
+  public static void main(String[] args) throws InterruptedException {
 
     long start = System.nanoTime();
     // this place can cause the heap oom, or stack oom; watch the jvm
     long result = forkJoinSum(20000000);
     long duration = (System.nanoTime() - start) / 1_000_000;
     System.out.println("result: " + result + ", cost: " + duration);
+
+    TimeUnit.SECONDS.sleep(Integer.MAX_VALUE);
   }
 }
