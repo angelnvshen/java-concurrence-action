@@ -41,4 +41,15 @@ source
   C 将两者添加到容器
   D 容器添加 @EnableAspectAutoProxy 注解，开始切面自动代理
   
+## 2 原理
+
+   EnableAspectJAutoProxy 开启切面自动代理 -> @Import :AspectJAutoProxyRegistrar
+    创建并注册 internalAutoProxyCreator = AnnotationAwareAspectJAutoProxyCreator对象
+    
+   AnnotationAwareAspectJAutoProxyCreator 的作用
+    AnnotationAwareAspectJAutoProxyCreator
+        -> AspectJAwareAdvisorAutoProxyCreator
+            -> AbstractAdvisorAutoProxyCreator
+                -> AbstractAutoProxyCreator - implements SmartInstantiationAwareBeanPostProcessor, BeanFactoryAware 
+            关注bean 初始化完成前后做的事情，和自动装配BeanFactory  
    
