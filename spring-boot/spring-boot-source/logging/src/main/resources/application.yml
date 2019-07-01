@@ -11,3 +11,8 @@ server:
 spring:
   profiles:
     active: dev
+
+own:
+  hello:
+    prefix: moring~
+    suffix: it's a good day.
