@@ -5,10 +5,15 @@ import static org.junit.Assert.assertTrue;
 import java.util.Arrays;
 import org.junit.Test;
 import org.springframework.beans.factory.BeanFactory;
+import org.springframework.beans.factory.config.BeanDefinition;
+import org.springframework.beans.factory.config.BeanPostProcessor;
+import org.springframework.beans.factory.support.RootBeanDefinition;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.annotation.Configuration;
 import own.spring.core.config.BeanConfig;
+import own.spring.core.model.Book;
+import own.spring.core.model.BookFactoryBean;
 import own.spring.core.service.MessageService;
 
 /**
@@ -31,12 +36,9 @@ public class AppTest {
 
     ApplicationContext applicationContext = new AnnotationConfigApplicationContext(BeanConfig.class);
 
-    MessageService messageService = applicationContext.getBean(MessageService.class);
-    System.out.println(messageService.getMessage());
+    Arrays.asList(applicationContext.getBeanDefinitionNames()).forEach(System.out::println);
 
-//    applicationContext.getBeanNamesForType()
-    BeanFactory parentBeanFactory = applicationContext.getParentBeanFactory();
-    System.out.println(parentBeanFactory);
+    // applicationContext.getAutowireCapableBeanFactory()
   }
 
   @Test
@@ -75,6 +77,66 @@ public class AppTest {
 
   @Test
   public void testAutowireCapableBeanFactoryMethodName() {
+    ApplicationContext applicationContext = new AnnotationConfigApplicationContext(BeanConfig.class);
+    Book book = applicationContext.getAutowireCapableBeanFactory().createBean(Book.class);
+    System.out.println(book);
 
+    System.out.println("----- ");
+
+    BeanDefinition beanDefinition = ((AnnotationConfigApplicationContext) applicationContext)
+        .getBeanDefinition("messageService");
+    System.out.println(beanDefinition);
+
+    for (String name : applicationContext.getBeanDefinitionNames()) {
+      System.out.println(name);
+    }
+
+    System.out.println("----- ");
+
+    RootBeanDefinition rootBeanDefinition = new RootBeanDefinition(Book.class);
+    ((AnnotationConfigApplicationContext) applicationContext).registerBeanDefinition("booker", rootBeanDefinition);
+
+    for (String name : applicationContext.getBeanDefinitionNames()) {
+      System.out.println(name);
+    }
+
+    Object booker = applicationContext.getBean("booker");
+    System.out.println(booker);
+
+    booker = applicationContext.getBean("booker");
+    System.out.println(booker);
+  }
+
+  @Test
+  public void testFactoryBean(){
+    ApplicationContext applicationContext = new AnnotationConfigApplicationContext(BeanConfig.class);
+
+    for (String name : applicationContext.getBeanDefinitionNames()) {
+      System.out.println(name);
+    }
+
+    System.out.println(" ======= ");
+
+    Object bookFactoryBean = applicationContext.getBean("bookFactoryBean");
+    Book bean = applicationContext.getBean(Book.class);
+    System.out.println(bean + " - " + bookFactoryBean + " - " + bean.equals(bookFactoryBean));
+
+    System.out.println(" ======= ");
+
+    Object bean1 = applicationContext.getBean("&bookFactoryBean");
+    BookFactoryBean bean2 = applicationContext.getBean(BookFactoryBean.class);
+
+    System.out.println(bean1 + " - " + bean2 + " - " + bean1.equals(bean2));
+  }
+
+  @Test
+  public void testInitAndDestroy(){
+
+    ApplicationContext applicationContext = new AnnotationConfigApplicationContext(BeanConfig.class);
+
+    BeanDefinition beanDefinition = ((AnnotationConfigApplicationContext) applicationContext).getBeanDefinition("car");
+    System.out.println(beanDefinition);
+
+    ((AnnotationConfigApplicationContext) applicationContext).close();
   }
 }
