@@ -1,9 +1,15 @@
 package own.spring.core.model;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
+@Component
 public class Person {
 
   private String name;
   private Integer age;
+
+  @Autowired
   private Book book;
 
   public String getName() {

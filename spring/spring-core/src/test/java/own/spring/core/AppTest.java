@@ -7,6 +7,8 @@ import org.junit.Test;
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.beans.factory.config.BeanPostProcessor;
+import org.springframework.beans.factory.config.InstantiationAwareBeanPostProcessor;
+import org.springframework.beans.factory.config.InstantiationAwareBeanPostProcessorAdapter;
 import org.springframework.beans.factory.support.RootBeanDefinition;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
@@ -14,7 +16,9 @@ import org.springframework.context.annotation.Configuration;
 import own.spring.core.config.BeanConfig;
 import own.spring.core.model.Book;
 import own.spring.core.model.BookFactoryBean;
+import own.spring.core.model.Person;
 import own.spring.core.service.MessageService;
+import sun.net.www.content.text.plain;
 
 /**
  * Unit test for simple App.
@@ -27,6 +31,7 @@ public class AppTest {
   @Test
   public void shouldAnswerWithTrue() {
     assertTrue(true);
+
 
   }
 
@@ -146,4 +151,14 @@ public class AppTest {
     ApplicationContext applicationContext = new AnnotationConfigApplicationContext(BeanConfig.class);
     ((AnnotationConfigApplicationContext) applicationContext).close();
   }
+  @Test
+  public void testBean(){
+    ApplicationContext applicationContext = new AnnotationConfigApplicationContext(BeanConfig.class);
+    Person bean = applicationContext.getBean(Person.class);
+    System.out.println(bean);
+  }
+
+
+
+
 }
