@@ -4,7 +4,7 @@ import org.springframework.beans.factory.FactoryBean;
 import org.springframework.stereotype.Component;
 import own.spring.core.model.Book;
 
-@Component
+//@Component
 public class BookFactoryBean implements FactoryBean<Book> {
 
   @Override
