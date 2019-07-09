@@ -29,7 +29,8 @@ public class BeanFactoryTest {
 
     // 指定依赖关系
     ConstructorArgumentValues argumentValues = new ConstructorArgumentValues();
-
+    argumentValues.addIndexedArgumentValue(0, newsListener);
+    argumentValues.addIndexedArgumentValue(1, newsPersister);
   }
 
 }
