@@ -144,6 +144,13 @@ public class AppTest {
 
     ((AnnotationConfigApplicationContext) applicationContext).close();
   }
+
+
+  @Test
+  public void testDestructionAwareBeanProcessor(){
+    ApplicationContext applicationContext = new AnnotationConfigApplicationContext(BeanConfig.class);
+    ((AnnotationConfigApplicationContext) applicationContext).close();
+  }
   @Test
   public void testBean(){
     ApplicationContext applicationContext = new AnnotationConfigApplicationContext(BeanConfig.class);

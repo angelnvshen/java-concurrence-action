@@ -1,0 +1,11 @@
+hello: world
+pets:
+  - cat
+  - dog
+
+pets2: [dog, pig]
+
+friend: {name: pie, age: 10}
+friend2:
+  name: tony
+  age: 12
