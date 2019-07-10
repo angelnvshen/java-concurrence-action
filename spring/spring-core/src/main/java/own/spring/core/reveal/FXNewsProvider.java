@@ -7,7 +7,7 @@ public class FXNewsProvider {
 
   public void getAndPersistNews() {
     String[] newsIds = newsListener.getAvailableNewsIds();
-    if (newsIds != null) {
+    if (newsIds == null || newsIds.length == 0) {
       return;
     }
     for (String newsId : newsIds) {
@@ -22,12 +22,19 @@ public class FXNewsProvider {
     this.newPersistener = newsPersister;
   }
 
-  public IFXNewsListener getNewsListener() { return newsListener;
+  public IFXNewsListener getNewsListener() {
+    return newsListener;
   }
+
   public void setNewsListener(IFXNewsListener newsListener) {
-    this.newsListener = newsListener; }
-  public IFXNewsPersister getNewPersistener() { return newPersistener;
+    this.newsListener = newsListener;
   }
+
+  public IFXNewsPersister getNewPersistener() {
+    return newPersistener;
+  }
+
   public void setNewPersistener(IFXNewsPersister newPersistener) {
-    this.newPersistener = newPersistener; }
+    this.newPersistener = newPersistener;
+  }
 }
