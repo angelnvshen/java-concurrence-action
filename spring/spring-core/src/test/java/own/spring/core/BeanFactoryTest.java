@@ -12,14 +12,11 @@ import org.springframework.beans.factory.support.DefaultListableBeanFactory;
 import org.springframework.beans.factory.support.RootBeanDefinition;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
-<<<<<<< HEAD
 import own.spring.core.config.BeanFactoryConfig;
 import own.spring.core.model.factory.Phone;
 import own.spring.core.replace.FXNewsProviderMethodReplacer;
-=======
 import own.spring.core.config.InjectBeanConfig;
 import own.spring.core.model.inject.Cup;
->>>>>>> 54949de745ceec0e756e777dbe05718fee6741e4
 import own.spring.core.reveal.DowJonesNewsListener;
 import own.spring.core.reveal.DowJonesNewsPersister;
 import own.spring.core.reveal.FXNewsProvider;
