@@ -8,6 +8,11 @@ import org.springframework.beans.factory.support.AbstractBeanDefinition;
 import org.springframework.beans.factory.support.BeanDefinitionRegistry;
 import org.springframework.beans.factory.support.DefaultListableBeanFactory;
 import org.springframework.beans.factory.support.RootBeanDefinition;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import own.spring.core.config.BeanFactoryConfig;
+import own.spring.core.model.factory.Phone;
+import own.spring.core.replace.FXNewsProviderMethodReplacer;
 import own.spring.core.reveal.DowJonesNewsListener;
 import own.spring.core.reveal.DowJonesNewsPersister;
 import own.spring.core.reveal.FXNewsProvider;
@@ -49,4 +54,21 @@ public class BeanFactoryTest {
     return (BeanFactory) registry;
   }
 
+
+
+  @Test
+  public void testMethodReplacer(){
+    ApplicationContext context = new AnnotationConfigApplicationContext(BeanFactoryConfig.class);
+    FXNewsProvider fxNewsProvider = context.getBean(FXNewsProvider.class);
+    fxNewsProvider.getAndPersistNews();
+  }
+
+  @Test
+  public void testBeanFactory(){
+    ApplicationContext context = new AnnotationConfigApplicationContext(BeanFactoryConfig.class);
+    Phone phone = context.getBean(Phone.class);
+    System.out.println(phone.getClass());
+    System.out.println(phone.getScreen());
+    System.out.println(phone.getScreen());
+  }
 }

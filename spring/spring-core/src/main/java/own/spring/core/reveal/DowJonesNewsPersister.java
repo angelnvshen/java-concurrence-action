@@ -1,5 +1,8 @@
 package own.spring.core.reveal;
 
+import org.springframework.stereotype.Component;
+
+@Component
 public class DowJonesNewsPersister implements IFXNewsPersister {
 
   @Override

@@ -1,8 +1,15 @@
 package own.spring.core.reveal;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
+@Component
 public class FXNewsProvider {
 
+  @Autowired
   private IFXNewsListener newsListener;
+
+  @Autowired
   private IFXNewsPersister newPersistener;
 
   public void getAndPersistNews() {

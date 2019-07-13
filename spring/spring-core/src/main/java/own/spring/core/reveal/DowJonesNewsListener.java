@@ -1,8 +1,11 @@
 package own.spring.core.reveal;
 
+import org.springframework.stereotype.Component;
+
 import java.util.HashMap;
 import java.util.Map;
 
+@Component
 public class DowJonesNewsListener implements IFXNewsListener {
 
   private static Map<String, FXNewsBean> map = new HashMap<>();
