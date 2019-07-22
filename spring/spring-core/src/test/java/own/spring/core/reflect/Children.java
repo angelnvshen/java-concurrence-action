@@ -1,4 +1,4 @@
-package own.spring.core.test;
+package own.spring.core.reflect;
 
 import static own.spring.core.common.Util.printArrays;
 

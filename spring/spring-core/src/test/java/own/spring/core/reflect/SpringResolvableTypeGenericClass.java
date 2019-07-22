@@ -1,4 +1,4 @@
-package own.spring.core.test;
+package own.spring.core.reflect;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;

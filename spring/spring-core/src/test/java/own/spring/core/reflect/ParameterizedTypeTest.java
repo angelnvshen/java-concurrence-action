@@ -1,7 +1,6 @@
-package own.spring.core.test;
+package own.spring.core.reflect;
 
 import java.lang.reflect.ParameterizedType;
-import java.lang.reflect.Type;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;

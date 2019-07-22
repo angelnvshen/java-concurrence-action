@@ -1,4 +1,4 @@
-package own.spring.core.test;
+package own.spring.core.reflect;
 
 import java.lang.reflect.GenericArrayType;
 import java.lang.reflect.ParameterizedType;
