@@ -8,6 +8,9 @@ import java.util.Map;
 @Component
 public class DowJonesNewsListener implements IFXNewsListener {
 
+  public DowJonesNewsListener() {
+  }
+
   private static Map<String, FXNewsBean> map = new HashMap<>();
 
   static {

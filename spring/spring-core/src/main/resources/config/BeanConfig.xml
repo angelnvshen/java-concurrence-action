@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+  <bean id="order" class="own.spring.core.model.Order">
+    <property name="createDate" value="2016-07-09 23:44:18"/>
+  </bean>
+
+  <bean id="customDateEditor"
+    class="own.spring.core.propertyEditor.CustomDateEditor">
+    <constructor-arg name="allowEmpty" value="true"/>
+    <constructor-arg name="pattern" value="yyyy-MM-dd HH:mm:ss"/>
+  </bean>
+
+  <bean id="customEditorRegistrar" class="own.spring.core.propertyEditor.CustomEditorRegistrar">
+    <property name="customEditors">
+      <map>
+        <entry key="java.util.Date" value-ref="customDateEditor"/>
+      </map>
+    </property>
+  </bean>
+
+  <bean id="customEditorConfigurer" class="org.springframework.beans.factory.config.CustomEditorConfigurer">
+    <property name="propertyEditorRegistrars">
+      <list>
+        <ref bean="customEditorRegistrar"/>
+      </list>
+    </property>
+  </bean>
+</beans>

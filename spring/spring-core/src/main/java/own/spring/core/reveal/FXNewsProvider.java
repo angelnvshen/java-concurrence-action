@@ -12,6 +12,9 @@ public class FXNewsProvider {
   @Autowired
   private IFXNewsPersister newPersistener;
 
+  public FXNewsProvider() {
+  }
+
   public void getAndPersistNews() {
     String[] newsIds = newsListener.getAvailableNewsIds();
     if (newsIds == null || newsIds.length == 0) {
