@@ -6,11 +6,9 @@ import static org.junit.Assert.assertTrue;
 import org.junit.Test;
 import org.springframework.beans.BeanWrapper;
 import org.springframework.beans.BeanWrapperImpl;
-import org.springframework.beans.MutablePropertyValues;
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.config.ConstructorArgumentValues;
 import org.springframework.beans.factory.config.ConstructorArgumentValues.ValueHolder;
-import org.springframework.beans.factory.config.PlaceholderConfigurerSupport;
 import org.springframework.beans.factory.support.AbstractBeanDefinition;
 import org.springframework.beans.factory.support.BeanDefinitionRegistry;
 import org.springframework.beans.factory.support.DefaultListableBeanFactory;
@@ -19,8 +17,8 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.core.convert.TypeDescriptor;
 import own.spring.core.config.BeanFactoryConfig;
+import own.spring.core.model.lazy.LazyComputer;
 import own.spring.core.model.factory.Phone;
-import own.spring.core.replace.FXNewsProviderMethodReplacer;
 import own.spring.core.config.InjectBeanConfig;
 import own.spring.core.model.inject.Cup;
 import own.spring.core.reveal.DowJonesNewsListener;
@@ -115,6 +113,17 @@ public class BeanFactoryTest {
 
     TypeDescriptor newPersistener = beanWrapper.getPropertyTypeDescriptor("newPersistener");
     System.out.println(newPersistener);
+
+  }
+
+  /**
+   * applicationContext 会立即实例化singleton对象，@Lazy注解 会延迟到使用时实例化
+   */
+  @Test
+  public void testLazyInit() {
+    ApplicationContext applicationContext = new AnnotationConfigApplicationContext("own.spring.core.model.lazy");
+    LazyComputer lazyComputer = applicationContext.getBean(LazyComputer.class);
+    System.out.println(lazyComputer.getName());
 
   }
 }

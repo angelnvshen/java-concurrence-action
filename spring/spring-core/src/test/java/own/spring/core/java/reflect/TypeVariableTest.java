@@ -1,4 +1,4 @@
-package own.spring.core.reflect;
+package own.spring.core.java.reflect;
 
 import java.io.Serializable;
 import java.lang.reflect.Field;

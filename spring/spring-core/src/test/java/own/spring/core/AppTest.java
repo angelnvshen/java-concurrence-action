@@ -2,6 +2,7 @@ package own.spring.core;
 
 import static org.junit.Assert.assertTrue;
 
+import com.sun.tools.classfile.Dependencies;
 import java.util.Arrays;
 import org.junit.Test;
 import org.springframework.beans.factory.BeanFactory;
@@ -18,6 +19,7 @@ import own.spring.core.model.Book;
 import own.spring.core.model.BookFactoryBean;
 import own.spring.core.model.Person;
 import own.spring.core.service.MessageService;
+import sun.net.www.content.text.Generic;
 import sun.net.www.content.text.plain;
 
 /**
@@ -157,7 +159,6 @@ public class AppTest {
     Person bean = applicationContext.getBean(Person.class);
     System.out.println(bean);
   }
-
 
 
 

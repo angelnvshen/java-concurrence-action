@@ -1,4 +1,4 @@
-package own.spring.core.reflect;
+package own.spring.core.java.reflect;
 
 /**
  * 测试继承获取泛型

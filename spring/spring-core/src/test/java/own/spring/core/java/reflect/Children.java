@@ -1,4 +1,4 @@
-package own.spring.core.reflect;
+package own.spring.core.java.reflect;
 
 import static own.spring.core.common.Util.printArrays;
 
