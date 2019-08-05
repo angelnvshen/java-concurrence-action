@@ -1,0 +1,5 @@
+
+mybatis:
+  config-location: classpath:mybatis/mybtais-config.xml
+  type-aliases-package: own.springboot.with.mybatis.mapper
+  mapper-locations: mybatis.mapper
