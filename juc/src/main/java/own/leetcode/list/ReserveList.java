@@ -111,6 +111,8 @@ public class ReserveList {
 
   /**
    * 4: 检查链表是否有环，如果有，返回环的节点值 - 1
+   *
+   * set集合
    */
   public static Node detectCycle(Node node) {
 
@@ -124,6 +126,75 @@ public class ReserveList {
     }
 
     return null;
+  }
+
+  /**
+   * 4: 检查链表是否有环，如果有，返回环的节点值 - 2
+   *
+   * 快慢指针
+   */
+  public static Node detectCycle_sec(Node head) {
+
+    Node slow = head;
+    Node fast = head;
+    Node meet = null;
+
+    while (fast != null) {
+      slow = slow.next;
+      fast = fast.next;
+
+      if (fast == null) {
+        return null; // fast遇见list节点尾
+      }
+
+      fast = fast.next;
+      if (slow == fast) {
+        meet = fast;
+        break;
+      }
+    }
+
+    if (meet == null) {
+      return null;
+    }
+
+    while (meet != null && head != null) {
+      if (meet == head) {
+        return head;
+      }
+      head = head.next;
+      meet = meet.next;
+    }
+    return null;
+  }
+
+
+  /**
+   * 4: 链表切分
+   *
+   * (根据3) 1 4 6 5 2 3 -> 1 2 3 4 6 5
+   */
+  public static Node partition(Node head, int x) {
+
+    Node lessList = new Node(-1);
+    Node moreList = new Node(-1);
+
+    Node less_p = lessList;
+    Node more_p = moreList;
+    while (head != null) {
+      if (head.val <= x) {
+        less_p.next = head;
+        less_p = head;
+      } else {
+        more_p.next = head;
+        more_p = head;
+      }
+      head = head.next;
+    }
+    less_p.next = moreList.next;
+    more_p.next = null;
+
+    return lessList.next;
   }
 
   public static void print(Node head) {
@@ -154,7 +225,7 @@ public class ReserveList {
     return node;
   }
 
-  public static void main(String[] args) {
+  public static void main2(String[] args) {
     Node node1 = new Node(1);
     Node node2 = new Node(2);
     Node node3 = new Node(3);
@@ -194,11 +265,30 @@ public class ReserveList {
     Node node9 = new Node(9);
     node9.next = node8;
     node1.next = node7;
-    Node detectCycle = detectCycle(node9);
+//    Node detectCycle = detectCycle(node9);
+    Node detectCycle = detectCycle_sec(node9);
     System.out.println(detectCycle != null ? detectCycle.val : "null");
 
   }
 
+  public static void main(String[] args) {
+
+    // 1 4 6 5 2 3
+    Node node1 = new Node(1);
+    Node node2 = new Node(2);
+    Node node3 = new Node(3);
+    Node node4 = new Node(4);
+    Node node5 = new Node(5);
+    Node node6 = new Node(6);
+
+    node1.next = node4;
+    node4.next = node6;
+    node6.next = node5;
+    node5.next = node2;
+    node2.next = node3;
+
+    print(partition(node1, 3));
+  }
   // @Data
   static class Node {
 
