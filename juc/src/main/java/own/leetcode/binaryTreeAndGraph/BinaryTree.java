@@ -1,14 +1,17 @@
 package own.leetcode.binaryTreeAndGraph;
 
+import com.sun.media.jfxmediaimpl.HostUtils;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
+import java.util.Queue;
 import java.util.Stack;
 import javax.swing.tree.TreeNode;
 
 public class BinaryTree {
 
-  // 深度遍历
+  // ================================= 深度遍历 =================================
   static void printTree(TreeNode tree, int layer) {
 
     if (tree == null) {
@@ -107,7 +110,18 @@ public class BinaryTree {
     path.pop();
   }
 
-  public static void main(String[] args) {
+  public static void main_queue(String[] args) {
+    Queue<Integer> queue = new LinkedList<>();
+    queue.add(1);
+    queue.add(2);
+    queue.add(3);
+    System.out.println(queue);
+    while (!queue.isEmpty()) {
+      System.out.println(queue.remove());
+    }
+  }
+
+  public static void main_sum(String[] args) {
     TreeNode a = new TreeNode(5);
     TreeNode b = new TreeNode(4);
     TreeNode c = new TreeNode(8);
@@ -135,7 +149,11 @@ public class BinaryTree {
     System.out.println(treeNode);
   }
 
-  public static void main_print(String[] args) {
+  public static void flattenBinaryTreeToLinkedList(TreeNode tree) {
+
+  }
+
+  public static void main(String[] args) {
     TreeNode a = new TreeNode(1);
     TreeNode b = new TreeNode(2);
     TreeNode c = new TreeNode(3);
@@ -151,7 +169,58 @@ public class BinaryTree {
 
     e.right = f;
 
-    printTree(a, 0);
+//    printTree(a, 0);
+//    bfs_printTree(a);
+    System.out.println(rightSideView(a));
+  }
+
+  // ================================= 层次遍历 =================================
+
+  static void bfs_printTree(TreeNode treeNode) {
+    Queue<TreeNode> queue = new LinkedList<>();
+    queue.add(treeNode);
+    while (!queue.isEmpty()) {
+      TreeNode node = queue.remove();
+      System.out.println(node.value + " -> ");
+      if (node.left != null) {
+        queue.add(node.left);
+      }
+      if (node.right != null) {
+        queue.add(node.right);
+      }
+    }
+  }
+
+  static List<Integer> rightSideView(TreeNode root) {
+    List<Integer> result = new ArrayList<>();
+
+    int size = 1; // 每一层的节点个数 ，第一层 为 1；
+    int child;
+
+    Queue<TreeNode> queue = new LinkedList<>();
+    queue.add(root);
+    while (!queue.isEmpty()) {
+
+      child = 0;
+      for (int i = 0; i < size; i++) {
+        TreeNode node = queue.remove();
+        if (i == size - 1) {
+          result.add(node.value);
+        }
+        if (node.left != null) {
+          queue.add(node.left);
+          child++;
+        }
+        if (node.right != null) {
+          queue.add(node.right);
+          child++;
+        }
+      }
+
+      size = child;
+    }
+
+    return result;
   }
 
   static class TreeNode {
