@@ -1,6 +1,8 @@
 package own.spring.core.model;
 
-public class Car {
+import java.io.Serializable;
+
+public class Car implements Serializable {
 
   private String name;
 
@@ -28,5 +30,13 @@ public class Car {
 
   public void destroy() {
     System.out.println("Book -> destroy .... ");
+  }
+
+  public Car() {
+  }
+
+  public Car(String name, Integer speed) {
+    this.name = name;
+    this.speed = speed;
   }
 }

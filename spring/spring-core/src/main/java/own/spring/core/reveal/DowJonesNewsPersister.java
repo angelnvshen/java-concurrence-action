@@ -5,6 +5,9 @@ import org.springframework.stereotype.Component;
 @Component
 public class DowJonesNewsPersister implements IFXNewsPersister {
 
+  public DowJonesNewsPersister() {
+  }
+
   @Override
   public void persistNews(FXNewsBean bean) {
 

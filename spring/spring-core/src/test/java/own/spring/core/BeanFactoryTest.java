@@ -1,20 +1,24 @@
 package own.spring.core;
 
+import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertTrue;
+
 import org.junit.Test;
-import org.springframework.beans.MutablePropertyValues;
+import org.springframework.beans.BeanWrapper;
+import org.springframework.beans.BeanWrapperImpl;
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.config.ConstructorArgumentValues;
 import org.springframework.beans.factory.config.ConstructorArgumentValues.ValueHolder;
-import org.springframework.beans.factory.config.PlaceholderConfigurerSupport;
 import org.springframework.beans.factory.support.AbstractBeanDefinition;
 import org.springframework.beans.factory.support.BeanDefinitionRegistry;
 import org.springframework.beans.factory.support.DefaultListableBeanFactory;
 import org.springframework.beans.factory.support.RootBeanDefinition;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import org.springframework.core.convert.TypeDescriptor;
 import own.spring.core.config.BeanFactoryConfig;
+import own.spring.core.model.lazy.LazyComputer;
 import own.spring.core.model.factory.Phone;
-import own.spring.core.replace.FXNewsProviderMethodReplacer;
 import own.spring.core.config.InjectBeanConfig;
 import own.spring.core.model.inject.Cup;
 import own.spring.core.reveal.DowJonesNewsListener;
@@ -24,7 +28,7 @@ import own.spring.core.reveal.FXNewsProvider;
 public class BeanFactoryTest {
 
   @Test
-  public void test(){
+  public void test() {
 
     DefaultListableBeanFactory beanFactory = new DefaultListableBeanFactory();
     bindViaCode(beanFactory);
@@ -32,7 +36,7 @@ public class BeanFactoryTest {
     fxNewsProvider.getAndPersistNews();
   }
 
-  public static BeanFactory bindViaCode(BeanDefinitionRegistry registry){
+  public static BeanFactory bindViaCode(BeanDefinitionRegistry registry) {
     AbstractBeanDefinition newsProvider = new RootBeanDefinition(FXNewsProvider.class);
     AbstractBeanDefinition newsListener = new RootBeanDefinition(DowJonesNewsListener.class);
     AbstractBeanDefinition newsPersister = new RootBeanDefinition(DowJonesNewsPersister.class);
@@ -62,14 +66,14 @@ public class BeanFactoryTest {
   }
 
   @Test
-  public void testMethodReplacer(){
+  public void testMethodReplacer() {
     ApplicationContext context = new AnnotationConfigApplicationContext(BeanFactoryConfig.class);
     FXNewsProvider fxNewsProvider = context.getBean(FXNewsProvider.class);
     fxNewsProvider.getAndPersistNews();
   }
 
   @Test
-  public void testBeanFactory(){
+  public void testBeanFactory() {
     ApplicationContext context = new AnnotationConfigApplicationContext(BeanFactoryConfig.class);
     Phone phone = context.getBean(Phone.class);
     System.out.println(phone.getClass());
@@ -78,7 +82,7 @@ public class BeanFactoryTest {
   }
 
   @Test
-  public void testInject(){
+  public void testInject() {
 
     ApplicationContext context = new AnnotationConfigApplicationContext(InjectBeanConfig.class);
     Cup cup = context.getBean(Cup.class);
@@ -91,5 +95,35 @@ public class BeanFactoryTest {
     System.out.println(cup);
   }
 
-  
+  @Test
+  public void testBeanWrapper() throws Exception {
+
+    Object provider = Class.forName("own.spring.core.reveal.FXNewsProvider").newInstance();
+    Object listener = Class.forName("own.spring.core.reveal.DowJonesNewsListener").newInstance();
+    Object persister = Class.forName("own.spring.core.reveal.DowJonesNewsPersister").newInstance();
+
+    BeanWrapper beanWrapper = new BeanWrapperImpl(provider);
+    beanWrapper.setPropertyValue("newsListener", listener);
+    beanWrapper.setPropertyValue("newPersistener", persister);
+
+    assertTrue(beanWrapper.getWrappedInstance() instanceof FXNewsProvider);
+    assertSame(provider, beanWrapper.getWrappedInstance());
+    assertSame(listener, beanWrapper.getPropertyValue("newsListener"));
+    assertSame(persister, beanWrapper.getPropertyValue("newPersistener"));
+
+    TypeDescriptor newPersistener = beanWrapper.getPropertyTypeDescriptor("newPersistener");
+    System.out.println(newPersistener);
+
+  }
+
+  /**
+   * applicationContext 会立即实例化singleton对象，@Lazy注解 会延迟到使用时实例化
+   */
+  @Test
+  public void testLazyInit() {
+    ApplicationContext applicationContext = new AnnotationConfigApplicationContext("own.spring.core.model.lazy");
+    LazyComputer lazyComputer = applicationContext.getBean(LazyComputer.class);
+    System.out.println(lazyComputer.getName());
+
+  }
 }
