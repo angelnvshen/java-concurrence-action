@@ -4,6 +4,7 @@ import static org.junit.Assert.assertTrue;
 
 import com.sun.tools.classfile.Dependencies;
 import java.util.Arrays;
+import javax.swing.Spring;
 import org.junit.Test;
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.config.BeanDefinition;
@@ -14,6 +15,8 @@ import org.springframework.beans.factory.support.RootBeanDefinition;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.transaction.interceptor.TransactionInterceptor;
+import org.springframework.transaction.support.TransactionTemplate;
 import own.spring.core.config.BeanConfig;
 import own.spring.core.model.Book;
 import own.spring.core.model.BookFactoryBean;
@@ -159,7 +162,6 @@ public class AppTest {
     Person bean = applicationContext.getBean(Person.class);
     System.out.println(bean);
   }
-
 
 
 }
