@@ -18,15 +18,21 @@ public class BinaryTree {
       return;
     }
 
+//    for (int i = 0; i < layer; i++) {
+//      System.out.print("---- ");
+//    }
+//    System.out.print(tree.value + "\n"); // preOrder
+
+    printTree(tree.left, layer + 1);
     for (int i = 0; i < layer; i++) {
       System.out.print("---- ");
     }
-
-    // System.out.print(tree.value + "\n"); // preOrder
-    printTree(tree.left, layer + 1);
-    // System.out.print(tree.value + "\n"); // midOrder
+     System.out.print(tree.value + "\n"); // midOrder
     printTree(tree.right, layer + 1);
-    // System.out.print(tree.value + "\n"); // postOrder
+//    for (int i = 0; i < layer; i++) {
+//      System.out.print("---- ");
+//    }
+//    System.out.print(tree.value + "\n"); // postOrder
   }
 
   static List<List<Integer>> pathSum(TreeNode tree, int sum) {
@@ -223,7 +229,7 @@ public class BinaryTree {
     return result;
   }
 
-  static class TreeNode {
+  public static class TreeNode {
 
     int value;
     TreeNode left;

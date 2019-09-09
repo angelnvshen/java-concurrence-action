@@ -2,9 +2,9 @@ package own.spring.core;
 
 import static org.junit.Assert.assertTrue;
 
-import com.sun.tools.classfile.Dependencies;
 import java.util.Arrays;
 import javax.swing.Spring;
+import java.util.concurrent.TimeUnit;
 import org.junit.Test;
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.config.BeanDefinition;
@@ -118,7 +118,7 @@ public class AppTest {
   }
 
   @Test
-  public void testFactoryBean(){
+  public void testFactoryBean() {
     ApplicationContext applicationContext = new AnnotationConfigApplicationContext(BeanConfig.class);
 
     for (String name : applicationContext.getBeanDefinitionNames()) {
@@ -140,7 +140,7 @@ public class AppTest {
   }
 
   @Test
-  public void testInitAndDestroy(){
+  public void testInitAndDestroy() {
 
     ApplicationContext applicationContext = new AnnotationConfigApplicationContext(BeanConfig.class);
 
@@ -152,16 +152,15 @@ public class AppTest {
 
 
   @Test
-  public void testDestructionAwareBeanProcessor(){
+  public void testDestructionAwareBeanProcessor() {
     ApplicationContext applicationContext = new AnnotationConfigApplicationContext(BeanConfig.class);
     ((AnnotationConfigApplicationContext) applicationContext).close();
   }
+
   @Test
-  public void testBean(){
+  public void testBean() {
     ApplicationContext applicationContext = new AnnotationConfigApplicationContext(BeanConfig.class);
     Person bean = applicationContext.getBean(Person.class);
     System.out.println(bean);
   }
-
-
 }
