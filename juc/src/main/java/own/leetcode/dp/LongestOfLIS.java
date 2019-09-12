@@ -23,7 +23,7 @@ public class LongestOfLIS {
         list.add(arrays[i]);
       } else {
         for (int j = 0; j < list.size(); j++) {
-          if (list.get(j) > arrays[i]) {
+          if (list.get(j) > arrays[i]) { // 可优化到 n*log(n), 二分查找代替
             list.set(j, arrays[i]);
             break;
           }
