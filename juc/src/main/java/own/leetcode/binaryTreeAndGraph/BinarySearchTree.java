@@ -22,6 +22,25 @@ public class BinarySearchTree extends BinaryTree {
         }
     }
 
+    public static boolean BST_search(TreeNode node, int value) {
+        if (node.value == value) {
+            return true;
+        }
+        if (node.value > value) {
+            if (node.left != null) {
+                return BST_search(node.left, value);
+            } else {
+                return false;
+            }
+        } else {
+            if (node.right != null) {
+                return BST_search(node.right, value);
+            } else {
+                return false;
+            }
+        }
+    }
+
     public static void main(String[] args) {
         List<TreeNode> nodes = new ArrayList<>();
         int test[] = new int[]{8, 3, 10, 1, 6, 15};
@@ -31,6 +50,13 @@ public class BinarySearchTree extends BinaryTree {
         for (int i = 1; i < nodes.size(); i++) {
             BST_insert(nodes.get(0), nodes.get(i));
         }
-        printTree(nodes.get(0), 0);
+//        printTree(nodes.get(0), 0);
+        for (int i = 0; i < 20; i++) {
+            if (BST_search(nodes.get(0), i)) {
+                System.out.println(String.format("%d is in BST", i));
+            } else {
+                System.out.println(String.format("%d is not in BST.", i));
+            }
+        }
     }
 }
