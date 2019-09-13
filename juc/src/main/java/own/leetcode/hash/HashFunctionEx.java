@@ -1,4 +1,4 @@
-package own.leetcode;
+package own.leetcode.hash;
 
 import java.util.ArrayList;
 import java.util.List;
