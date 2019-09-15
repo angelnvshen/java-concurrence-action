@@ -1,6 +1,6 @@
-package own.leetcode.complexStruct;
+package own.leetcode.complexStruct.triesTree;
 
-import static own.leetcode.complexStruct.TrieTree.TriesNode.TRIES_MAX_NODE_NUM;
+import static own.leetcode.complexStruct.triesTree.TrieTree.TriesNode.TRIES_MAX_NODE_NUM;
 
 public class WordDictionary {
     private TrieTree trieTree;

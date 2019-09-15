@@ -1,4 +1,4 @@
-package own.leetcode.complexStruct;
+package own.leetcode.complexStruct.triesTree;
 
 import com.google.common.collect.Lists;
 import lombok.Data;
@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import static own.leetcode.complexStruct.TrieTree.TriesNode.TRIES_MAX_NODE_NUM;
+import static own.leetcode.complexStruct.triesTree.TrieTree.TriesNode.TRIES_MAX_NODE_NUM;
 
 @Data
 public class TrieTree {
