@@ -5,6 +5,7 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplicat
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import ows.stu.springboot.simplespringbootstarterautoconfigurer.logAspect.ControllerLogAspect;
 import ows.stu.springboot.simplespringbootstarterautoconfigurer.service.HelloService;
 
 @ConditionalOnWebApplication
@@ -20,5 +21,10 @@ public class HelloAutoConfiguration {
     HelloService helloService = new HelloService();
     helloService.setHelloProperties(helloProperties);
     return helloService;
+  }
+
+  @Bean
+  public ControllerLogAspect controllerLogAspect(){
+    return new ControllerLogAspect();
   }
 }
