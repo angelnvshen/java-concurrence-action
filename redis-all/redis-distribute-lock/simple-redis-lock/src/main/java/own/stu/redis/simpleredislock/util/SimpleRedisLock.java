@@ -8,6 +8,7 @@ import org.springframework.data.redis.connection.RedisConnection;
 import org.springframework.data.redis.connection.ReturnType;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;
+import org.springframework.util.StringUtils;
 
 @Component
 public class SimpleRedisLock {
@@ -42,13 +43,17 @@ public class SimpleRedisLock {
   public boolean unlock(String key) {
 
     String value = valueThreadLocal.get();
+    if (StringUtils.isEmpty(value)) {
+      value = "";
+    }
+    String finalValue = value;
     return redisTemplate.execute(
         (RedisConnection connection) -> connection.eval(
             RELEASE_LOCK_LUA_SCRIPT.getBytes(),
             ReturnType.INTEGER,
             1,
             key.getBytes(),
-            value.getBytes())
+            finalValue.getBytes())
     ).equals(RELEASE_LOCK_SUCCESS_RESULT);
   }
 }
