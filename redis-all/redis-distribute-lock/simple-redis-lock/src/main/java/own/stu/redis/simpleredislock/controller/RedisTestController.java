@@ -3,6 +3,8 @@ package own.stu.redis.simpleredislock.controller;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
+import org.redisson.api.RLock;
+import org.redisson.api.RedissonClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.util.Assert;
@@ -53,9 +55,11 @@ public class RedisTestController {
 
   private AtomicInteger count = new AtomicInteger();
 
+  String ticket = "ticket";
+
   @RequestMapping("sell-ticket-2")
   public String sellTicket2() {
-    String ticket = "ticket";
+
     String lock = "ticket-lock";
 
     simpleRedisLock.lock(lock);
@@ -70,9 +74,32 @@ public class RedisTestController {
     return "SUCCESS";
   }
 
+
+  @Autowired
+  private RedissonClient redissonClient;
+
+  @RequestMapping("sell-ticket-3")
+  public String sellTicket3() {
+
+    String lock = "ticket-lock";
+
+    RLock rLock = redissonClient.getLock(lock);
+    rLock.lock();
+    Integer ticketNum = Integer.valueOf(redisTemplate.opsForValue().get(ticket));
+    if (ticketNum > 0) {
+      System.out.println(count.incrementAndGet() + ": 剩余库存：" + (ticketNum - 1));
+      redisTemplate.opsForValue().set(ticket, (ticketNum - 1) + "");
+    } else {
+      System.out.println(count.incrementAndGet() + "库存不足...");
+    }
+    rLock.unlock();
+    return "SUCCESS";
+  }
+
   @RequestMapping("reset-count")
   public String resetCount() {
     count.set(0);
+    setValue(ticket, "100");
     return "SU";
   }
 }
