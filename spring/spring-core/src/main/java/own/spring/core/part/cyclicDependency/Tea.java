@@ -1,14 +1,15 @@
-package own.spring.core.model.inject;
+package own.spring.core.part.cyclicDependency;
 
-import org.springframework.context.annotation.Scope;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
 public class Tea {
 
-  private String name;
-
+  @Autowired
   private Water water;
+
+  private String name = "tea";
 
   public String getName() {
     return name;
@@ -18,5 +19,7 @@ public class Tea {
     this.name = name;
   }
 
-
+  public Water getWater() {
+    return water;
+  }
 }

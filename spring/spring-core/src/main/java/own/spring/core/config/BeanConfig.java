@@ -4,13 +4,12 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.ComponentScans;
 import org.springframework.context.annotation.Configuration;
-import own.spring.core.model.Car;
-import own.spring.core.service.MessageService;
-import own.spring.core.service.impl.MessageServiceImpl;
+import own.spring.core.model.cyclicDependency.Room;
 
 
 @ComponentScans({
-    @ComponentScan("own.spring.core.model"),
+    @ComponentScan("own.spring.core.model.cyclicDependency"),
+//    @ComponentScan("own.spring.core.model"),
 //    @ComponentScan("own.spring.core.postProcessor"),
 })
 @Configuration
@@ -26,4 +25,14 @@ public class BeanConfig {
 //  public Car getCar() {
 //    return new Car();
 //  }
+
+  @Bean
+  public Room room() {
+    Room room = new Room();
+    room.setAirConditioner("Gree");
+    room.setTelevision("Xiaomi");
+    room.setRefrigerator("Haier");
+    room.setWasher("Siemens");
+    return room;
+  }
 }

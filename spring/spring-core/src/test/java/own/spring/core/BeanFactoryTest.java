@@ -16,7 +16,9 @@ import org.springframework.beans.factory.support.RootBeanDefinition;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.core.convert.TypeDescriptor;
+import own.spring.core.config.BeanConfig;
 import own.spring.core.config.BeanFactoryConfig;
+import own.spring.core.model.cyclicDependency.Room;
 import own.spring.core.model.lazy.LazyComputer;
 import own.spring.core.model.factory.Phone;
 import own.spring.core.config.InjectBeanConfig;
@@ -125,5 +127,13 @@ public class BeanFactoryTest {
     LazyComputer lazyComputer = applicationContext.getBean(LazyComputer.class);
     System.out.println(lazyComputer.getName());
 
+  }
+
+  @Test
+  public void testIocA() {
+
+    ApplicationContext applicationContext = new AnnotationConfigApplicationContext(BeanConfig.class);
+    Room bean = applicationContext.getBean(Room.class);
+    System.out.println(bean);
   }
 }
