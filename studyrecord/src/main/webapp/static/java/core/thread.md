@@ -1,6 +1,5 @@
 ## 线程状态
 
-
 <img src="../../../picture/a5f63edf687bd5ab58fcb614da12ff0.png" width = "100%" height = "100%" alt="图片名称" align=center />
 
 
@@ -152,3 +151,7 @@ public class InterruptedException extends Exception {
 ## interrupt
 
 **所谓“中断一个线程”，其实并不是让一个线程停止运行，仅仅是将线程的中断标志设为true, 或者在某些特定情况下抛出一个InterruptedException，它并不会直接将一个线程停掉，在被中断的线程的角度看来，仅仅是自己的中断标志位被设为true了，或者自己所执行的代码中抛出了一个InterruptedException异常，仅此而已。**
+
+
+
+https://segmentfault.com/a/1190000016058789
