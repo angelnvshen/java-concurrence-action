@@ -6,8 +6,8 @@ package own.stu.rpc.grpc.protobufferBasic;
 
 // java_package and java_outer_classname. java_package specifies in
 // what Java package name your generated classes should live.
-option java_package = "own.stu.rpc.grpc.protobufferBasic";
-option java_outer_classname = "StudentProto";
+option java_package = "own.stu.netty.lecture.transformWithProtoBuffer";
+option java_outer_classname = "StudentNettyProto";
 
 message Student {
   required int32 id = 1;
