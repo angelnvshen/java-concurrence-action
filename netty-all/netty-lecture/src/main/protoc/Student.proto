@@ -1,0 +1,16 @@
+syntax = "proto2";
+
+// you should still define a normal package
+// as well to avoid name collisions in the Protocol Buffers name space as well as in non-Java languages.
+package own.stu.rpc.grpc.protobufferBasic;
+
+// java_package and java_outer_classname. java_package specifies in
+// what Java package name your generated classes should live.
+option java_package = "own.stu.rpc.grpc.protobufferBasic";
+option java_outer_classname = "StudentProto";
+
+message Student {
+  required int32 id = 1;
+  optional string name = 2;
+  optional string address = 3;
+}
