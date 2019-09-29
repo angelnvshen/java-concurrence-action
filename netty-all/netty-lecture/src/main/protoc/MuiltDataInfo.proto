@@ -1,0 +1,39 @@
+syntax = "proto2";
+
+// you should still define a normal package
+// as well to avoid name collisions in the Protocol Buffers name space as well as in non-Java languages.
+package own.stu.rpc.grpc.protobufferBasic;
+
+// java_package and java_outer_classname. java_package specifies in
+// what Java package name your generated classes should live.
+option java_package = "own.stu.netty.lecture.transformWithProtoBuffer";
+option java_outer_classname = "MultiDataInfo";
+
+message MultiData {
+  enum DataType {
+    StudentType = 1;
+    CatType = 2;
+    DogType = 3;
+  }
+
+  required DataType data_type = 1;
+  oneof dataBody {
+    Student student = 2;
+    Cat cat = 3;
+    Dog dog = 4;
+  }
+}
+
+message Student {
+  required int32 id = 1;
+  optional string name = 2;
+  optional string address = 3;
+}
+
+message Cat {
+  optional string name = 1;
+}
+
+message Dog {
+  optional string name = 1;
+}

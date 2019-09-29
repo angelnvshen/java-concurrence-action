@@ -16,10 +16,11 @@ public class MyServerInitializer extends ChannelInitializer<SocketChannel> {
 
     // 注意顺序
     pipeline.addLast(new ProtobufVarint32FrameDecoder());
-    pipeline.addLast(new ProtobufDecoder(StudentNettyProto.Student.getDefaultInstance()));
+    //pipeline.addLast(new ProtobufDecoder(StudentNettyProto.Student.getDefaultInstance()));
+    pipeline.addLast(new ProtobufDecoder(MultiDataInfo.MultiData.getDefaultInstance()));
     pipeline.addLast(new ProtobufVarint32LengthFieldPrepender());
     pipeline.addLast(new ProtobufEncoder());
 
-    pipeline.addLast(new MyServerHandler());
+    pipeline.addLast(new MyServerSecHandler());
   }
 }
