@@ -5,11 +5,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import own.stu.com.plugin.demo.annotation.StatisticsTime;
+//import own.stu.com.plugin.demo.annotation.StatisticsTime;
 import own.stu.tkmybatis.demo.controller.async.AsyncTask;
 import own.stu.tkmybatis.demo.controller.async.AsyncTaskWithResult;
 
-@StatisticsTime
+//@StatisticsTime
 @RestController
 @RequestMapping("async")
 public class AsyncTaskController {

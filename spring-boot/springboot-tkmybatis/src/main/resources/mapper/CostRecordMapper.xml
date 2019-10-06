@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="own.stu.tkmybatis.demo.dao.CostRecordMapper">
+    <resultMap id="BaseResultMap" type="own.stu.tkmybatis.demo.model.CostRecord">
+        <!--
+          WARNING - @mbg.generated
+        -->
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="start_time" jdbcType="VARCHAR" property="startTime"/>
+        <result column="end_time" jdbcType="VARCHAR" property="endTime"/>
+        <result column="last_minutes" jdbcType="INTEGER" property="lastMinutes"/>
+        <result column="category_id" jdbcType="INTEGER" property="categoryId"/>
+    </resultMap>
+    <sql id="Example_Where_Clause">
+        <!--
+          WARNING - @mbg.generated
+        -->
+        <where>
+            <foreach collection="oredCriteria" item="criteria" separator="or">
+                <if test="criteria.valid">
+                    <trim prefix="(" prefixOverrides="and" suffix=")">
+                        <foreach collection="criteria.criteria" item="criterion">
+                            <choose>
+                                <when test="criterion.noValue">
+                                    and ${criterion.condition}
+                                </when>
+                                <when test="criterion.singleValue">
+                                    and ${criterion.condition} #{criterion.value}
+                                </when>
+                                <when test="criterion.betweenValue">
+                                    and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                                </when>
+                                <when test="criterion.listValue">
+                                    and ${criterion.condition}
+                                    <foreach close=")" collection="criterion.value" item="listItem" open="("
+                                             separator=",">
+                                        #{listItem}
+                                    </foreach>
+                                </when>
+                            </choose>
+                        </foreach>
+                    </trim>
+                </if>
+            </foreach>
+        </where>
+    </sql>
+    <sql id="Update_By_Example_Where_Clause">
+        <!--
+          WARNING - @mbg.generated
+        -->
+        <where>
+            <foreach collection="example.oredCriteria" item="criteria" separator="or">
+                <if test="criteria.valid">
+                    <trim prefix="(" prefixOverrides="and" suffix=")">
+                        <foreach collection="criteria.criteria" item="criterion">
+                            <choose>
+                                <when test="criterion.noValue">
+                                    and ${criterion.condition}
+                                </when>
+                                <when test="criterion.singleValue">
+                                    and ${criterion.condition} #{criterion.value}
+                                </when>
+                                <when test="criterion.betweenValue">
+                                    and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                                </when>
+                                <when test="criterion.listValue">
+                                    and ${criterion.condition}
+                                    <foreach close=")" collection="criterion.value" item="listItem" open="("
+                                             separator=",">
+                                        #{listItem}
+                                    </foreach>
+                                </when>
+                            </choose>
+                        </foreach>
+                    </trim>
+                </if>
+            </foreach>
+        </where>
+    </sql>
+    <sql id="Base_Column_List">
+        <!--
+          WARNING - @mbg.generated
+        -->
+        id, start_time, end_time, last_minutes, category_id
+    </sql>
+    <select id="selectByExample" parameterType="own.stu.tkmybatis.demo.model.CostRecordExample"
+            resultMap="BaseResultMap">
+        <!--
+          WARNING - @mbg.generated
+        -->
+        select
+        <if test="distinct">
+            distinct
+        </if>
+        <include refid="Base_Column_List"/>
+        from cost_record
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+        <if test="orderByClause != null">
+            order by ${orderByClause}
+        </if>
+    </select>
+    <delete id="deleteByExample" parameterType="own.stu.tkmybatis.demo.model.CostRecordExample">
+        <!--
+          WARNING - @mbg.generated
+        -->
+        delete from cost_record
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+    </delete>
+    <select id="countByExample" parameterType="own.stu.tkmybatis.demo.model.CostRecordExample"
+            resultType="java.lang.Long">
+        <!--
+          WARNING - @mbg.generated
+        -->
+        select count(*) from cost_record
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+    </select>
+    <update id="updateByExampleSelective" parameterType="map">
+        <!--
+          WARNING - @mbg.generated
+        -->
+        update cost_record
+        <set>
+            <if test="record.id != null">
+                id = #{record.id,jdbcType=INTEGER},
+            </if>
+            <if test="record.startTime != null">
+                start_time = #{record.startTime,jdbcType=VARCHAR},
+            </if>
+            <if test="record.endTime != null">
+                end_time = #{record.endTime,jdbcType=VARCHAR},
+            </if>
+            <if test="record.lastMinutes != null">
+                last_minutes = #{record.lastMinutes,jdbcType=INTEGER},
+            </if>
+            <if test="record.categoryId != null">
+                category_id = #{record.categoryId,jdbcType=INTEGER},
+            </if>
+        </set>
+        <if test="_parameter != null">
+            <include refid="Update_By_Example_Where_Clause"/>
+        </if>
+    </update>
+    <update id="updateByExample" parameterType="map">
+        <!--
+          WARNING - @mbg.generated
+        -->
+        update cost_record
+        set id = #{record.id,jdbcType=INTEGER},
+        start_time = #{record.startTime,jdbcType=VARCHAR},
+        end_time = #{record.endTime,jdbcType=VARCHAR},
+        last_minutes = #{record.lastMinutes,jdbcType=INTEGER},
+        category_id = #{record.categoryId,jdbcType=INTEGER}
+        <if test="_parameter != null">
+            <include refid="Update_By_Example_Where_Clause"/>
+        </if>
+    </update>
+
+    <select id="groupBy" parameterType="map" resultType="own.stu.tkmybatis.demo.model.CostRecordGroupByInfo">
+        SELECT
+            c.NAME as name,
+            sum( r.last_minutes ) as lastMinutes
+        FROM
+            cost_record r
+            LEFT JOIN category c ON r.category_id = c.id
+
+            where 1=1
+            and r.start_time >= #{record.startTime}
+            and r.end_time >= #{record.endTime}
+        GROUP BY
+            r.category_id
+    </select>
+</mapper>

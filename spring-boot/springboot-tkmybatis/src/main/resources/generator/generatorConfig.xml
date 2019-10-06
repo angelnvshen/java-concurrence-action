@@ -30,10 +30,14 @@
       targetProject="src/main/java"
       type="XMLMAPPER"/>
 
-    <table tableName="ls_app"
+    <!--<table tableName="ls_app"
       enableSelectByExample="false" enableDeleteByExample="false" enableCountByExample  ="false"
       enableUpdateByExample="false"
     >
+      <generatedKey column="id" sqlStatement="JDBC"/>
+    </table>-->
+
+    <table tableName="cost_record">
       <generatedKey column="id" sqlStatement="JDBC"/>
     </table>
   </context>

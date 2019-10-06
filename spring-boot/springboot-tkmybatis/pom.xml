@@ -102,11 +102,11 @@
 			<artifactId>lombok</artifactId>
 		</dependency>
 
-		<dependency>
+		<!--<dependency>
 			<groupId>own.stu.com</groupId>
 			<artifactId>plugin-demo</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
-		</dependency>
+		</dependency>-->
 	</dependencies>
 
 	<build>
