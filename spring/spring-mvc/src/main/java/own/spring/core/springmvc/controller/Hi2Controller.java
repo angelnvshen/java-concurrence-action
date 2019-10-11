@@ -6,7 +6,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.Controller;
 
-@Component("hi2")
+@Component("/hi2")
 public class Hi2Controller implements Controller {
 
   @Override
