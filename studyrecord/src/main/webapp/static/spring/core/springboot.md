@@ -65,6 +65,7 @@ A condition is any state that can be determined programmatically before the bean
 
 Endpoint的加载还是要依靠spring.factories实现的，Spring-boot-actutor包下的META-IN/spring.factories配置了EndpointAutoConfiguration。
 
+
 #### support http2.0
 
 #### support webflux
