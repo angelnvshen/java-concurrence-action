@@ -2,10 +2,13 @@ package own.stu.springboot.async.config;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.boot.actuate.autoconfigure.endpoint.condition.ConditionalOnEnabledEndpoint;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
+import own.stu.springboot.async.endpoint.MyEndpoint;
 
 import java.util.concurrent.Executor;
 import java.util.concurrent.ThreadPoolExecutor;
@@ -16,7 +19,7 @@ public class ExecutorConfig {
 
     private static final Logger logger = LoggerFactory.getLogger(ExecutorConfig.class);
 
-     @Bean(name = "customer-executor")
+    @Bean(name = "customer-executor")
     public Executor asyncServiceExecutor() {
         logger.info("start asyncServiceExecutor");
         ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
@@ -35,5 +38,12 @@ public class ExecutorConfig {
         //执行初始化
         executor.initialize();
         return executor;
+    }
+
+    @Bean
+    @ConditionalOnMissingBean
+    @ConditionalOnEnabledEndpoint
+    public MyEndpoint myEndpoint() {
+        return new MyEndpoint();
     }
 }
