@@ -11,8 +11,6 @@
 
 `SpringBoot` 是为了简化 `Spring` 应用的创建、运行、调试、部署等一系列问题而诞生的产物，**自动装配的特性让我们可以更好的关注业务本身而不是外部的XML配置，我们只需遵循规范，引入相关的依赖就可以轻易的搭建出一个 WEB 工程**。
 
-
-
 #### Async 异步
 
 Enables Spring's asynchronous method execution capability, similar to functionality found in Spring's <task:*> XML namespace.
@@ -28,13 +26,18 @@ By default, Spring will be searching for an associated thread pool definition: e
 @EnableConfigurationProperties与@ConfigurationProperties------>>>读取配置文件转换为bean。
 @EnableAutoConfiguration、@AutoConfigurationPackage 与@Import------>>>实现bean发现与加载。
 
+##### 1: @Conditional
+
+Indicates that a component is only eligible for registration when all specified conditions match.
+A condition is any state that can be determined programmatically before the bean definition is due to be registered (see Condition for details).
+
 
 
 #### actuator 服务监控与管理
 
 `actuator`是`spring boot`项目中非常强大一个功能，有助于对应用程序进行监视和管理，通过 `restful api` 请求来监管、审计、收集应用的运行情况，针对微服务而言它是必不可少的一个环节
 
-#####endpoint
+#####1: endpoint
 
 `actuator` 的核心部分，它用来监视应用程序及交互，`spring-boot-actuator`中已经内置了非常多的 **Endpoints（health、info、beans、httptrace、shutdown等等）**，同时也允许我们自己扩展自己的端点
 
@@ -61,3 +64,8 @@ By default, Spring will be searching for an associated thread pool definition: e
 `Spring Boot2.x`中，默认只开放了`info、health`两个端点，剩余的需要自己通过配置`management.endpoints.web.exposure.include`属性来加载（有`include`自然就有`exclude`，不做详细概述了）。如果想单独操作某个端点可以使用`management.endpoint.端点.enabled`属性进行启用或禁用。
 
 Endpoint的加载还是要依靠spring.factories实现的，Spring-boot-actutor包下的META-IN/spring.factories配置了EndpointAutoConfiguration。
+
+#### support http2.0
+
+#### support webflux
+
