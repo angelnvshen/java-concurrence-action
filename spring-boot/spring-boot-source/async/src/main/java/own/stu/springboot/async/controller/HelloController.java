@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import own.stu.springboot.async.service.AsyncService;
+import own.stu.springboot.async.service.SimpleServiceImpl;
 
 @RestController
 public class HelloController {
@@ -14,6 +15,9 @@ public class HelloController {
 
     @Autowired
     private AsyncService asyncService;
+
+    @Autowired
+    private SimpleServiceImpl simpleService;
 
     @RequestMapping("/")
     public String submit() {
@@ -25,5 +29,12 @@ public class HelloController {
         logger.info("end submit");
 
         return "success";
+    }
+
+    @RequestMapping("/test")
+    public void test(){
+        logger.info("test start submit");
+        simpleService.test();
+        logger.info("test end submit");
     }
 }
