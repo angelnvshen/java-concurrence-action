@@ -40,10 +40,10 @@ public class ExecutorConfig {
         return executor;
     }
 
-    @Bean
+   /* @Bean
     @ConditionalOnMissingBean
     @ConditionalOnEnabledEndpoint
     public MyEndpoint myEndpoint() {
         return new MyEndpoint();
-    }
+    }*/
 }
