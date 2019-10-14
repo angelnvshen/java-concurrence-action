@@ -16,7 +16,7 @@ public class ExecutorConfig {
 
     private static final Logger logger = LoggerFactory.getLogger(ExecutorConfig.class);
 
-    // @Bean(name = "customer-executor")
+     @Bean(name = "customer-executor")
     public Executor asyncServiceExecutor() {
         logger.info("start asyncServiceExecutor");
         ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
