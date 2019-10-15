@@ -1,0 +1,17 @@
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka/
+
+
+#The default application name (that is, the service ID), virtual host,
+#  and non-secure port (taken from the Environment) are ${spring.application.name}, ${spring.application.name} and ${server.port}, respectively.
+spring:
+  application:
+    name: product
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,service-registry
