@@ -24,6 +24,7 @@
         <module>eureka-server</module>
         <module>order</module>
         <module>product</module>
+        <module>hystrix-demo</module>
     </modules>
 
     <dependencyManagement>
