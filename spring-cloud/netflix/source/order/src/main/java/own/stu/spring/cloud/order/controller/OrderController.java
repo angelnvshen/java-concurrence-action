@@ -5,6 +5,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 import own.stu.spring.cloud.order.model.Order;
+import own.stu.spring.cloud.order.remote.ProductServiceRemote;
 import own.stu.spring.cloud.order.service.OrderService;
 import own.stu.springcloud.product.domain.Product;
 
@@ -20,11 +21,15 @@ public class OrderController {
     @Autowired
     private RestTemplate restTemplate;
 
+    @Autowired
+    private ProductServiceRemote productServiceRemote;
+
     @RequestMapping("save")
     public Order save(Integer productId) {
         Order order = new Order();
 
-        Product product = restTemplate.getForObject("http://product/product/get-by-id?productId=" + productId, Product.class);
+        // Product product = restTemplate.getForObject("http://product/product/get-by-id?productId=" + productId, Product.class);
+        Product product = productServiceRemote.getById(productId);
         System.out.println(product);
 
         order.setProductId(product.getId());
