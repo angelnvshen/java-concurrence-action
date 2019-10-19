@@ -1,8 +1,10 @@
-####什么是Feign？[](https://blog.csdn.net/weixin_33754065/article/details/91454760)
+####什么是Feign？[##](https://juejin.im/post/5cc2b7f4e51d456e4869545c)
 
 Feign 的英文表意为“假装，伪装，变形”， 是一个http请求调用的轻量级框架，可以以Java接口注解的方式调用Http请求，而不用像Java中通过封装HTTP请求报文的方式直接调用。Feign通过处理注解，将请求模板化，当实际调用的时候，传入参数，根据参数再应用到请求上，进而转化成真正的请求。
 
 ####Feign是如何设计的？
+
+<img src="picture/1571277164831.jpg" width = "100%" height = "100%" alt="图片名称" align=center />
 
 ##### 基于面向接口的动态代理方式生成实现类
 

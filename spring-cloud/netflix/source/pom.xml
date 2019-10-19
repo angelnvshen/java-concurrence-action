@@ -25,6 +25,7 @@
         <module>order</module>
         <module>product</module>
         <module>hystrix-demo</module>
+        <module>zuul</module>
     </modules>
 
     <dependencyManagement>
