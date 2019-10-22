@@ -14,4 +14,4 @@ management:
   endpoints:
     web:
       exposure:
-        include: health,info,service-registry
+        include: health,info,service-registry,loggers
