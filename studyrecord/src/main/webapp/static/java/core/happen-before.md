@@ -87,3 +87,5 @@ public class Singleton {
     }  
 }  
 ```
+
+https://www.jianshu.com/p/7ee5dc71a7f8
