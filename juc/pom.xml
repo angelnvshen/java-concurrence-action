@@ -91,5 +91,15 @@
         </plugin>
       </plugins>
     </pluginManagement>
+
+    <resources>
+      <resource>
+        <directory>src/main/resources</directory>
+        <includes>
+          <include>**/*.properties</include>
+          <include>**/*.txt</include>
+        </includes>
+      </resource>
+    </resources>
   </build>
 </project>
