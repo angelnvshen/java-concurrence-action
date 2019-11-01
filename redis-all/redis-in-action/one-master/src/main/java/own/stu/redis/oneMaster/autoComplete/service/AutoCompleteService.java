@@ -1,9 +1,8 @@
 package own.stu.redis.oneMaster.autoComplete.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.redis.core.BoundZSetOperations;
-import org.springframework.data.redis.core.RedisCallback;
-import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.dao.DataAccessException;
+import org.springframework.data.redis.core.*;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
@@ -36,28 +35,39 @@ public class AutoCompleteService {
         zSetOperations.add(start, 0);
         zSetOperations.add(end, 0);
 
-        redisTemplate.watch(zsetName); // should ingore exception and do while
+        List<Object> execute = (List<Object>) redisTemplate.execute(new SessionCallback<List<String>>() {
+            @Override
+            public List<String> execute(RedisOperations operations) throws DataAccessException {
+                List<String> result = null;
+                do {
+                    operations.watch(zsetName);
+                    BoundZSetOperations setOperations = operations.boundZSetOps(zsetName);
 
-        Long startRank = zSetOperations.rank(start);
-        Assert.notNull(startRank, "startRank can't be null");
+                    Long startRank = setOperations.rank(start);
+                    Assert.notNull(startRank, "startRank can't be null");
 
-        Long endRank = zSetOperations.rank(end);
-        Assert.notNull(startRank, "endRank can't be null");
+                    Long endRank = setOperations.rank(end);
+                    Assert.notNull(startRank, "endRank can't be null");
 
-        Set rangeSet = new HashSet();
-        try {
+                    try {
+                        operations.multi();
+                        setOperations.remove(start, end);
+                        long range = Math.min(startRank + 9, endRank - 2);
+                        if (range > 0) {
+                            setOperations.range(startRank, range);
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    } finally {
+                        result = operations.exec(); // 返回所有 multi命令的执行结果
+                    }
+                } while (result.size() == 0); //如果失败则重试
 
-            redisTemplate.multi();
-            zSetOperations.remove(start, end);
-            long range = Math.min(startRank + 9, endRank - 2);
-            if (range > 0) {
-                zSetOperations.range(startRank, range);
+                return result;
             }
-        } finally {
-            redisTemplate.exec();
-        }
-        return new ArrayList<>(rangeSet);
+        });
 
+        return execute.size() > 1 ? new ArrayList<>((Set<String>) execute.get(execute.size() - 1)) : new ArrayList<>();
     }
 
     private static String getSuffix(String prefix) {
