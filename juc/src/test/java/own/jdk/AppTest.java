@@ -1,16 +1,14 @@
 package own.jdk;
 
-import static org.junit.Assert.assertTrue;
+import org.junit.Test;
 
 import java.io.Serializable;
 import java.lang.ref.ReferenceQueue;
 import java.lang.ref.SoftReference;
-import java.util.HashMap;
 import java.util.IdentityHashMap;
-import java.util.LinkedList;
 import java.util.Map;
-import java.util.concurrent.locks.AbstractQueuedSynchronizer;
-import org.junit.Test;
+
+import static org.junit.Assert.assertTrue;
 
 /**
  * Unit test for simple App.
@@ -22,7 +20,16 @@ public class AppTest {
    */
   @Test
   public void shouldAnswerWithTrue() {
+
     assertTrue(true);
+    System.out.println(0xf0000000);
+    System.out.println(0xc0000000);
+    System.out.println(0x80000000);
+    System.out.println(0x00010000);
+    System.out.println(0x0000ffff);
+    System.out.println(Integer.MAX_VALUE);
+    System.out.println(Integer.MIN_VALUE);
+
   }
 
   @Test

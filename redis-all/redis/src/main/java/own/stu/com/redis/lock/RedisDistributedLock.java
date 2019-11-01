@@ -50,10 +50,10 @@ public class RedisDistributedLock implements Lock {
     if(jedis.setnx(lock_name, id) == 1){
       jedis.pexpire(lock_name, unit.toMillis(time));
       lockContext.set(id);
-      setExclusiveOwnerThread(t);
+//      setExclusiveOwnerThread(t);
       return true;
-    }else if(exclusiveOwnerThread == t){ //当前线程获取锁，可重入
-      return true;
+//    }else if(exclusiveOwnerThread == t){ //当前线程获取锁，可重入
+//      return true;
     }
     return false;
   }

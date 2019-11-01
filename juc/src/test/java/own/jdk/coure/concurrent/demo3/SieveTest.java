@@ -88,4 +88,9 @@ public class SieveTest extends TestCase {
         final long parElapsed = System.currentTimeMillis() - parStart;
         System.out.println("200_000 cost : " + parElapsed + " compute in 1");
     }
+
+    public void test(){
+        new SieveActor().countPrimes(2);
+    }
+
 }
