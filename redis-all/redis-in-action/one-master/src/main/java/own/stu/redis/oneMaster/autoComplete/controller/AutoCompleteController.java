@@ -42,7 +42,7 @@ public class AutoCompleteController {
 
     private static String allChars = "abcdefghijklmnopqrstuvwxyz";
 
-    private String getRandomStr(int length) {
+    public static String getRandomStr(int length) {
 
         StringBuffer sb = new StringBuffer(length);
         Random random = new Random();

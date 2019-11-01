@@ -1,1 +1,3 @@
-
+logging:
+  level:
+    own.stu.redis.oneMaster: info
