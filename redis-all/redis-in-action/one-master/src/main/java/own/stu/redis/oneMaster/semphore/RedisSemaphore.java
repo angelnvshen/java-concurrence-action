@@ -36,6 +36,13 @@ public class RedisSemaphore {
         return String.format(with_prefix, semaphoreName);
     }
 
+
+    // 非公平的
+    /*
+    如果b比a慢10ms，那么b的得分小于a，因为我们使用本地时间作为排序集的得分。
+    所以b的秩，即pipeline.zrank(semname, identifier)，小于a的秩，即limit。
+    B认为它得到了信号量，即if pipeline.execute()[-1] < limit:。事实上，它从a中窃取信号量。
+    */
     public String acquire(String semaphoreName) {
         String uuid = UUID.randomUUID().toString();
         long now = Instant.now().getEpochSecond();
