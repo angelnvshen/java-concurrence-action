@@ -1,17 +1,8 @@
 package own.stu.redis.oneMaster.fakeDistribute.service;
 
-import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.FileSystemResource;
-import org.springframework.http.*;
 import org.springframework.stereotype.Service;
-import org.springframework.util.LinkedMultiValueMap;
-import org.springframework.util.MultiValueMap;
-import org.springframework.web.client.RestTemplate;
-import own.stu.redis.oneMaster.fakeDistribute.service.bean.MergeRunnable;
-import own.stu.redis.oneMaster.fakeDistribute.service.bean.SplitRunnable;
-import own.stu.redis.oneMaster.fakeDistribute.service.inner.W2wzServerImpl;
 import own.stu.redis.oneMaster.fakeDistribute.util.FileUtil;
 
 import java.io.*;
@@ -56,7 +47,7 @@ public class QuickSplitFileService {
         for (int i = 0; i < count; i++) {
             String partFileName = file.getName() + "."
                     + leftPad((i + 1) + "", countLen, '0') + ".jpg";
-            threadPoolExecutor.execute(new SplitRunnable(byteSize, i * byteSize,
+            threadPoolExecutor.execute(new FileUtil.SplitRunnable(byteSize, i * byteSize,
                     partFileName, file));
             parts.add(partFileName);
         }
@@ -84,18 +75,9 @@ public class QuickSplitFileService {
 
         for (int i = 0; i < partFiles.size(); i++) {
             threadPoolExecutor.execute(
-                    new MergeRunnable(i * partFileSize, mergeFileName, partFiles.get(i)));
+                    new FileUtil.MergeRunnable(i * partFileSize, mergeFileName, partFiles.get(i)));
         }
 
-    }
 
-    public void mergePartFiles(List<String> fileNameList,
-                               int partFileSize, String mergeFileName) throws IOException {
-
-    }
-
-
-    public void saveToRemote() {
-//        restTemplate.p
     }
 }

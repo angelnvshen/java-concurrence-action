@@ -4,27 +4,31 @@ import com.alibaba.fastjson.JSON;
 
 import com.google.common.collect.Lists;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.client.OkHttp3ClientHttpRequestFactory;
+import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
+import org.springframework.util.FileCopyUtils;
 import org.springframework.web.client.RestTemplate;
+import own.stu.redis.oneMaster.config.RestTemplateConfig;
 import own.stu.redis.oneMaster.fakeDistribute.model.FileInfo;
 import own.stu.redis.oneMaster.fakeDistribute.service.inner.DistributedServer;
 import own.stu.redis.oneMaster.fakeDistribute.service.inner.W2wzServerImpl;
+import own.stu.redis.oneMaster.fakeDistribute.util.FileUtil;
 
+import javax.annotation.Resource;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadPoolExecutor;
+
+import static own.stu.redis.oneMaster.fakeDistribute.util.FileUtil.deleteIfExisted;
 
 @Service
 public class DistributeService {
 
-    @Autowired
+    @Resource(name = "httpRestTemplate")
     private RestTemplate restTemplate;
 
     @Autowired
@@ -55,7 +59,7 @@ public class DistributeService {
         // TODO parallel ensure order for merge
         ConcurrentHashMap<String, String> map = new ConcurrentHashMap();
         partFileNameList.parallelStream().forEach(s -> {
-            String remoteFilePartPath = upAndDownService.restTemplateTransferFile(
+            String remoteFilePartPath = upAndDownService.sendFilePartToRemote(
                     restTemplate, serverList.get(0).getServer(), new File(s));
             map.put(s, remoteFilePartPath);
         });
@@ -74,32 +78,33 @@ public class DistributeService {
     public void downloadFile(String fileSeed) throws IOException {
         Assert.notNull(fileSeed, "fileSeed is null");
 
-        UpAndDownService.RemoteSendState<String> state = upAndDownService.getFile(restTemplate, fileSeed);
+        UpAndDownService.RemoteSendState<String> state = upAndDownService.getFileFromRemote(restTemplate, fileSeed, String.class);
         if (HttpStatus.OK.value() != state.getCode()) {
             throw new RuntimeException(state.getBody());
         }
 
         String stateBody = state.getBody();
+
         FileInfo fileInfo = JSON.parseObject(stateBody, FileInfo.class);
         List<FileInfo.FilePartInfo> filePartInfoList = fileInfo.getFilePartInfoList();
         filePartInfoList.stream().forEach(filePartInfo -> {
-            UpAndDownService.RemoteSendState<String> file = upAndDownService.getFile(restTemplate, filePartInfo.getRemotePartFileName());
-            if (HttpStatus.OK.value() != state.getCode()) {
+            UpAndDownService.RemoteSendState<byte[]> file = upAndDownService.getFileFromRemote(restTemplate, filePartInfo.getRemotePartFileName(), byte[].class);
+            if (HttpStatus.OK.value() != file.getCode()) {
                 return; // failOver
             }
 
-            try {
-                OutputStream os = new FileOutputStream(fileInfo.getFileName() + "/" + filePartInfo.getPartFileOrderName());
-                byte[] b = new byte[file.getBody().length()];
-                os.write(b);
-                os.flush();
+            try (
+                    OutputStream os = new FileOutputStream(filePartInfo.getPartFileOrderName())
+            ) {
+                FileCopyUtils.copy(file.getBody(), os);
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
+                return;
             } catch (IOException e) {
                 e.printStackTrace();
             }
         });
-        splitFileService.mergePartFiles("", ".part", filePartInfoList.size(), fileInfo.getFileName());
+        splitFileService.mergePartFiles(FileUtil.currentWorkDir, ".jpg", default_file_part_size, "111.jpg");
     }
 
     /*public static void main(String[] args) throws IOException {
@@ -111,42 +116,36 @@ public class DistributeService {
         System.out.println(new String(bytes));
     }*/
 
-    /*public static void main(String[] args) throws IOException {
-        String fileStr = UUID.randomUUID() + ".part";
-        FileOutputStream stream = new FileOutputStream(fileStr);
-        stream.write("ASDFGHJKL".getBytes());
-        stream.flush();
-//        stream.getFD()
-        stream.close();
-
-        File file = new File(fileStr);
-        // 路径为文件且不为空则进行删除
-        if (file.isFile() && file.exists())
-            file.delete();// 文件删除
-    }*/
-
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
         ThreadPoolExecutor poolExecutor = (ThreadPoolExecutor) Executors.newFixedThreadPool(10);
-        OkHttp3ClientHttpRequestFactory okHttp3ClientHttpRequestFactory = new OkHttp3ClientHttpRequestFactory();
-        okHttp3ClientHttpRequestFactory.setConnectTimeout(120);
-        RestTemplate restTemplate = new RestTemplate(okHttp3ClientHttpRequestFactory);
+
+        RestTemplateConfig con = new RestTemplateConfig();
+        RestTemplate restTemplate = con.httpRestTemplate();
 
         QuickSplitFileService splitFileService = new QuickSplitFileService(poolExecutor);
         UpAndDownService upAndDownService = new UpAndDownService(restTemplate);
         DistributeService distributeService = new DistributeService(restTemplate, splitFileService, upAndDownService);
 
 //        distributeService.distribute("/Users/my/Downloads/redis-pdfdownloads.rar");
-        distributeService.distribute("/Users/my/Desktop/111.jpg");
-        String xx = "{\"fileName\":\"/Users/my/Desktop/111.jpg\",\"filePartInfoList\":[{\"partFileOrderName\":\"111.jpg.1.jpg\",\"remotePartFileName\":\"http://chuantu.xyz/t6/703/1572707371x2362407012.jpg\"},{\"partFileOrderName\":\"111.jpg.2.jpg\",\"remotePartFileName\":\"http://chuantu.xyz/t6/703/1572707377x3752237043.jpg\"},{\"partFileOrderName\":\"111.jpg.3.jpg\",\"remotePartFileName\":\"http://chuantu.xyz/t6/703/1572707378x2362407012.jpg\"}]}";
-        poolExecutor.shutdown();
-    }
 
-    private void deleteIfExisted(List<String> fileName) {
-        for (String s : fileName) {
-            File file = new File(s);
-            // 路径为文件且不为空则进行删除
-            if (file.isFile() && file.exists())
-                file.delete();// 文件删除
-        }
+//        distributeService.distribute("/Users/my/Desktop/111.jpg");
+//        String xx = "{\"fileName\":\"/Users/my/Desktop/111.jpg\",\"filePartInfoList\":[{\"partFileOrderName\":\"111.jpg.1.jpg\",\"remotePartFileName\":\"http://chuantu.xyz/t6/703/1572707371x2362407012.jpg\"},{\"partFileOrderName\":\"111.jpg.2.jpg\",\"remotePartFileName\":\"http://chuantu.xyz/t6/703/1572707377x3752237043.jpg\"},{\"partFileOrderName\":\"111.jpg.3.jpg\",\"remotePartFileName\":\"http://chuantu.xyz/t6/703/1572707378x2362407012.jpg\"}]}";
+
+
+        /*String url = "http://chuantu.xyz/t6/703/1572707371x2362407012.jpg";
+        UpAndDownService.RemoteSendState<byte[]> fileFromRemote = upAndDownService.getFileFromRemote(restTemplate, url, byte[].class);
+
+//        FileCopyUtils.copy(fileFromRemote.getBody(), new FileWriter("xx.jpg"));
+
+        System.out.println(fileFromRemote.getBody().length);
+
+        OutputStream os = new FileOutputStream("xx.jpg");
+        os.write(fileFromRemote.getBody());
+        os.flush();
+        os.close();*/
+
+        distributeService.downloadFile("");
+        poolExecutor.shutdown();
+
     }
 }

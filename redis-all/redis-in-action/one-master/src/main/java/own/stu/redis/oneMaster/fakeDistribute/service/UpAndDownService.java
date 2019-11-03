@@ -2,6 +2,7 @@ package own.stu.redis.oneMaster.fakeDistribute.service;
 
 import lombok.Data;
 import org.springframework.core.io.FileSystemResource;
+import org.springframework.core.io.Resource;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.util.LinkedMultiValueMap;
@@ -14,13 +15,14 @@ import java.io.File;
 @Service
 public class UpAndDownService {
 
+    @javax.annotation.Resource(name = "httpRestTemplate")
     private RestTemplate restTemplate;
 
     public UpAndDownService(RestTemplate restTemplate) {
         this.restTemplate = restTemplate;
     }
 
-    public static String restTemplateTransferFile(RestTemplate restTemplate, String server, File file) {
+    public static String sendFilePartToRemote(RestTemplate restTemplate, String server, File file) {
 
         //设置请求头
         HttpHeaders headers = new HttpHeaders();
@@ -46,17 +48,19 @@ public class UpAndDownService {
         return w2wzServer.dealBody(responseEntity.getBody());
     }
 
-    public static RemoteSendState getFile(RestTemplate restTemplate, String url) {
+    public static <T> RemoteSendState getFileFromRemote(RestTemplate restTemplate, String url, Class<T> tClass) {
 
         HttpHeaders headers = new HttpHeaders();
-        MediaType type = MediaType.parseMediaType("multipart/form-data");
-        headers.setContentType(type);
         headers.add("User-Agent", "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.70 Safari/537.36");
-        HttpEntity<String> entity = new HttpEntity<>(null, headers);
+        HttpEntity<Resource> entity = new HttpEntity<>(headers);
 
-        ResponseEntity<String> exchange = restTemplate.exchange(url, HttpMethod.GET, entity, String.class);
+        ResponseEntity<T> exchange = restTemplate.exchange(url, HttpMethod.GET, entity, tClass);
 
         return new RemoteSendState<>(exchange.getStatusCodeValue(), exchange.getBody());
+    }
+
+    public static void main(String[] args) {
+
     }
 
     @Data

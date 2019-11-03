@@ -1,5 +1,7 @@
 package own.stu.redis.oneMaster.fakeDistribute.util;
 
+import own.stu.redis.oneMaster.fakeDistribute.service.DistributeService;
+
 import java.io.*;
 import java.util.*;
 import java.util.concurrent.*;
@@ -267,14 +269,13 @@ public class FileUtil {
      *
      * @author yjmyzz@126.com
      */
-    private class SplitRunnable implements Runnable {
+    public static class SplitRunnable implements Runnable {
         int byteSize;
         String partFileName;
         File originFile;
         int startPos;
 
-        public SplitRunnable(int byteSize, int startPos, String partFileName,
-                             File originFile) {
+        public SplitRunnable(int byteSize, int startPos, String partFileName, File originFile) {
             this.startPos = startPos;
             this.byteSize = byteSize;
             this.partFileName = partFileName;
@@ -282,18 +283,18 @@ public class FileUtil {
         }
 
         public void run() {
-            RandomAccessFile rFile;
-            OutputStream os;
-            try {
-                rFile = new RandomAccessFile(originFile, "r");
+
+            try (
+                    RandomAccessFile rFile = new RandomAccessFile(originFile, "r");
+                    OutputStream os = new FileOutputStream(partFileName)
+            ) {
                 byte[] b = new byte[byteSize];
                 rFile.seek(startPos);// 移动指针到每“段”开头
                 int s = rFile.read(b);
-                os = new FileOutputStream(partFileName);
                 os.write(b, 0, s);
                 os.flush();
-                os.close();
-            } catch (IOException e) {
+
+            } catch (Exception e) {
                 e.printStackTrace();
             }
         }
@@ -304,7 +305,7 @@ public class FileUtil {
      *
      * @author yjmyzz@126.com
      */
-    private class MergeRunnable implements Runnable {
+    public static class MergeRunnable implements Runnable {
         long startPos;
         String mergeFileName;
         File partFile;
@@ -316,20 +317,34 @@ public class FileUtil {
         }
 
         public void run() {
-            RandomAccessFile rFile;
-            try {
-                rFile = new RandomAccessFile(mergeFileName, "rw");
+
+            try (
+                    RandomAccessFile rFile = new RandomAccessFile(mergeFileName, "rw");
+                    FileInputStream fs = new FileInputStream(partFile);
+            ) {
+
                 rFile.seek(startPos);
-                FileInputStream fs = new FileInputStream(partFile);
                 byte[] b = new byte[fs.available()];
                 fs.read(b);
-                fs.close();
                 rFile.write(b);
-                rFile.close();
             } catch (IOException e) {
                 e.printStackTrace();
+            } finally {
+                deleteIfExisted(partFile.getName());
             }
         }
     }
 
+    public static void deleteIfExisted(String fileName) {
+        File file = new File(fileName);
+        // 路径为文件且不为空则进行删除
+        if (file.isFile() && file.exists())
+            file.delete();// 文件删除
+    }
+
+    public static void deleteIfExisted(List<String> fileName) {
+        for (String s : fileName) {
+            deleteIfExisted(s);
+        }
+    }
 }
