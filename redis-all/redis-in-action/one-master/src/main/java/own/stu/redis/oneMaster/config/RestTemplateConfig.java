@@ -39,7 +39,7 @@ public class RestTemplateConfig {
 
     private void addMessageConverts(RestTemplate restTemplate) {
 
-        List<HttpMessageConverter<?>> messageConverters = new ArrayList<>();
+        List<HttpMessageConverter<?>> messageConverters = restTemplate.getMessageConverters();
 
         MappingJackson2HttpMessageConverter converter = new MappingJackson2HttpMessageConverter();
         converter.setSupportedMediaTypes(Collections.singletonList(MediaType.APPLICATION_JSON));

@@ -23,7 +23,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadPoolExecutor;
 
-import static own.stu.redis.oneMaster.fakeDistribute.util.FileUtil.deleteIfExisted;
+import static own.stu.redis.oneMaster.fakeDistribute.util.FileUtil.*;
 
 @Service
 public class DistributeService {
@@ -49,10 +49,12 @@ public class DistributeService {
 
     private int default_file_part_size = 300 * 1024;
 
+    static List<DistributedServer> serverList = Lists.newArrayList(new W2wzServerImpl());
+
     public String distribute(String fileName) {
 
         // need todo 策略模式
-        List<DistributedServer> serverList = Lists.newArrayList(new W2wzServerImpl());
+
         List<String> partFileNameList = splitFileService.splitBySize(fileName, default_file_part_size);
 
         List<FileInfo.FilePartInfo> filePartInfoList = new ArrayList<>();
@@ -68,12 +70,23 @@ public class DistributeService {
         deleteIfExisted(partFileNameList);
 
         FileInfo fileInfo = new FileInfo();
-        fileInfo.setFileName(fileName);
+        fileInfo.setFileName(getSimpleFileName(fileName));
         fileInfo.setFilePartInfoList(filePartInfoList);
-        return JSON.toJSONString(fileInfo);
+        return getSeed(fileInfo);
     }
 
-    // TODO json -> seed
+    private String getSeed(FileInfo fileInfo) {
+
+        String fileJson = JSON.toJSONString(fileInfo);
+        String jsonFileName = writeTempFile(fileInfo.getFileName(), fileJson.getBytes());
+
+        String remote = upAndDownService.sendFilePartToRemote(
+                restTemplate, serverList.get(0).getServer(), new File(jsonFileName));
+
+        deleteIfExisted(jsonFileName);
+        System.out.println(jsonFileName);
+        return remote;
+    }
 
     public void downloadFile(String fileSeed) throws IOException {
         Assert.notNull(fileSeed, "fileSeed is null");
@@ -107,15 +120,6 @@ public class DistributeService {
         splitFileService.mergePartFiles(FileUtil.currentWorkDir, ".jpg", default_file_part_size, "111.jpg");
     }
 
-    /*public static void main(String[] args) throws IOException {
-
-        OutputStream outputStream = new ByteArrayOutputStream();
-        Resources.copy(new URL("http://chuantu.xyz/t6/703/1572696241x3752237043.jpg"), outputStream);
-        byte[] bytes = new byte[1024];
-        outputStream.write(bytes);
-        System.out.println(new String(bytes));
-    }*/
-
     public static void main(String[] args) throws IOException {
         ThreadPoolExecutor poolExecutor = (ThreadPoolExecutor) Executors.newFixedThreadPool(10);
 
@@ -135,16 +139,10 @@ public class DistributeService {
         /*String url = "http://chuantu.xyz/t6/703/1572707371x2362407012.jpg";
         UpAndDownService.RemoteSendState<byte[]> fileFromRemote = upAndDownService.getFileFromRemote(restTemplate, url, byte[].class);
 
-//        FileCopyUtils.copy(fileFromRemote.getBody(), new FileWriter("xx.jpg"));
+        */
 
-        System.out.println(fileFromRemote.getBody().length);
+        distributeService.downloadFile("http://chuantu.xyz/t6/703/1572754033x1033347913.jpg");
 
-        OutputStream os = new FileOutputStream("xx.jpg");
-        os.write(fileFromRemote.getBody());
-        os.flush();
-        os.close();*/
-
-        distributeService.downloadFile("");
         poolExecutor.shutdown();
 
     }

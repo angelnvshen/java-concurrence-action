@@ -1,5 +1,6 @@
 package own.stu.redis.oneMaster.fakeDistribute.util;
 
+import org.springframework.util.Assert;
 import own.stu.redis.oneMaster.fakeDistribute.service.DistributeService;
 
 import java.io.*;
@@ -147,25 +148,38 @@ public class FileUtil {
         return result;
     }
 
-    /**
-     * 写文件
-     *
-     * @param fileName    目标文件名
-     * @param fileContent 写入的内容
-     * @return
-     * @throws IOException
-     */
-    public static boolean write(String fileName, String fileContent)
-            throws IOException {
-        boolean result = false;
-        File f = new File(fileName);
-        FileOutputStream fs = new FileOutputStream(f);
-        byte[] b = fileContent.getBytes();
-        fs.write(b);
-        fs.flush();
-        fs.close();
-        result = true;
-        return result;
+    public static String getSimpleFileName(String fileName) {
+        Assert.notNull(fileName, "fileName is null");
+        int index = fileName.lastIndexOf(File.separatorChar);
+        return fileName.substring(index + 1);
+    }
+
+    public static String writeTempFile(String fileName, byte[] fileContent) {
+        Assert.notNull(fileName, "fileName is null");
+        int dotIndex = fileName.lastIndexOf(".");
+        String prefix = fileName.substring(0, dotIndex);
+        String suffix = fileName.substring(dotIndex);
+
+        File file = null;
+        FileOutputStream fs = null;
+        try {
+            file = File.createTempFile(prefix, suffix);
+            fs = new FileOutputStream(file);
+            fs.write(fileContent);
+            fs.flush();
+            return file.getAbsolutePath();
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        } finally {
+            if (fs != null) {
+                try {
+                    fs.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
     }
 
     /**
