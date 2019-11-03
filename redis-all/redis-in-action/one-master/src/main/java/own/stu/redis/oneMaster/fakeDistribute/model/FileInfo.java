@@ -9,6 +9,8 @@ public class FileInfo {
 
     private String fileName;
 
+    private Long fileSize;
+
     private String seed;
 
     private List<FilePartInfo> filePartInfoList;

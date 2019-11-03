@@ -4,6 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import own.stu.redis.oneMaster.fakeDistribute.util.FileUtil;
+import own.stu.redis.oneMaster.fakeDistribute.util.SplitPartSize;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -29,18 +30,25 @@ public class QuickSplitFileService {
         this.threadPoolExecutor = threadPoolExecutor;
     }
 
+
+    public List<String> splitBySize(String fileName) {
+        File file = new File(fileName);
+        long length = file.length();
+        int byteSize = SplitPartSize.filePartSize(length);
+        return splitBySize(file, byteSize);
+    }
+
     /**
      * 拆分文件
      *
-     * @param fileName 待拆分的完整文件名
+     * @param file 待拆分的完整文件名
      * @param byteSize 按多少字节大小拆分
      * @return 拆分后的文件名列表
      */
-    public List<String> splitBySize(String fileName, int byteSize) {
+    public List<String> splitBySize(File file, int byteSize) {
 
         List<String> parts = new ArrayList<>();
 
-        File file = new File(fileName);
         int count = (int) ((file.length() + byteSize - 1) / byteSize);
         int countLen = (count + "").length();
 

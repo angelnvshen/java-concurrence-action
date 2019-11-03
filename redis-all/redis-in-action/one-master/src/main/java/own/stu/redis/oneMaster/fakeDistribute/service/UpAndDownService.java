@@ -1,6 +1,7 @@
 package own.stu.redis.oneMaster.fakeDistribute.service;
 
 import lombok.Data;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.Resource;
 import org.springframework.http.*;
@@ -8,44 +9,35 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
+import own.stu.redis.oneMaster.fakeDistribute.service.inner.DistributedServer;
 import own.stu.redis.oneMaster.fakeDistribute.service.inner.W2wzServerImpl;
+import own.stu.redis.oneMaster.fakeDistribute.util.FileUtil;
 
 import java.io.File;
 
 @Service
 public class UpAndDownService {
 
-    @javax.annotation.Resource(name = "httpRestTemplate")
     private RestTemplate restTemplate;
 
-    public UpAndDownService(RestTemplate restTemplate) {
+    public UpAndDownService(@Qualifier("httpRestTemplate") RestTemplate restTemplate) {
         this.restTemplate = restTemplate;
     }
 
-    public static String sendFilePartToRemote(RestTemplate restTemplate, String server, File file) {
-
-        //设置请求头
-        HttpHeaders headers = new HttpHeaders();
-        MediaType type = MediaType.parseMediaType("multipart/form-data");
-        headers.setContentType(type);
-
-        //设置请求体，注意是LinkedMultiValueMap
-        FileSystemResource fileSystemResource = new FileSystemResource(file);
-        MultiValueMap<String, Object> form = new LinkedMultiValueMap<>();
-        form.add("uploadimg", fileSystemResource);
-        form.add("filename", file.getName());
+    public static String sendFilePartToRemote(RestTemplate restTemplate, DistributedServer server, File file) {
 
         //用HttpEntity封装整个请求报文
-        HttpEntity<MultiValueMap<String, Object>> files = new HttpEntity<>(form, headers);
+        HttpEntity<MultiValueMap<String, Object>> files = server.getHttpEntity(file);
 
-        ResponseEntity<String> responseEntity = restTemplate.postForEntity(server, files, String.class);
+        ResponseEntity<String> responseEntity = restTemplate.postForEntity(server.getServer(), files, String.class);
         if (!responseEntity.getStatusCode().is2xxSuccessful()) {
             // todo need try backUp server
             throw new RuntimeException(responseEntity.getBody());
         }
 
-        W2wzServerImpl w2wzServer = new W2wzServerImpl();
-        return w2wzServer.dealBody(responseEntity.getBody());
+        FileUtil.deleteIfExisted(file);
+
+        return server.dealBodyAfterSendFilePart(responseEntity.getBody());
     }
 
     public static <T> RemoteSendState getFileFromRemote(RestTemplate restTemplate, String url, Class<T> tClass) {

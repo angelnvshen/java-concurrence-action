@@ -351,6 +351,11 @@ public class FileUtil {
 
     public static void deleteIfExisted(String fileName) {
         File file = new File(fileName);
+        deleteIfExisted(file);
+    }
+
+    public static void deleteIfExisted(File file) {
+
         // 路径为文件且不为空则进行删除
         if (file.isFile() && file.exists())
             file.delete();// 文件删除

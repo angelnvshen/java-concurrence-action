@@ -12,8 +12,10 @@ import org.springframework.web.client.RestTemplate;
 import own.stu.redis.oneMaster.config.RestTemplateConfig;
 import own.stu.redis.oneMaster.fakeDistribute.model.FileInfo;
 import own.stu.redis.oneMaster.fakeDistribute.service.inner.DistributedServer;
+import own.stu.redis.oneMaster.fakeDistribute.service.inner.LocalServerImpl;
 import own.stu.redis.oneMaster.fakeDistribute.service.inner.W2wzServerImpl;
 import own.stu.redis.oneMaster.fakeDistribute.util.FileUtil;
+import own.stu.redis.oneMaster.fakeDistribute.util.SplitPartSize;
 
 import javax.annotation.Resource;
 import java.io.*;
@@ -46,32 +48,29 @@ public class DistributeService {
         this.upAndDownService = upAndDownService;
     }
 
-
-    private int default_file_part_size = 300 * 1024;
-
-    static List<DistributedServer> serverList = Lists.newArrayList(new W2wzServerImpl());
+    static List<DistributedServer> serverList = Lists.newArrayList(new LocalServerImpl(), new W2wzServerImpl());
 
     public String distribute(String fileName) {
 
         // need todo 策略模式
-
-        List<String> partFileNameList = splitFileService.splitBySize(fileName, default_file_part_size);
+        List<String> partFileNameList = splitFileService.splitBySize(fileName);
 
         List<FileInfo.FilePartInfo> filePartInfoList = new ArrayList<>();
         // TODO parallel ensure order for merge
         ConcurrentHashMap<String, String> map = new ConcurrentHashMap();
         partFileNameList.parallelStream().forEach(s -> {
+//        partFileNameList.stream().forEach(s -> {
             String remoteFilePartPath = upAndDownService.sendFilePartToRemote(
-                    restTemplate, serverList.get(0).getServer(), new File(s));
+                    restTemplate, serverList.get(0), new File(s));
             map.put(s, remoteFilePartPath);
         });
 
         partFileNameList.forEach(s -> filePartInfoList.add(new FileInfo.FilePartInfo(s, map.get(s))));
-        deleteIfExisted(partFileNameList);
 
         FileInfo fileInfo = new FileInfo();
         fileInfo.setFileName(getSimpleFileName(fileName));
         fileInfo.setFilePartInfoList(filePartInfoList);
+        fileInfo.setFileSize(new File(fileName).length());
         return getSeed(fileInfo);
     }
 
@@ -81,22 +80,21 @@ public class DistributeService {
         String jsonFileName = writeTempFile(fileInfo.getFileName(), fileJson.getBytes());
 
         String remote = upAndDownService.sendFilePartToRemote(
-                restTemplate, serverList.get(0).getServer(), new File(jsonFileName));
+                restTemplate, serverList.get(0), new File(jsonFileName));
 
         deleteIfExisted(jsonFileName);
-        System.out.println(jsonFileName);
         return remote;
     }
 
     public void downloadFile(String fileSeed) throws IOException {
         Assert.notNull(fileSeed, "fileSeed is null");
 
-        UpAndDownService.RemoteSendState<String> state = upAndDownService.getFileFromRemote(restTemplate, fileSeed, String.class);
+        UpAndDownService.RemoteSendState<byte[]> state = upAndDownService.getFileFromRemote(restTemplate, fileSeed, byte[].class);
         if (HttpStatus.OK.value() != state.getCode()) {
-            throw new RuntimeException(state.getBody());
+            throw new RuntimeException(new String(state.getBody()));
         }
 
-        String stateBody = state.getBody();
+        String stateBody = new String(state.getBody());
 
         FileInfo fileInfo = JSON.parseObject(stateBody, FileInfo.class);
         List<FileInfo.FilePartInfo> filePartInfoList = fileInfo.getFilePartInfoList();
@@ -117,11 +115,13 @@ public class DistributeService {
                 e.printStackTrace();
             }
         });
-        splitFileService.mergePartFiles(FileUtil.currentWorkDir, ".jpg", default_file_part_size, "111.jpg");
+        int default_file_part_size = SplitPartSize.filePartSize(fileInfo.getFileSize());
+        splitFileService.mergePartFiles(FileUtil.currentWorkDir, ".jpg", default_file_part_size, fileInfo.getFileName());
     }
 
     public static void main(String[] args) throws IOException {
-        ThreadPoolExecutor poolExecutor = (ThreadPoolExecutor) Executors.newFixedThreadPool(10);
+        long start = System.currentTimeMillis();
+        ThreadPoolExecutor poolExecutor = (ThreadPoolExecutor) Executors.newFixedThreadPool(100);
 
         RestTemplateConfig con = new RestTemplateConfig();
         RestTemplate restTemplate = con.httpRestTemplate();
@@ -130,20 +130,22 @@ public class DistributeService {
         UpAndDownService upAndDownService = new UpAndDownService(restTemplate);
         DistributeService distributeService = new DistributeService(restTemplate, splitFileService, upAndDownService);
 
-//        distributeService.distribute("/Users/my/Downloads/redis-pdfdownloads.rar");
+        try {
 
-//        distributeService.distribute("/Users/my/Desktop/111.jpg");
-//        String xx = "{\"fileName\":\"/Users/my/Desktop/111.jpg\",\"filePartInfoList\":[{\"partFileOrderName\":\"111.jpg.1.jpg\",\"remotePartFileName\":\"http://chuantu.xyz/t6/703/1572707371x2362407012.jpg\"},{\"partFileOrderName\":\"111.jpg.2.jpg\",\"remotePartFileName\":\"http://chuantu.xyz/t6/703/1572707377x3752237043.jpg\"},{\"partFileOrderName\":\"111.jpg.3.jpg\",\"remotePartFileName\":\"http://chuantu.xyz/t6/703/1572707378x2362407012.jpg\"}]}";
+//        String seed = distributeService.distribute("/Users/my/Downloads/04并发编程的原理(下)- 【www.zxit8.com】.mp4");
+//            String seed = distributeService.distribute("/Users/my/Desktop/大图网-下载说明.jpg");
+//            System.out.println(seed);
 
 
-        /*String url = "http://chuantu.xyz/t6/703/1572707371x2362407012.jpg";
-        UpAndDownService.RemoteSendState<byte[]> fileFromRemote = upAndDownService.getFileFromRemote(restTemplate, url, byte[].class);
+            distributeService.downloadFile("http://localhost:8080/distribute/download?filename=04并发编程的原理(下)- 【www.zxit8.com】3799856882541700614.mp4");
+            System.out.println("cost: ==== " + (System.currentTimeMillis() - start));
 
-        */
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            poolExecutor.shutdown();
+        }
 
-        distributeService.downloadFile("http://chuantu.xyz/t6/703/1572754033x1033347913.jpg");
-
-        poolExecutor.shutdown();
 
     }
 }

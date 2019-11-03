@@ -1,3 +1,10 @@
 logging:
   level:
     own.stu.redis.oneMaster: info
+
+spring:
+  servlet:
+    multipart:
+      max-file-size: 100MB # 上传文件的最大值
+      location: /Users/my/Desktop/file-temp #上传文件用到的临时文件夹，是一个绝对路径
+      max-request-size: 100MB # 整个mutipart请求的最大值
