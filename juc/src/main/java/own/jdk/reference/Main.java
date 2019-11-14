@@ -13,15 +13,18 @@ public class Main {
     System.out.println(reference.get());
     System.out.println(reference.isEnqueued());
 
-    user = null;
+    // user = null; // (注释 or not) 该行 测试
     System.out.println(reference.get());
     System.out.println(reference.isEnqueued());
 
+    System.out.println(" gc is coming ....");
     System.gc();
-//    TimeUnit.SECONDS.sleep(1);
+    // TimeUnit.SECONDS.sleep(1); // wait system gc happen
     System.out.println(reference.get());
     System.out.println(reference.isEnqueued());
     System.out.println(q.poll());
+
+
   }
 }
 

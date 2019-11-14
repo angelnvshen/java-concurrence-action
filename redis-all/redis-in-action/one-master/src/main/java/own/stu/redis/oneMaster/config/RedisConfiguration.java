@@ -5,7 +5,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.connection.RedisStandaloneConfiguration;
 import org.springframework.data.redis.connection.jedis.JedisConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.data.redis.serializer.GenericJackson2JsonRedisSerializer;
 import org.springframework.data.redis.serializer.RedisSerializer;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
 
@@ -15,7 +14,7 @@ class RedisConfiguration {
     @Bean
     public JedisConnectionFactory redisConnectionFactory() {
 
-        RedisStandaloneConfiguration config = new RedisStandaloneConfiguration("127.0.0.1", 6379);
+        RedisStandaloneConfiguration config = new RedisStandaloneConfiguration("127.0.0.1", 6279);
         return new JedisConnectionFactory(config);
     }
 

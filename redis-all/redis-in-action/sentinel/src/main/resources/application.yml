@@ -1,0 +1,7 @@
+#spring:
+#  redis:
+#    sentinel:
+#      master: mymaster
+#      nodes: 127.0.0.1:26379,127.0.0.1:26279,127.0.0.1:26179
+##    host: 127.0.0.1
+##    port: 6279

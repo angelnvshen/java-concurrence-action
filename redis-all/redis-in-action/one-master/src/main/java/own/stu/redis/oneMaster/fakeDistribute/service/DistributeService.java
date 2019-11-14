@@ -20,6 +20,7 @@ import own.stu.redis.oneMaster.fakeDistribute.util.SplitPartSize;
 import javax.annotation.Resource;
 import java.io.*;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.Executors;
@@ -48,6 +49,7 @@ public class DistributeService {
         this.upAndDownService = upAndDownService;
     }
 
+    //    static List<DistributedServer> serverList = Lists.newArrayList(new W2wzServerImpl(), new LocalServerImpl());
     static List<DistributedServer> serverList = Lists.newArrayList(new LocalServerImpl(), new W2wzServerImpl());
 
     public String distribute(String fileName) {
@@ -119,9 +121,11 @@ public class DistributeService {
         splitFileService.mergePartFiles(FileUtil.currentWorkDir, ".jpg", default_file_part_size, fileInfo.getFileName());
     }
 
-    public static void main(String[] args) throws IOException {
+    public static void main2(String[] args) throws IOException {
         long start = System.currentTimeMillis();
         ThreadPoolExecutor poolExecutor = (ThreadPoolExecutor) Executors.newFixedThreadPool(100);
+
+        httpClientLogSetting();
 
         RestTemplateConfig con = new RestTemplateConfig();
         RestTemplate restTemplate = con.httpRestTemplate();
@@ -137,7 +141,7 @@ public class DistributeService {
 //            System.out.println(seed);
 
 
-            distributeService.downloadFile("http://localhost:8080/distribute/download?filename=04并发编程的原理(下)- 【www.zxit8.com】3799856882541700614.mp4");
+            distributeService.downloadFile("http://chuantu.xyz/t6/703/1572776720x2362407012.jpg");
             System.out.println("cost: ==== " + (System.currentTimeMillis() - start));
 
         } catch (Exception e) {
@@ -145,7 +149,34 @@ public class DistributeService {
         } finally {
             poolExecutor.shutdown();
         }
+    }
+
+    public static void main(String[] args) throws IOException {
+        String fileName = "/Users/my/Music/网易云音乐/Alex Fox - Those Were The Days.mp3";
+//        String fileName = "/Users/my/Desktop/win7/movies.mp3";
+
+        String read = read(fileName);
+        System.out.println(read);
 
 
+        File f = new File(fileName);
+        FileInputStream fs = new FileInputStream(f);
+
+        byte[] b = new byte[fs.available()];
+        fs.read(b);
+        fs.close();
+
+        String tempFile = writeTempFile("max-f.mp3", Arrays.copyOf(b, 1024));
+        System.out.println(tempFile);
+    }
+
+    // not work
+    private static void httpClientLogSetting() {
+
+        System.setProperty("org.apache.commons.logging.Log", "org.apache.commons.logging.impl.SimpleLog");
+
+        System.setProperty("org.apache.commons.logging.simplelog.showdatetime", "true");
+
+        System.setProperty("org.apache.commons.logging.simplelog.log.org.apache.commons.httpclient", "info");
     }
 }
