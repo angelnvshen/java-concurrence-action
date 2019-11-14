@@ -7,3 +7,4 @@
 **程序检查主从复制是否写入磁盘的逻辑**
 
 <img src="../../picture/WeChat1f3ee898bb372a02e191b8746679829f.png" width = "100%" height = "100%" alt="图片名称" align=center />
+
