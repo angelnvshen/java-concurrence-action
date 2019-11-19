@@ -15,3 +15,4 @@ docker stop | rm containerId
 docker container prune  清理所有处于终止状态的容器
 
 docker rm $(docker ps -q ) 批量删除容器
+
