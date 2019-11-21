@@ -6,10 +6,13 @@ import org.mybatis.spring.SqlSessionFactoryBean;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.mybatis.spring.annotation.MapperScan;
 import org.mybatis.spring.annotation.MapperScans;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
+import org.springframework.jdbc.datasource.DataSourceTransactionManager;
+import org.springframework.transaction.PlatformTransactionManager;
 
 import javax.sql.DataSource;
 
@@ -36,11 +39,12 @@ public class BeanConfiguration {
 
     @Bean
     @ConfigurationProperties("spring.datasource.druid.customer")
-    public DataSource dataSourceDbcp() {
+    public DataSource dataSourceCustomer() {
         return DruidDataSourceBuilder.create().build();
     }
 
-    // ================= testSqlSessionFactory =================
+    // ================= SqlSessionFactory =================
+    //               == testSqlSessionFactory ==
     @Bean
     SqlSessionFactory sqlSessionFactoryTest() {
         SqlSessionFactory sessionFactory = null;
@@ -59,13 +63,13 @@ public class BeanConfiguration {
         return new SqlSessionTemplate(sqlSessionFactoryTest());
     }
 
-    // ================= customerSqlSessionFactory =================
+    //        === customerSqlSessionFactory ===
     @Bean
     SqlSessionFactory sqlSessionFactoryCustomer() {
         SqlSessionFactory sessionFactory = null;
         try {
             SqlSessionFactoryBean bean = new SqlSessionFactoryBean();
-            bean.setDataSource(dataSourceDbcp());
+            bean.setDataSource(dataSourceCustomer());
             sessionFactory = bean.getObject();
         } catch (Exception e) {
             e.printStackTrace();
@@ -76,6 +80,18 @@ public class BeanConfiguration {
     @Bean
     SqlSessionTemplate sqlSessionTemplateCustomer() {
         return new SqlSessionTemplate(sqlSessionFactoryCustomer());
+    }
+
+    // =================== transactionManager===============
+
+    @Bean
+    PlatformTransactionManager testTransactionManager() {
+        return new DataSourceTransactionManager(dataSourceTest());
+    }
+
+    @Bean
+    public PlatformTransactionManager customerTransactionManager(@Qualifier("dataSourceCustomer") DataSource dataSource) {
+        return new DataSourceTransactionManager(dataSource);
     }
 
 }
