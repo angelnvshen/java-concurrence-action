@@ -1,4 +1,4 @@
-package own.stu.mysql.cp;
+package own.stu.mysql.cp.cp;
 
 import org.apache.commons.dbcp2.BasicDataSource;
 import org.databene.contiperf.PerfTest;
@@ -6,6 +6,7 @@ import org.databene.contiperf.junit.ContiPerfRule;
 import org.junit.Rule;
 import org.junit.Test;
 import own.stu.mysql.cp.config.MyDBCPDataSource;
+import own.stu.mysql.cp.cp.CommonCp;
 
 import java.io.IOException;
 import java.sql.Connection;
@@ -15,23 +16,10 @@ import java.sql.Statement;
 import java.util.Properties;
 import java.util.concurrent.atomic.AtomicInteger;
 
-public class DBCPTest {
-
-
-    //引入 ContiPerf 进行性能测试
-    @Rule
-    public ContiPerfRule rule = new ContiPerfRule();
-
+public class DBCPTest extends CommonCp {
 
     int times = 2000;
     AtomicInteger time = new AtomicInteger(2001);
-
-    //2个线程 共执行4次
-    @PerfTest(invocations = 4, threads = 2)
-    @Test
-    public void testContiperf() {
-        System.out.println(time.getAndIncrement());
-    }
 
     //Throughput:	46 / s
     @Test
@@ -75,15 +63,5 @@ public class DBCPTest {
         }
     }
 
-    static Properties connProperties = getConnProperties();
-
-    private static Properties getConnProperties() {
-        Properties properties = new Properties();
-        try {
-            properties.load(MyDBCPDataSource.class.getResourceAsStream("/config/dbcp.properties"));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return properties;
-    }
+    static Properties connProperties = getConnProperties("dbcp.properties");
 }
