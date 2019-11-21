@@ -16,3 +16,7 @@ docker container prune  清理所有处于终止状态的容器
 
 docker rm $(docker ps -q ) 批量删除容器
 
+#### docker --link containerName:containerName 
+
+可以使容器之间进行通讯，主要原理是 将link的容器的ip和name（域名）写入到 /etc/hosts文件中。缺点是：如果多个容器互相调用，link不方便。
+
