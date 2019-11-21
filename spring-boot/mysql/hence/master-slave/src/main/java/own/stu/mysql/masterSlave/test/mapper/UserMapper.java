@@ -1,7 +1,7 @@
-package own.stu.mysql.masterSlave.mapper;
+package own.stu.mysql.masterSlave.test.mapper;
 
 import org.apache.ibatis.annotations.*;
-import own.stu.mysql.masterSlave.model.User;
+import own.stu.mysql.masterSlave.test.model.User;
 
 import java.util.List;
 

@@ -1,11 +1,11 @@
-package own.stu.mysql.masterSlave.controller;
+package own.stu.mysql.masterSlave.test.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import own.stu.mysql.masterSlave.mapper.UserMapper;
-import own.stu.mysql.masterSlave.model.User;
+import own.stu.mysql.masterSlave.test.mapper.UserMapper;
+import own.stu.mysql.masterSlave.test.model.User;
 
 import java.util.List;
 

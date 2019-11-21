@@ -1,4 +1,4 @@
-package own.stu.mysql.masterSlave.model;
+package own.stu.mysql.masterSlave.test.model;
 
 import lombok.Data;
 
