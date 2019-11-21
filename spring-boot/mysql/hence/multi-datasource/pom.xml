@@ -9,9 +9,9 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>own.stu.mysql</groupId>
-    <artifactId>master-slave</artifactId>
+    <artifactId>multi-datasource</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>master-slave</name>
+    <name>multi-datasource</name>
     <description>Demo project for Spring Boot</description>
 
     <properties>

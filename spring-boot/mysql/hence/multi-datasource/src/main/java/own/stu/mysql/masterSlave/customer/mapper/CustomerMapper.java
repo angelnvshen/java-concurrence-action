@@ -13,6 +13,6 @@ public interface CustomerMapper {
     @Select("SELECT * FROM customer WHERE id = #{id}")
     Customer getOne(Long id);
 
-    @Insert("INSERT INTO user(name,age) VALUES(#{name}, #{age})")
+    @Insert("INSERT INTO customer(name,age) VALUES(#{name}, #{age})")
     void insert(Customer user);
 }

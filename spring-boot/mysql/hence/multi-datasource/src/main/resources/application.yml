@@ -12,5 +12,5 @@ spring:
         password: 123456
         driver-class-name: com.mysql.cj.jdbc.Driver
 
-mybatis:
-  type-aliases-package: own.stu.mysql.masterSlave.test.mapper,own.stu.mysql.masterSlave.customer.mapper
+#mybatis:
+#  type-aliases-package: own.stu.mysql.masterSlave.test.mapper,own.stu.mysql.masterSlave.customer.mapper
