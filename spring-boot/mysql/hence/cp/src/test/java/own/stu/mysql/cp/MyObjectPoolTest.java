@@ -72,7 +72,7 @@ public class MyObjectPoolTest {
      */
     public static MyObjectPool.MyObjectConfig getConfig() {
         MyObjectPool.MyObjectConfig config = new MyObjectPool.MyObjectConfig();
-        config.setMaxActive(5);
+        config.setMaxTotal(5);
         config.setMaxIdle(3);
         config.setMinIdle(0);
         config.setTestOnBorrow(true);

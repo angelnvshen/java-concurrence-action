@@ -1,7 +1,7 @@
 package own.stu.mysql.cp.config;
 
-import org.apache.commons.dbcp.BasicDataSource;
-import org.apache.commons.pool.impl.GenericObjectPool;
+import org.apache.commons.dbcp2.BasicDataSource;
+import org.apache.commons.pool2.impl.GenericObjectPoolConfig;
 
 import java.io.IOException;
 import java.sql.Connection;
@@ -40,14 +40,14 @@ public class MyDBCPDataSource {
         dataSource.setDefaultAutoCommit(true);
         // ...
         // 连接池的相关配置，这部分的默认配置完全由apache-commons-pool组件提供
-        dataSource.setInitialSize(GenericObjectPool.DEFAULT_MIN_IDLE);
-        dataSource.setMaxActive(GenericObjectPool.DEFAULT_MAX_ACTIVE);
-        dataSource.setMaxIdle(GenericObjectPool.DEFAULT_MAX_ACTIVE);
-        dataSource.setMinIdle(GenericObjectPool.DEFAULT_MIN_IDLE);
-        dataSource.setMaxWait(GenericObjectPool.DEFAULT_MAX_WAIT);
-        dataSource.setTestOnBorrow(GenericObjectPool.DEFAULT_TEST_ON_BORROW);
-        dataSource.setTestOnReturn(GenericObjectPool.DEFAULT_TEST_ON_RETURN);
-        dataSource.setTestWhileIdle(GenericObjectPool.DEFAULT_TEST_WHILE_IDLE);
+        dataSource.setInitialSize(GenericObjectPoolConfig.DEFAULT_MIN_IDLE);
+        dataSource.setMaxTotal(GenericObjectPoolConfig.DEFAULT_MAX_TOTAL);
+        dataSource.setMaxIdle(GenericObjectPoolConfig.DEFAULT_MAX_IDLE);
+        dataSource.setMinIdle(GenericObjectPoolConfig.DEFAULT_MIN_IDLE);
+        dataSource.setMaxWaitMillis(GenericObjectPoolConfig.DEFAULT_MAX_WAIT_MILLIS);
+        dataSource.setTestOnBorrow(GenericObjectPoolConfig.DEFAULT_TEST_ON_BORROW);
+        dataSource.setTestOnReturn(GenericObjectPoolConfig.DEFAULT_TEST_ON_RETURN);
+        dataSource.setTestWhileIdle(GenericObjectPoolConfig.DEFAULT_TEST_WHILE_IDLE);
         // 其他配置见 http://commons.apache.org/proper/commons-dbcp/configuration.html
         return dataSource;
     }

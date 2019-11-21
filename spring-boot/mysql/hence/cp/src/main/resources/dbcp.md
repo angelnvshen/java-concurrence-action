@@ -46,3 +46,7 @@ poolPreparedStatements：是否缓存PreparedStatements
 maxOpenPreparedStatements：缓存PreparedStatements的最大个数
 
 ![e781608a-8e5f-3ac6-b4da-79db7e1e9cd0](static/e781608a-8e5f-3ac6-b4da-79db7e1e9cd0.jpg)
+
+#### commons-pool 线程池的流程图如上图
+
+1和2的原理基本一致，在多线程获取资源时，1使用的是synchronize和wait ，notify ，而2使用的blockQueue。

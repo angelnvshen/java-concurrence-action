@@ -1,23 +1,32 @@
 package own.stu.mysql.pool;
 
-import org.apache.commons.pool.BasePoolableObjectFactory;
+import org.apache.commons.pool2.BasePooledObjectFactory;
+import org.apache.commons.pool2.PooledObject;
+import org.apache.commons.pool2.impl.DefaultPooledObject;
 
-public class MyPoolableObjectFactory extends BasePoolableObjectFactory<MyObject> {
+public class MyPoolableObjectFactory extends BasePooledObjectFactory<MyObject> {
+
     @Override
-    public MyObject makeObject() throws Exception {
+    public MyObject create() throws Exception {
         MyObject obj = new MyObject("new obj", false, " i am new");
         return obj;
     }
 
     @Override
-    public void activateObject(MyObject obj) throws Exception {
+    public PooledObject<MyObject> wrap(MyObject obj) {
+        return new DefaultPooledObject<>(obj);
+    }
+
+    public void activateObject(PooledObject<MyObject> pooledObject) throws Exception {
+        MyObject obj = pooledObject.getObject();
         obj.setState("i am ok");
         obj.setValidate(true);
         System.out.println(obj.getName() + " 对象已经激活");
     }
 
     @Override
-    public void destroyObject(MyObject obj) throws Exception {
+    public void destroyObject(PooledObject<MyObject> pooledObject) throws Exception {
+        MyObject obj = pooledObject.getObject();
         obj.setState("i am done");
         obj.setValidate(false);
         System.out.println(obj.getName() + " 对象已经销毁");
@@ -27,7 +36,8 @@ public class MyPoolableObjectFactory extends BasePoolableObjectFactory<MyObject>
      * 归还对象时 钝化对象 比如某些对象用完之后需要休眠一段时间
      */
     @Override
-    public void passivateObject(MyObject obj) throws Exception {
+    public void passivateObject(PooledObject<MyObject> pooledObject) throws Exception {
+        MyObject obj = pooledObject.getObject();
         obj.setPassivateFlag(true);
         System.out.println(obj.getName() + " 钝化完成");
 
@@ -40,7 +50,8 @@ public class MyPoolableObjectFactory extends BasePoolableObjectFactory<MyObject>
      * 如果无效了则不往对象池中放对象。
      */
     @Override
-    public boolean validateObject(MyObject obj) {
+    public boolean validateObject(PooledObject<MyObject> pooledObject) {
+        MyObject obj = pooledObject.getObject();
         System.out.println(obj.getName() + " 验证对象 " + obj.isValidate());
         return obj.isValidate() ? true : false;
     }
