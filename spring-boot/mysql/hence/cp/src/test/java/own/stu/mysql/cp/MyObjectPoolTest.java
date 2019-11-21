@@ -10,6 +10,9 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
+/**
+ * commons-pool2 的小测试：单线程和多线程
+ */
 public class MyObjectPoolTest {
 
     @Test

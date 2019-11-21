@@ -41,7 +41,8 @@ public class MyDBCPDataSource {
         // ...
         // 连接池的相关配置，这部分的默认配置完全由apache-commons-pool组件提供
         dataSource.setInitialSize(GenericObjectPoolConfig.DEFAULT_MIN_IDLE);
-        dataSource.setMaxTotal(GenericObjectPoolConfig.DEFAULT_MAX_TOTAL);
+//        dataSource.setMaxTotal(GenericObjectPoolConfig.DEFAULT_MAX_TOTAL);
+        dataSource.setMaxTotal(100);
         dataSource.setMaxIdle(GenericObjectPoolConfig.DEFAULT_MAX_IDLE);
         dataSource.setMinIdle(GenericObjectPoolConfig.DEFAULT_MIN_IDLE);
         dataSource.setMaxWaitMillis(GenericObjectPoolConfig.DEFAULT_MAX_WAIT_MILLIS);
