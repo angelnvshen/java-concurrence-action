@@ -6,11 +6,16 @@ import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import own.stu.mysql.masterSlave.config.DynamicDB;
+import own.stu.mysql.masterSlave.config.DynamicDataSource;
 import own.stu.mysql.masterSlave.customer.mapper.CustomerMapper;
 import own.stu.mysql.masterSlave.customer.model.Customer;
 
 import java.util.List;
 
+import static own.stu.mysql.masterSlave.config.DynamicDataSource.CUSTOMER;
+
+@DynamicDB("customer")
 @RestController
 @RequestMapping("customer")
 public class CustomerController {
@@ -20,19 +25,22 @@ public class CustomerController {
 
     @RequestMapping("/getCustomers")
     public List<Customer> getCustomers() {
+
         List<Customer> customers = customerMapper.getAll();
         return customers;
     }
 
     @RequestMapping("/getCustomer")
     public Customer getUser(Long id) {
+
         Customer customer = customerMapper.getOne(id);
         return customer;
     }
 
-    @Transactional(value = "customerTransactionManager")
+    @Transactional
     @RequestMapping("/add")
     public void save(Customer customer) {
+
         customerMapper.insert(customer);
 //        int i = 10/0;
     }

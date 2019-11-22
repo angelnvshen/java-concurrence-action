@@ -1,10 +1,10 @@
 package own.stu.mysql.masterSlave;
 
-import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.EnableAspectJAutoProxy;
 
-//@MapperScan("own.stu.mysql.masterSlave.*.mapper")
+@EnableAspectJAutoProxy
 @SpringBootApplication
 public class MasterSlaveApplication {
 

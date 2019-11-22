@@ -29,11 +29,11 @@ public class HelloController {
         return user;
     }
 
-    @Transactional(value = "testTransactionManager")
+    @Transactional
     @RequestMapping("/add")
     public void save(User user) {
         userMapper.insert(user);
-         int i = 10/0;
+//         int i = 10/0;
     }
 
     @RequestMapping(value = "update")

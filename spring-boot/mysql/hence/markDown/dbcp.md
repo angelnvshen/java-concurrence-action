@@ -45,7 +45,7 @@ PreparedStatements是可以缓存是，尤其在一些支持游标的数据库�
 poolPreparedStatements：是否缓存PreparedStatements
 maxOpenPreparedStatements：缓存PreparedStatements的最大个数
 
-![e781608a-8e5f-3ac6-b4da-79db7e1e9cd0](static/e781608a-8e5f-3ac6-b4da-79db7e1e9cd0.jpg)
+![e781608a-8e5f-3ac6-b4da-79db7e1e9cd0](../cp/src/main/resources/static/e781608a-8e5f-3ac6-b4da-79db7e1e9cd0.jpg)
 
 #### commons-pool 线程池的流程图如上图
 

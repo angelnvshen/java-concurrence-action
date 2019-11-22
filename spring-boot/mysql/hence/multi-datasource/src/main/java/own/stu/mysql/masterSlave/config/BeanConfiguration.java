@@ -16,7 +16,7 @@ import org.springframework.transaction.PlatformTransactionManager;
 
 import javax.sql.DataSource;
 
-@MapperScans({
+/*@MapperScans({
         @MapperScan(
                 basePackages = "own.stu.mysql.masterSlave.test.mapper",
                 sqlSessionFactoryRef = "sqlSessionFactoryTest",
@@ -27,7 +27,7 @@ import javax.sql.DataSource;
                 sqlSessionFactoryRef = "sqlSessionFactoryCustomer",
                 sqlSessionTemplateRef = "sqlSessionTemplateCustomer")
 })
-@Configuration
+@Configuration*/
 public class BeanConfiguration {
 
     @Primary
