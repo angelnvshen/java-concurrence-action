@@ -9,5 +9,4 @@ class MasterSlaveApplicationTests {
     @Test
     void contextLoads() {
     }
-
 }

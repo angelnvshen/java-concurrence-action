@@ -1,12 +1,19 @@
 package own.jdk.executorService;
 
-import java.util.concurrent.LinkedBlockingQueue;
-import java.util.concurrent.ThreadPoolExecutor;
-import java.util.concurrent.TimeUnit;
+import java.util.concurrent.*;
 
 public class ExecutorServiceTest {
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws InterruptedException {
+        ThreadPoolExecutor threadPoolExecutor = (ThreadPoolExecutor) Executors.newFixedThreadPool(3);
+        threadPoolExecutor.prestartCoreThread();
+
+        threadPoolExecutor.getQueue().put(()-> System.out.println("hello ......"));
+
+        threadPoolExecutor.shutdown();
+    }
+
+    public static void main1(String[] args) {
         ThreadPoolExecutor threadPoolExecutor = new ThreadPoolExecutor(1, 2, 3, TimeUnit.SECONDS, new LinkedBlockingQueue<>(3));
 
         try {
