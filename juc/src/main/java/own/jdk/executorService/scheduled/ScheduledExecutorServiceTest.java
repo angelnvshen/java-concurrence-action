@@ -1,4 +1,4 @@
-package own.jdk.executorService;
+package own.jdk.executorService.scheduled;
 
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
