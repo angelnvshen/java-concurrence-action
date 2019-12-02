@@ -1,6 +1,11 @@
 package own.guava.base.io;
 
+import com.google.common.io.Files;
 import org.junit.Test;
+
+import java.io.File;
+import java.io.IOException;
+import java.nio.charset.Charset;
 
 public class CloserTest {
 
@@ -80,5 +85,15 @@ public class CloserTest {
             }
 
         }
+    }
+
+    private String filePath = "/Users/my/IdeaProjects_own/core/juc/src/test/resources/";
+    private String sourceFile = filePath + "quartz.properties";
+
+    @Test
+    public void test6() throws IOException {
+        Files.asCharSource(new File(sourceFile), Charset.defaultCharset())
+                .readLines()
+                .forEach(System.out::println);
     }
 }

@@ -2,14 +2,16 @@ package own.jdk.executorService.scheduled;
 
 import java.util.concurrent.TimeUnit;
 
+import static java.util.concurrent.TimeUnit.SECONDS;
+
 /**
  * @see own.jdk.schedual.TimerTest
- *
+ * <p>
  * one thread execute the task , and the task store in the priority queue.
  */
 public class TimerExample {
 
-    public static void printNow(){
+    public static void printNow() {
         System.out.println(now());
     }
 
@@ -17,9 +19,13 @@ public class TimerExample {
         return System.currentTimeMillis();
     }
 
-    public static void sleep(int seconds){
+    public static void sleep(int seconds) {
+        sleep(seconds, SECONDS);
+    }
+
+    public static void sleep(int timeout, TimeUnit timeUnit) {
         try {
-            TimeUnit.SECONDS.sleep(seconds);
+            timeUnit.sleep(timeout);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
