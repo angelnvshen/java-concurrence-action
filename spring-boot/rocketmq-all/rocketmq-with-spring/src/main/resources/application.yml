@@ -1,0 +1,9 @@
+server:
+  port: 8090
+
+rocketmq:
+  name-server: 192.168.0.116:9876;192.168.0.117:9876
+  producer:
+    group: hello-spring-boot
+
+common.topic: hello
