@@ -1,0 +1,14 @@
+rocketmq:
+  name-server: 192.168.0.116:9876;192.168.0.117:9876
+  producer:
+    group: hello-tcc
+
+server:
+  port: 8090
+
+spring:
+  redis:
+    port: 6379
+    host: localhost
+
+order.create.tx.group: tx
