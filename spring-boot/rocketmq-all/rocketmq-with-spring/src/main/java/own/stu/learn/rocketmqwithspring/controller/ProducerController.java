@@ -21,9 +21,9 @@ public class ProducerController {
 
     @ResponseBody
     @RequestMapping("/send")
-    public String sendMessage(@RequestParam(required = false, defaultValue = "world-tag") String tag, String messsage) {
+    public String sendMessage(@RequestParam(required = false, defaultValue = "world-tag") String tag, String message) {
 
-        rocketMQTemplate.asyncSend(topic + ":" + tag, messsage, new SendCallback() {
+        rocketMQTemplate.asyncSend(topic + ":" + tag, message, new SendCallback() {
 
             @Override
             public void onSuccess(SendResult sendResult) {
