@@ -1,6 +1,8 @@
 package own.jdk;
 
+import lombok.Data;
 import org.junit.Test;
+import own.TreeNode;
 
 import java.util.*;
 import java.util.concurrent.locks.AbstractQueuedSynchronizer;
@@ -226,7 +228,7 @@ public class OwnSyn extends AbstractQueuedSynchronizer {
         LinkedList<TreeNodeHence> stack = new LinkedList();
         stack.push(new TreeNodeHence(root, false));
         while (!stack.isEmpty()) {
-            TreeNodeHence nodeHence = stack.peek();
+            TreeNodeHence<Integer> nodeHence = stack.peek();
             // if(!nodeHence.visited){
             //     stack.pop();
             //     continue;
@@ -248,8 +250,8 @@ public class OwnSyn extends AbstractQueuedSynchronizer {
     }
 
     //iteration
-    static class TreeNodeHence {
-        TreeNode node;
+    static class TreeNodeHence<T> {
+        TreeNode<T> node;
         boolean visited;
 
         TreeNodeHence(TreeNode node, boolean visited) {
@@ -258,15 +260,6 @@ public class OwnSyn extends AbstractQueuedSynchronizer {
         }
     }
 
-    static class TreeNode {
-        int val;
-        TreeNode left;
-        TreeNode right;
-
-        TreeNode(int x) {
-            val = x;
-        }
-    }
 
     public static List<List<Integer>> zigzagLevelOrder(TreeNode root) {
         List<List<Integer>> result = new ArrayList<>();
@@ -283,7 +276,7 @@ public class OwnSyn extends AbstractQueuedSynchronizer {
             LinkedList<Integer> temp = new LinkedList<>();
             int current_level_size = list.size();
             for (int i = 0; i < current_level_size; i++) {
-                TreeNode node = list.pop();
+                TreeNode<Integer> node = list.pop();
                 if (node == null) {
                     continue;
                 }
@@ -475,7 +468,12 @@ public class OwnSyn extends AbstractQueuedSynchronizer {
     @Test
     public void test4() {
 //        System.out.println(hammingWeight(-3));
-        System.out.println(search2(new int[]{4, 5, 6, 7, 0, 1, 2}, 0));
+//        System.out.println(search2(new int[]{4, 5, 6, 7, 0, 1, 2}, 0));
+        System.out.println(findMin(new int[]{1, 3, 3}));
+        System.out.println(findMin(new int[]{1, 3, 5}));
+        System.out.println(findMin(new int[]{2, 2, 2, 0, 1}));
+        System.out.println(findMin(new int[]{3, 3, 1, 3}));
+        System.out.println(findMin(new int[]{10, 1, 10, 10, 10}));
     }
 
     public static int hammingWeight(int n) {
@@ -529,21 +527,456 @@ public class OwnSyn extends AbstractQueuedSynchronizer {
     }
 
 
-    public int findMin(int[] nums) {
+    public static int findMin(int[] nums) {
         int start = 0;
         int end = nums.length - 1;
+        if (nums[start] < nums[end]) {
+            return nums[start];
+        }
         int target = nums[end];
         // find first element <= target （找到第一个 <= 最右的元素就是最小元素）
-        while(start + 1 < end){
-            int mid = start + (end - start) /2;
-            if(nums[mid] <= target){
+        while (start + 1 < end) {
+            int mid = start + (end - start) / 2;
+            if (nums[mid] < target) {
                 end = mid;
-            }else{
+            } else {
                 start = mid;
             }
         }
 
         return Math.min(nums[start], nums[end]);
+    }
+
+    @Test
+    public void test5() {
+
+//        HashMap map = new HashMap(75);
+//        System.out.println(map.size());
+
+//        new Pattern("[0-9]");s
+//        System.out.println("hello".indexOf("lx"));
+
+        //1->2->3->4->5
+//        ListNode head = new ListNode(1);
+//        head.next(new ListNode(2)).next(new ListNode(3)).next(new ListNode(4)).next(new ListNode(5));
+
+//        removeNthFromEnd(head, 2);
+//        removeNthFromEnd(head, 1);
+
+//        1->2->4, 1->3->4
+
+        /*ListNode l1 = new ListNode(1);
+        l1.next(new ListNode(2)).next(new ListNode(4));
+        ListNode l2 = new ListNode(1);
+        l2.next(new ListNode(3)).next(new ListNode(4));
+        ListNode listNode = mergeTwoLists(l1, l2);
+        ListNode.print(listNode);*/
+
+        /*ListNode l1 = new ListNode(1);
+        l1.next(new ListNode(2)).next(new ListNode(1));
+
+        System.out.println(isPalindrome(l1));*/
+
+        System.out.println(11 & 1);
+    }
+
+    static class ListNode {
+        int val;
+        ListNode next;
+
+        ListNode(int x) {
+            val = x;
+        }
+
+        ListNode next(ListNode next) {
+            this.next = next;
+            return next;
+        }
+
+        static void print(ListNode head) {
+            while (head != null) {
+                System.out.print(head.val + ", ");
+                head = head.next;
+            }
+        }
+    }
+
+    public static boolean isPalindrome(ListNode head) {
+        if (head == null) {
+            return true;
+        }
+
+        if (head != null && head.next == null) {
+            return true;
+        }
+
+        LinkedList<Integer> stack = new LinkedList<>();
+        while (head != null) {
+            if (!stack.isEmpty()) {
+                Integer value = stack.peek();
+                if (value == head.val) {
+                    stack.pop();
+                } else {
+                    stack.push(head.val);
+                }
+            } else {
+                stack.push(head.val);
+            }
+            head = head.next;
+        }
+        return stack.isEmpty() || stack.size() == 1;
+    }
+
+    public static ListNode mergeTwoLists(ListNode l1, ListNode l2) {
+        if (l1 == null) {
+            return l2;
+        }
+
+        if (l2 == null) {
+            return l1;
+        }
+
+        ListNode newHead = new ListNode(0);
+        ListNode cur = newHead;
+
+        while (l1 != null && l2 != null) {
+            if (l1.val > l2.val) {
+                cur.next = l2;
+                cur = cur.next;
+                l2 = l2.next;
+            } else if (l2.val > l1.val) {
+                cur.next = l1;
+                cur = cur.next;
+                l1 = l1.next;
+            } else {
+                cur.next = l1;
+                cur = cur.next;
+                l1 = l1.next;
+
+                cur.next = l2;
+                cur = cur.next;
+                l2 = l2.next;
+            }
+        }
+
+        if (l1 != null) {
+            cur.next = l1;
+        }
+
+        if (l2 != null) {
+            cur.next = l2;
+        }
+
+        return newHead.next;
+    }
+
+    public static ListNode removeNthFromEnd(ListNode head, int n) {
+        if (head == null) {
+            return head;
+        }
+
+        ListNode dummy = new ListNode(Integer.MIN_VALUE);
+        dummy.next = head;
+
+        ListNode cur = dummy;
+        ListNode theNNode = dummy;
+        // 给定的 n 保证是有效的。
+        int count = -n;
+        while (cur.next != null) {
+            cur = cur.next;
+            count += 1;
+            if (count > 0) {
+                theNNode = theNNode.next;
+            }
+        }
+        // theNNode 是 需要寻找的节点的前一个节点
+        if (theNNode.next != null) {
+            theNNode.next = theNNode.next.next;
+        }
+
+        return dummy.next;
+    }
+
+    public static int arrangeCoins(int n) {
+
+        if (n <= 1) {
+            return n;
+        }
+        int target = 0;
+        int i = 1;
+        while (true) {
+
+            if (target + i > n) {
+                break;
+            }
+            target += i;
+            i += 1;
+        }
+
+        return i;
+    }
+
+    @Test
+    public void test6() {
+        ListNode head = new ListNode(1);
+        head
+                .next(new ListNode(2))
+                .next(new ListNode(3))
+                /*.next(new ListNode(4))
+                .next(new ListNode(5))
+                .next(new ListNode(6))*/;
+        /*ListNode middleNode = middleNode(head);
+        ListNode.print(middleNode);*/
+
+        ListNode cur = head;
+        ListNode newHead = null, next;
+        while (cur != null) {
+            next = cur.next;
+            cur.next = newHead;
+            newHead = cur;
+            cur = next;
+        }
+
+        System.out.println(newHead);
+
+    }
+
+    public static ListNode middleNode(ListNode head) {
+        int len = lenOfLinkedList(head);
+        int mid;
+        /*if ((len & 1) == 1) { //奇数
+            mid = (len >> 1) + 1;
+        } else {
+            mid = len >> 1;
+        }*/
+        mid = len >> 1;
+
+        while (mid > 0) {
+            head = head.next;
+            mid -= 1;
+        }
+        return head;
+    }
+
+    private static int lenOfLinkedList(ListNode list) {
+        int length = 0;
+        while (list != null) {
+            length += 1;
+            list = list.next;
+        }
+
+        return length;
+    }
+
+    @Test
+    public void test7() {
+        ListNode head = new ListNode(1);
+        head
+                .next(new ListNode(1))
+                .next(new ListNode(1))
+                .next(new ListNode(4))
+                /*.next(new ListNode(5))
+                .next(new ListNode(6))*/;
+
+        // System.out.println(getDecimalValue(head));
+        ListNode listNode = removeElements(head, 1);
+        ListNode.print(listNode);
+
+    }
+
+    public static int getDecimalValue(ListNode head) {
+        if (head == null) {
+            return 0;
+        }
+
+        int result = 0;
+        while (head != null) {
+            result = (result << 1) + head.val;
+            head = head.next;
+        }
+
+        return result;
+    }
+
+    public static ListNode removeElements(ListNode head, int val) {
+        if (head == null) {
+            return head;
+        }
+
+        ListNode dummyHead = new ListNode(0);
+        dummyHead.next = head;
+
+        ListNode cur = dummyHead;
+        ListNode next = null;
+        while (cur != null) {
+            next = cur.next;
+            if (next == null) {
+                break;
+            }
+
+            if (next.val == val) {
+                cur.next = next.next;
+            } else {
+                cur = next;
+            }
+        }
+
+        return dummyHead.next;
+    }
+
+    @Test
+    public void test8() {
+        //[1,2,3,4,null,null,5]
+        TreeNode root = new TreeNode(5);
+        TreeNode rl = new TreeNode(1);
+        TreeNode rr = new TreeNode(4);
+        root.left = rl;
+        root.right = rr;
+
+
+        TreeNode rrl = new TreeNode(3);
+        rr.left = rrl;
+        TreeNode rrr = new TreeNode(6);
+        rr.right = rrr;
+
+//        BTreePrinter.printNode(root);
+
+//        System.out.println(maxDepth(root));
+
+        BTreePrinter.printNode(root);
+        System.out.println(isValidBST(root));
+
+    }
+
+    public static int maxDepth(TreeNode root) {
+
+        int deep = 0;
+        if (root == null) {
+            return deep;
+        }
+
+        LinkedList<TreeNode> list = new LinkedList<>();
+        list.add(root);
+
+        while (list.size() > 0) {
+            int cur_size = list.size();
+            for (int i = 0; i < cur_size; i++) {
+                TreeNode node = list.pop();
+                System.out.println(node.val);
+                if (node.left != null) {
+                    list.add(node.left);
+                }
+                if (node.right != null) {
+                    list.add(node.right);
+                }
+            }
+            deep += 1;
+            System.out.println(" ==== ");
+        }
+
+        return deep;
+    }
+
+    public boolean isValidBST(TreeNode root) {
+        if (root == null) {
+            return true;
+        }
+
+        /// 中序遍历，前一个节点元素小于后一个即可
+        int cur = 0;
+        int prev = 0;
+
+        LinkedList<TreeNodeHence2> list = new LinkedList<>();
+        list.push(new TreeNodeHence2(root, 0));
+
+        List<Integer> values = new ArrayList();
+
+        while (list.size() > 0) {
+            TreeNodeHence2<Integer> temp = list.pop();
+            System.out.println(temp);
+            if (temp.node == null) {
+                continue;
+            }
+
+            if (temp.operate == 1) {
+                values.add(temp.node.val);
+                continue;
+            }
+
+            list.push(new TreeNodeHence2(temp.node.right, 0));
+            list.push(new TreeNodeHence2(temp.node, 1));
+            list.push(new TreeNodeHence2(temp.node.left, 0));
+        }
+
+        for (int i = 1; i < values.size(); i++) {
+            if (values.get(i) <= values.get(i - 1)){
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    @Data
+    class TreeNodeHence2<T> {
+        TreeNode<T> node;
+        int operate; // 0 - visit ; 1 - print
+
+        TreeNodeHence2(TreeNode node, int operate) {
+            this.node = node;
+            this.operate = operate;
+        }
+    }
+
+    @Test
+    public void test9(){
+        /*int [] nums1 = new int[]{1,2,3,0,0,0};
+        int [] nums2 = new int[]{2,5,6};
+        merge(nums1, 3 , nums2, 3);*/
+
+        int [] nums1 = new int[]{0};
+        int [] nums2 = new int[]{1};
+        merge(nums1, 0 , nums2, 1);
+        System.out.println(nums1);
+    }
+
+    public static void merge(int[] nums1, int m, int[] nums2, int n) {
+        if(nums1.length < m + n){
+            return;
+        }
+
+        int i = m - 1;
+        int j = n - 1;
+        int p = m + n - 1;
+        while(i >= 0 && j >= 0){
+            if(nums1[i] > nums2[j]){
+                nums1[p] = nums1[i];
+                p --;
+                i --;
+            }else if(nums1[i] < nums2[j]){
+                nums1[p] = nums2[j];
+                p --;
+                j --;
+            }else{
+                nums1[p] = nums1[i];
+                nums1[p - 1] = nums2[j];
+                i --;
+                j --;
+                p -= 2;
+            }
+        }
+
+        while(i >= 0){
+            nums1[p] = nums1[i];
+            p --;
+            i --;
+        }
+
+        while(j >= 0){
+            nums1[p] = nums2[j];
+            p --;
+            j --;
+        }
     }
 }
 
