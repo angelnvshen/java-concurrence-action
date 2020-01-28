@@ -580,7 +580,7 @@ public class OwnSyn extends AbstractQueuedSynchronizer {
         System.out.println(11 & 1);
     }
 
-    static class ListNode {
+    public static class ListNode {
         int val;
         ListNode next;
 
@@ -598,6 +598,7 @@ public class OwnSyn extends AbstractQueuedSynchronizer {
                 System.out.print(head.val + ", ");
                 head = head.next;
             }
+            System.out.println();
         }
     }
 
