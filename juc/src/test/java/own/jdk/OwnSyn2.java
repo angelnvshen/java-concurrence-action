@@ -333,7 +333,7 @@ public class OwnSyn2 {
     }
 
     @Test
-    public void test7(){
+    public void test7() {
         System.out.println(generate(3));
     }
 
@@ -344,20 +344,171 @@ public class OwnSyn2 {
             return result;
         }
 
-        generate("", 2, result);
+        generate("", 2, result, 0, 0);
 
         return result;
     }
 
-    private static void generate(String item, int n, List<String> result) {
+    // 左括号要先于右括号放入，并且左括号和右括号数量相等
+    private static void generate(String item, int n, List<String> result, int leftNum, int rightNum) {
+        if (rightNum > leftNum) {
+            return;
+        }
         if (item.length() == 2 * n) {
-
             result.add(item);
             return;
         }
+        // 剪枝：
+        if (leftNum < n) {
+            generate(item + "(", n, result, leftNum + 1, rightNum);
+        }
+        if (leftNum >= rightNum) {
+            generate(item + ")", n, result, leftNum, rightNum + 1);
+        }
+    }
 
-        generate(item + "(", n, result);
-        generate(item + ")", n, result);
+    private static void generate(String item, int n, List<String> result, Stack<String> stack) {
+        if (item.length() == 2 * n) {
+            if (stack.isEmpty()) {
+                result.add(item);
+            }
+            return;
+        }
+        // 剪枝：
+        if (stack.isEmpty() || stack.peek().equals("(")) {
+            stack.push("(");
+            generate(item + "(", n, result, stack);
+        }
+        if (!stack.isEmpty() && stack.peek().equals("(")) {
+            stack.pop();
+            generate(item + ")", n, result, stack);
+        }
+    }
+
+    @Test
+    public void test8() {
+
+        /*List<String> list = Arrays.asList(1 + "", 2 + "", 3 + "");
+        String join = String.join("->", list);
+        System.out.println(join);*/
+
+        int[][] mark = {
+                {0, 0, 0, 0, 0, 0, 0, 0},
+                {0, 0, 0, 0, 0, 0, 0, 0},
+                {0, 0, 0, 0, 0, 0, 0, 0},
+                {0, 0, 0, 0, 0, 0, 0, 0},
+                {0, 0, 0, 0, 0, 0, 0, 0},
+                {0, 0, 0, 0, 0, 0, 0, 0},
+                {0, 0, 0, 0, 0, 0, 0, 0},
+                {0, 0, 0, 0, 0, 0, 0, 0},
+        };
+
+        putTheQueue(3, 5, mark);
+
+        int[][] tempMark = cloneMark(mark);
+        printMatrix(mark);
+        System.out.println();
+        putTheQueue(1, 4, mark);
+        printMatrix(tempMark);
+        System.out.println();
+        printMatrix(mark);
+        System.out.println();
+    }
+
+    private static int[][] cloneMark(int[][] mark) {
+        int len = mark.length;
+        int[][] result = new int[len][len];
+
+        for (int i = 0; i < len; i++) {
+            result[i] = Arrays.copyOf(mark[i], mark[i].length);
+        }
+
+        return result;
+    }
+
+
+    private static List<String> formatResult(String [][] position){
+        List<String> result = new ArrayList();
+        for(int i = 0; i < position.length; i++){
+            result.add(String.join("", position[i]));
+        }
+        return result;
+    }
+
+    // 八个方向的方向数组
+    public static int[] dx = {0, 0, -1, 1, 1, 1, -1, -1};
+    public static int[] dy = {1, -1, 0, 0, 1, -1, -1, 1};
+
+    public static void putTheQueue(int x, int y, int[][] mark) {
+        mark[x][y] = 1;
+        for (int i = 1; i < mark.length; i++) { // 每个方向需要向外延伸 1 至 N - 1
+            for (int j = 0; j < 8; j++) {
+                int newX = x + i * dx[j];
+                int newY = y + i * dy[j];
+                if (newX >= 0 && newX < mark.length
+                        && newY >= 0 && newY < mark[i].length) {
+                    mark[newX][newY] = 1;
+                }
+            }
+        }
+    }
+
+    public static void printMatrix(int[][] mark) {
+        for (int i = 0; i < mark.length; i++) {
+            for (int j = 0; j < mark[i].length; j++) {
+                System.out.print(mark[i][j] + " ");
+            }
+            System.out.println();
+        }
+    }
+
+    public static List<List<String>> solveNQueens(int n) {
+        List<List<String>> result = new ArrayList<>();
+        if(n <= 0){
+            return result;
+        }
+
+        // init： mark 表示格子是否是皇后的攻击范围；position 表示皇后的位置
+        int[][] mark = new int[n][n];
+        String[][] position = new String[n][n];
+        for(int i = 0; i < n; i++){
+            for(int j = 0; j < mark[i].length; j ++){
+                mark[i][j] = 0;
+                position[i][j] = ".";
+            }
+        }
+
+        solution(n, 0, mark, position, result);
+
+        return result;
+    }
+
+    // k 表示第k个皇后
+    // 解决第k个皇后放置的位置
+    private static void solution(int n, int k, int[][] mark, String[][] position, List<List<String>> result){
+        if(n == k){
+            result.add(formatResult(position));
+            return;
+        }
+
+        // 尝试 0 至 n - 1列
+        for(int i = 0; i < n; i++){
+            if(mark[k][i] == 0){
+                int[][] tempMark = cloneMark(mark);
+                position[k][i] = "Q";
+                putTheQueue(k, i, mark);
+
+                solution(n, k + 1, mark, position, result);
+                // 回溯
+                mark = tempMark;
+                position[k][i] = ".";
+            }
+        }
+    }
+
+    @Test
+    public void test9(){
+        System.out.println(solveNQueens(4));
     }
 }
 
