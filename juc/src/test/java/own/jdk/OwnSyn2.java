@@ -388,11 +388,11 @@ public class OwnSyn2 {
     @Test
     public void test8() {
 
-        /*List<String> list = Arrays.asList(1 + "", 2 + "", 3 + "");
+        List<String> list = Arrays.asList(1 + "", 2 + "", 3 + "");
         String join = String.join("->", list);
-        System.out.println(join);*/
+        System.out.println(join);
 
-        int[][] mark = {
+        /*int[][] mark = {
                 {0, 0, 0, 0, 0, 0, 0, 0},
                 {0, 0, 0, 0, 0, 0, 0, 0},
                 {0, 0, 0, 0, 0, 0, 0, 0},
@@ -412,7 +412,7 @@ public class OwnSyn2 {
         printMatrix(tempMark);
         System.out.println();
         printMatrix(mark);
-        System.out.println();
+        System.out.println();*/
     }
 
     private static int[][] cloneMark(int[][] mark) {
