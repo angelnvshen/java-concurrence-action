@@ -2,6 +2,7 @@ package own.jdk;
 
 import org.junit.Test;
 import own.leetcode.Codec;
+import own.leetcode.TreeNode;
 
 import java.util.*;
 
@@ -265,7 +266,7 @@ public class OwnTest {
         return -1;
     }
 
-    private static void printArray(int[] nums) {
+    public static <T> void printArray(T[] nums) {
         for (int i = 0; i < nums.length; i++) {
             System.out.print(nums[i] + ", ");
         }
@@ -497,7 +498,7 @@ public class OwnTest {
     @Test
     public void test10() {
 //        maxSlidingWindow_ii(new int[]{1,3,-1,-3,5,3,6,7}, 3);
-        maxSlidingWindow_ii(new int[]{1, -1}, 1);
+//        maxSlidingWindow_ii(new int[]{1, -1}, 1);
     }
 
     public static int[] maxSlidingWindow_ii(int[] nums, int k) {
@@ -564,5 +565,140 @@ public class OwnTest {
         }
 
         return res;
+    }
+
+    @Test
+    public void test11() {
+//        System.out.println(summaryRanges(new int[]{0, 1, 2, 4, 5, 7}));
+        System.out.println(summaryRanges(new int[]{0, 2, 3, 4, 6, 8, 9}));
+    }
+
+    public static List<String> summaryRanges(int[] nums) {
+        List<String> result = new ArrayList<>();
+        if (nums == null || nums.length == 0) {
+            return result;
+        }
+
+        int start = 0;
+
+        for (int i = 0; i < nums.length; i++) {
+            if ((i < nums.length - 1) && nums[i + 1] - nums[i] == 1) {
+                continue;
+            } else {
+                if (i == start) {
+                    result.add(Integer.toString(nums[start]));
+                } else {
+                    result.add(nums[start] + "->" + nums[i]);
+                }
+                start = i + 1;
+            }
+        }
+        return result;
+    }
+
+    @Test
+    public void test12() {
+//        System.out.println(findPoisonedDuration(new int[]{1, 2}, 2));
+        int[] nums = new int[]{2, 3, 4};
+        /*int[] ints = Arrays.copyOfRange(nums, 0, nums.length - 1);
+        printArray(ints);*/
+
+        System.out.println(robII(nums));
+
+    }
+
+    private static int robII(int[] nums) {
+        if (nums == null || nums.length == 0) {
+            return 0;
+        }
+        int n = nums.length;
+        int pre = 0, temp = 0, cur = 0;
+        for (int i : nums) {
+            temp = cur;
+            // dp[i] = Math.max(dp[i-1], dp[i - 2] + nums[i-1])
+            cur = Math.max(pre + i, cur);
+            pre = temp;
+        }
+        return cur;
+    }
+
+    public static int findPoisonedDuration(int[] timeSeries, int duration) {
+        if (timeSeries == null || timeSeries.length == 0 || duration <= 0) {
+            return 0;
+        }
+        // 将攻击时间序列和持续时间生成一个 区间数组。对区间数组求交集即可。
+
+        int n = timeSeries.length;
+        int[][] intervals = new int[n][2];
+        for (int i = 0; i < n; i++) {
+            intervals[i] = new int[]{timeSeries[i], timeSeries[i] + duration};
+        }
+
+        // 并集
+        List<int[]> result = new ArrayList<>();
+        int ans = 0;
+
+        int[] pre = null;
+        for (int[] i : intervals) {
+            if (pre == null || pre[1] < i[0]) {
+//                ans += i[1] - i[0];
+                result.add(i);
+                pre = i;
+            } else {
+                pre[1] = Math.max(pre[1], i[1]);
+            }
+        }
+
+        /*int ans = 0;*/
+        for (int[] i : result) {
+            ans += i[1] - i[0];
+        }
+        return ans;
+    }
+
+    @Test
+    public void test13() {
+        char c = ' ';
+        Codec cod = new Codec();
+        TreeNode deserialize = cod.deserialize("10,5,#,1,100");
+        System.out.println(isValidBST(deserialize));
+    }
+
+    public static boolean isValidBST(TreeNode root) {
+        if (root == null) {
+            return true;
+        }
+        return validBST(root).bst;
+    }
+
+    static class Node {
+        boolean bst;
+        int max; // 子树中的最大值
+        int min; // 子树中的最小值
+
+        Node(boolean bst, int max, int min) {
+            this.bst = bst;
+            this.max = max;
+            this.min = min;
+        }
+    }
+
+    private static Node validBST(TreeNode node) {
+        if (node == null) return new Node(true, Integer.MIN_VALUE, Integer.MAX_VALUE);
+        Node left = validBST(node.left);
+        Node right = validBST(node.right);
+
+        if (!left.bst || !right.bst) {
+            return new Node(false, Integer.MIN_VALUE, Integer.MAX_VALUE);
+        }
+
+        if (((node.left != null && node.val <= left.max)
+                || (node.right != null && node.val >= right.min))) {
+            return new Node(false, Integer.MIN_VALUE, Integer.MAX_VALUE);
+        }
+
+        return new Node(true,
+                Math.max(right.max, node.val),
+                Math.min(left.min, node.val));
     }
 }
