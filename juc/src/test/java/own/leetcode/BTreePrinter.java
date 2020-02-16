@@ -1,5 +1,6 @@
-package own.jdk;
+package own.leetcode;
 
+import com.alibaba.fastjson.JSON;
 import own.TreeNode;
 
 import java.util.ArrayList;
@@ -8,13 +9,17 @@ import java.util.List;
 
 public class BTreePrinter {
 
-    public static void printNode(String[] strs){
-        TreeNode<Integer> root = null;
+    static Codec codec = new Codec();
 
+    public static void printNode(String strs) {
+        own.leetcode.TreeNode root = codec.deserialize(strs);
+        printNode(root);
     }
 
-    public static void printNode(String strs){
-        printNode(strs.substring(0, strs.length()-1).split(","));
+    public static void printNode(own.leetcode.TreeNode root) {
+        String str = JSON.toJSONString(root);
+        own.TreeNode<Integer> node = JSON.parseObject(str, own.TreeNode.class);
+        printNode(node);
     }
 
     public static <T extends Comparable<?>> void printNode(TreeNode<T> root) {
@@ -88,7 +93,7 @@ public class BTreePrinter {
         if (node == null)
             return 0;
 
-        return Math.max(BTreePrinter.maxLevel(node.left), BTreePrinter.maxLevel(node.right)) + 1;
+        return Math.max(maxLevel(node.left), maxLevel(node.right)) + 1;
     }
 
     private static <T> boolean isAllElementsNull(List<T> list) {

@@ -34,19 +34,19 @@ public class DisJoinSet {
     }
 
     public void union(int p, int q) {
-        int p_set_index = find(p);
-        int q_set_index = find(q);
+        int pid = find(p);
+        int qid = find(q);
 
         // p,q同一个集合
-        if(p_set_index == q_set_index){
+        if(pid == qid){
             return;
         }
-        if (sets[p] > sets[q]) {
-            nums[q_set_index] = p_set_index;
-            sets[p] += sets[q];
+        if (sets[pid] > sets[qid]) {
+            nums[qid] = pid;
+            sets[pid] += sets[qid];
         } else {
-            nums[p_set_index] = q_set_index;
-            sets[q] += sets[p];
+            nums[pid] = qid;
+            sets[qid] += sets[pid];
         }
         count--;
     }

@@ -8,7 +8,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
-import static own.jdk.BTreePrinter.printNode;
+import static own.leetcode.BTreePrinter.printNode;
 
 public class OwnTest2 {
 
