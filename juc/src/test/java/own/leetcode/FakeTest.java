@@ -1,9 +1,13 @@
 package own.leetcode;
 
 import org.junit.Test;
+import own.leetcode.other.uf.QuickUnion;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.*;
 
 public class FakeTest {
 
@@ -240,6 +244,11 @@ public class FakeTest {
             p = id[p];
         }
         return p;
+//        return id[p] == p ? p : (id[p] = find(id[p]);
+    }
+
+    boolean connected(int p, int q) {
+        return find(p) == find(q);
     }
 
     void union(int p, int q) {
@@ -318,14 +327,6 @@ public class FakeTest {
         return ans;
     }
 
-    @Test
-    public void test1() {
-//        int[] A = new int[]{4, 6, 15};
-        int[] A = new int[]{96857, 53577, 65309, 95929, 36067, 60701, 76651, 89431, 80651, 97949, 38863, 43177, 63179, 14303, 10543, 94967, 98491, 20543, 28225, 45569, 15482, 40099, 52177, 62047, 14557, 95339, 49645, 59756, 30565, 78901, 77229, 54151, 62386, 63473, 53008, 38173, 9103, 37379, 52153, 29921, 25867, 99391, 56891, 4317, 99581, 30097, 93809, 2441, 91645, 51097, 71993, 50383, 42611, 33923, 56531, 785, 34519, 1249, 8543, 94117, 65396, 26161, 56197, 45377, 4423, 67238, 32693, 27337, 31149, 3946, 1123, 5861, 94321, 90487, 34015, 93463, 554, 80249, 85727, 52373, 54419, 75223, 38569, 33347, 8209, 6827, 7853, 12893, 90707, 40961, 91244, 34367, 81439, 4937, 2857, 92311, 63709, 10133, 91127, 64877, 18181, 68437, 27967, 45643, 23599, 75041, 71933, 2213, 44809, 25643, 66932, 43049, 46559, 3203, 56159, 64475, 34543, 28781, 63241, 57515, 26399, 36671, 13627, 59699, 64007, 4861, 88867, 84059, 68017, 80341, 53773, 47123, 72305, 17665, 95257, 52663, 15199, 33889, 62897, 79201, 8101, 37547, 71867, 77237, 76343, 57077, 32029, 30869, 92789, 20873, 25019, 60811, 38767, 76029, 6997, 12319, 94057, 38327, 65479, 57367, 81, 98453, 16187, 19463, 457, 16699, 61129, 60899, 92111, 13645, 24023, 43399, 14051, 38197, 51593, 3779};
-
-        System.out.println(largestComponentSize(A));
-    }
-
     public int largestComponentSize(int[] A) {
         if (A == null || A.length == 0) {
             return 0;
@@ -351,7 +352,7 @@ public class FakeTest {
         int ans = 0;
         int temp = 0;
         Map<Integer, Integer> map = new HashMap<>();
-        for(int a : A){
+        for (int a : A) {
             temp = find(a);
             map.put(temp, map.getOrDefault(temp, 0) + 1);
             ans = Math.max(ans, map.get(temp));
@@ -359,4 +360,200 @@ public class FakeTest {
 
         return ans;
     }
+
+    public void solve(char[][] board) {
+        if (board == null || board.length == 0 || board[0].length == 0) {
+            return;
+        }
+
+        int n = board.length, m = board[0].length;
+//        int[] dx = {0, 0, -1, 1};//上下左右
+//        int[] dy = {1, -1, 0, 0};
+        int[] dx = {0, -1}; // 向下，向右
+        int[] dy = {1, 0};
+        int x = 0, y = 0;
+        //多出一个顶点，与所有边界union，如果边界是O的话
+        init(n * m + 1);
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < m; j++) {
+                if (board[i][j] != 'O') {
+                    continue;
+                }
+                //将边界union 虚拟的节点
+                if (i == 0 || i == n - 1 || j == 0 || j == m - 1) {
+                    union(i * m + j, n * m);
+                }
+                for (int k = 0; k < dx.length; k++) {
+                    x = i + dx[k];
+                    y = j + dy[k];
+                    if (x < 0 || x >= n || y < 0 || y >= m
+                            || board[x][y] != 'O') {
+                        continue;
+                    }
+                    union(i * m + j, x * m + y);
+                }
+            }
+        }
+
+        for (int i = 1; i < n; i++) {
+            for (int j = 1; j < m; j++) {
+                if (board[i][j] == 'O' && !connected(i * m + j, n * m)) {
+                    board[i][j] = 'X';
+                }
+            }
+        }
+    }
+
+    public List<List<String>> accountsMerge(List<List<String>> accounts) {
+        List<List<String>> result = new ArrayList();
+        if (accounts == null || accounts.size() == 0) {
+            return result;
+        }
+
+        Map<String, Integer> emailToId = new HashMap<>();
+        Map<String, String> emailToName = new HashMap<>();
+
+        QuickUnion uf = new QuickUnion(1000 * 10);
+        String name = "";
+        int index = 0;
+        for (List<String> account : accounts) {
+            if (account.size() == 0) continue;
+            name = account.get(0);
+            for (int i = 1; i < account.size(); i++) {
+                emailToId.putIfAbsent(account.get(i), index++);
+                emailToName.putIfAbsent(account.get(i), name);
+                if (i == 1) continue;
+                uf.union(emailToId.get(account.get(i - 1)),
+                        emailToId.get(account.get(i)));
+            }
+        }
+
+        Map<Integer, List<String>> ans = new HashMap();
+        for (String email : emailToId.keySet()) {
+            index = uf.find(emailToId.get(email));
+            ans.computeIfAbsent(index, x -> new ArrayList<>())
+                    .add(email);
+        }
+
+        for (List<String> list : ans.values()) {
+            Collections.sort(list);
+            list.add(0, emailToName.get(list.get(0)));
+        }
+
+        return new ArrayList(ans.values());
+    }
+
+    public int longestConsecutive(int[] nums) {
+        if (nums == null || nums.length == 0) {
+            return 0;
+        }
+        int index = 0, ans = 0;
+        Map<Integer, Integer> valueToIdx = new HashMap<>();
+        for (int i : nums) {
+            valueToIdx.putIfAbsent(i, index++);
+        }
+
+        Set<Integer> visited = new HashSet<>();
+        init(index);
+        Integer temp = null;
+        for (int i : nums) {
+            if (visited.contains(i)) {
+                continue;
+            }
+            visited.add(i);
+            temp = valueToIdx.get(i + 1);
+            if (temp != null) {
+                union(valueToIdx.get(i), temp);
+            }
+        }
+
+        Map<Integer, Integer> map = new HashMap<>();
+
+        for (int i : id) {
+            index = find(i);
+            map.put(index, map.getOrDefault(index, 0) + 1);
+            ans = Math.max(ans, map.get(index));
+        }
+        return ans;
+    }
+
+    private int[] getNumsFromSources() {
+        String fileName = "/Users/my/IdeaProjects_own/core/juc/src/test/resources/leetcode-sources/nuns.txt";
+        int[] nums = null;
+        try {
+            BufferedReader reader = new BufferedReader(new FileReader(fileName));
+            String line = reader.readLine();
+
+            List<Integer> list = new ArrayList<>();
+            String str = null;
+            while (line != null) {
+                str = line.trim();
+                list.add(Integer.valueOf(str.substring(0, str.length() - 1)));
+                line = reader.readLine();
+            }
+
+            System.out.println(list);
+            nums = list.stream()
+                    .mapToInt(Integer::intValue)
+                    .toArray();
+
+            reader.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+
+        }
+        return nums;
+    }
+
+
+    @Test
+    public void test1() {
+//        System.out.println(maxProfit(new int[]{4, 4, 6, 1, 1, 4, 2, 5}));
+        System.out.println(maxProfit(new int[]{2,1}));
+    }
+
+
+    public int maxProfit(int[] prices) {
+        // write your code here
+        if (prices == null || prices.length == 0) {
+            return 0;
+        }
+
+        //分阶段 未持有股票|第一次持有股票|第一次卖出未买入|第二次持有股票|
+        // 第二次卖出
+        int n = prices.length, k = 5;
+        int[][] dp = new int[n + 1][k + 1];
+        dp[0][1] = 0;
+        for (int i = 2; i <= k; i++) {
+            dp[0][i] = Integer.MIN_VALUE;
+        }
+
+        for (int i = 1; i <= n; i++) { // 第 1 ~ n天
+            for (int j = 1; j <= k; j += 2) { // 第 1， 3 ，5阶段，未持有股票
+                dp[i][j] = dp[i - 1][j];
+                if (i >= 2 && j > 1 && dp[i - 1][j - 1] != Integer.MIN_VALUE) {
+                    dp[i][j] = Math.max(dp[i][j], dp[i - 1][j - 1] + prices[i - 1] - prices[i - 2]);
+                }
+            }
+            for (int j = 2; j <= k; j += 2) {
+                // 第 2， 4 阶段，持有股票
+                dp[i][j] = dp[i - 1][j - 1];
+                if (i >= 2 && dp[i - 1][j] != Integer.MIN_VALUE) {
+                    dp[i][j] = Math.max(dp[i][j], dp[i - 1][j] + prices[i - 1] - prices[i - 2]);
+                }
+            }
+        }
+        int ans = Integer.MIN_VALUE;
+        for (int i = 1; i <= k; i++) {
+            if ((i & 1) == 1) {
+                ans = Math.max(ans, dp[n][i]);
+            }
+        }
+
+        return ans;
+    }
+
 }

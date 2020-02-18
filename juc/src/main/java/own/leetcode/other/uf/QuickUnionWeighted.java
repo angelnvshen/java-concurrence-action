@@ -9,6 +9,7 @@ public class QuickUnionWeighted {
 
     public QuickUnionWeighted(int n) {
         count = n;
+        size = new int[n];
         id = new int[n];
 
         for (int i = 0; i < n; i++) {
@@ -24,6 +25,10 @@ public class QuickUnionWeighted {
 
     public boolean connected(int p, int q) {
         return find(p) == find(q);
+    }
+
+    public int[] getSize(){
+        return size;
     }
 
     public int find(int p) {
@@ -42,7 +47,6 @@ public class QuickUnionWeighted {
         if (pid == qid)
             return;
 
-        id[pid] = qid;
         if (size[pid] > size[qid]) {
             id[qid] = pid;
             size[pid] += size[qid];
