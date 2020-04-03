@@ -6,7 +6,7 @@ import io.netty.handler.codec.ByteToMessageDecoder;
 
 import java.util.List;
 
-public class MyByteToLongHandler extends ByteToMessageDecoder {
+public class MyByteToLongHandler2 extends ByteToMessageDecoder {
     @Override
     protected void decode(ChannelHandlerContext ctx, ByteBuf in, List<Object> out) throws Exception {
         System.out.println("my decoder invoked : " + in + "| " + in.readableBytes());
