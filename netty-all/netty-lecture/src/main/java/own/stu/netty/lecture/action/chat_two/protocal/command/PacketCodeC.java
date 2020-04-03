@@ -3,13 +3,17 @@ package own.stu.netty.lecture.action.chat_two.protocal.command;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.ByteBufAllocator;
 import own.stu.netty.lecture.action.chat_two.protocal.request.LoginRequestPacket;
+import own.stu.netty.lecture.action.chat_two.protocal.request.MessageRequestPacket;
 import own.stu.netty.lecture.action.chat_two.protocal.response.LoginResponsePacket;
+import own.stu.netty.lecture.action.chat_two.protocal.response.MessageResponsePacket;
 import own.stu.netty.lecture.action.chat_two.serialize.Serializer;
 import own.stu.netty.lecture.action.chat_two.serialize.SerializerAlgorithm;
 import own.stu.netty.lecture.action.chat_two.serialize.impl.JSONSerializer;
 
 import java.util.HashMap;
 import java.util.Map;
+
+import static own.stu.netty.lecture.action.chat_two.protocal.command.Command.*;
 
 public class PacketCodeC {
 
@@ -22,8 +26,10 @@ public class PacketCodeC {
 
     static {
         packetTypeMap = new HashMap<>();
-        packetTypeMap.put(Command.LOGIN_REQUEST, LoginRequestPacket.class);
-        packetTypeMap.put(Command.LOGIN_RESPONSE, LoginResponsePacket.class);
+        packetTypeMap.put(LOGIN_REQUEST, LoginRequestPacket.class);
+        packetTypeMap.put(LOGIN_RESPONSE, LoginResponsePacket.class);
+        packetTypeMap.put(MESSAGE_REQUEST, MessageRequestPacket.class);
+        packetTypeMap.put(MESSAGE_RESPONSE, MessageResponsePacket.class);
 
         serializerMap = new HashMap<>();
         serializerMap.put(SerializerAlgorithm.JSON, JSONSerializer.DEFAULT);
@@ -37,10 +43,10 @@ public class PacketCodeC {
         return packetTypeMap.get(command);
     }
 
-    public ByteBuf encode(Packet packet) {
+    public ByteBuf encode(ByteBufAllocator allocator, Packet packet) {
 
         // 1. 创建 ByteBuf 对象
-        ByteBuf buffer = ByteBufAllocator.DEFAULT.buffer();
+        ByteBuf buffer = allocator.buffer();
 
         // 2. 序列化 java 对象
         byte[] bytes = Serializer.DEFAULT.serialize(packet);

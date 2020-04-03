@@ -1,13 +1,19 @@
 package own.stu.netty.lecture.action.chat_two.client;
 
 import io.netty.bootstrap.Bootstrap;
+import io.netty.channel.Channel;
+import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelOption;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioSocketChannel;
 import own.stu.netty.lecture.action.chat_one.FirstClientHandler;
+import own.stu.netty.lecture.action.chat_two.protocal.command.PacketCodeC;
+import own.stu.netty.lecture.action.chat_two.protocal.request.MessageRequestPacket;
+import own.stu.netty.lecture.action.chat_two.util.LoginUtil;
 
 import java.util.Date;
+import java.util.Scanner;
 import java.util.concurrent.TimeUnit;
 
 public class Client {
@@ -39,6 +45,11 @@ public class Client {
         bootstrap.connect(host, port).addListener(future -> {
             if (future.isSuccess()) {
                 System.out.println("连接成功!");
+
+                // 连接成功之后，启动控制台线程
+                Channel channel = ((ChannelFuture) future).channel();
+                startConsoleThread(channel);
+
             } else if (retry == 0) {
                 System.err.println("重试次数已用完，放弃连接！");
             } else {
@@ -52,5 +63,22 @@ public class Client {
                 }, delay, TimeUnit.SECONDS);
             }
         });
+    }
+
+    private static void startConsoleThread(Channel channel) {
+        new Thread(() -> {
+            while (!Thread.interrupted()) {
+                if (LoginUtil.hasLogin(channel)) {
+                    System.out.println("输入消息发送至服务端: ");
+                    Scanner scanner = new Scanner(System.in);
+                    String line = scanner.nextLine();
+
+                    MessageRequestPacket packet = new MessageRequestPacket();
+                    packet.setMessage(line);
+
+                    channel.writeAndFlush(PacketCodeC.INSTANCE.encode(channel.alloc(), packet));
+                }
+            }
+        }).start();
     }
 }
