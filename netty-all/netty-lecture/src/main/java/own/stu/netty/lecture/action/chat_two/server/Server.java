@@ -7,6 +7,10 @@ import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
 import io.netty.channel.socket.nio.NioSocketChannel;
 import own.stu.netty.lecture.action.chat_one.FirstServerHandler;
+import own.stu.netty.lecture.action.chat_two.codec.PacketDecoder;
+import own.stu.netty.lecture.action.chat_two.codec.PacketEncoder;
+import own.stu.netty.lecture.action.chat_two.server.handler.LoginRequestHandler;
+import own.stu.netty.lecture.action.chat_two.server.handler.MessageRequestHandler;
 
 public class Server {
     public static void main(String[] args) {
@@ -22,7 +26,10 @@ public class Server {
                 .childHandler(new ChannelInitializer<NioSocketChannel>() {
                     @Override
                     protected void initChannel(NioSocketChannel ch) throws Exception {
-                        ch.pipeline().addLast(new ServerHandler());
+                        ch.pipeline().addLast(new PacketDecoder());
+                        ch.pipeline().addLast(new LoginRequestHandler());
+                        ch.pipeline().addLast(new MessageRequestHandler());
+                        ch.pipeline().addLast(new PacketEncoder());
                     }
                 });
 

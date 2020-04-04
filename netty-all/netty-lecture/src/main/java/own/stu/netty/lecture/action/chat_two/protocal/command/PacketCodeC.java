@@ -43,10 +43,7 @@ public class PacketCodeC {
         return packetTypeMap.get(command);
     }
 
-    public ByteBuf encode(ByteBufAllocator allocator, Packet packet) {
-
-        // 1. 创建 ByteBuf 对象
-        ByteBuf buffer = allocator.buffer();
+    public ByteBuf encode(ByteBuf buffer, Packet packet) {
 
         // 2. 序列化 java 对象
         byte[] bytes = Serializer.DEFAULT.serialize(packet);

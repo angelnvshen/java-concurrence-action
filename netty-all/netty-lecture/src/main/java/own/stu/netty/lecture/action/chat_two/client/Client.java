@@ -8,6 +8,10 @@ import io.netty.channel.ChannelOption;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioSocketChannel;
 import own.stu.netty.lecture.action.chat_one.FirstClientHandler;
+import own.stu.netty.lecture.action.chat_two.client.handler.LoginResponseHandler;
+import own.stu.netty.lecture.action.chat_two.client.handler.MessageResponseHandler;
+import own.stu.netty.lecture.action.chat_two.codec.PacketDecoder;
+import own.stu.netty.lecture.action.chat_two.codec.PacketEncoder;
 import own.stu.netty.lecture.action.chat_two.protocal.command.PacketCodeC;
 import own.stu.netty.lecture.action.chat_two.protocal.request.MessageRequestPacket;
 import own.stu.netty.lecture.action.chat_two.util.LoginUtil;
@@ -34,7 +38,10 @@ public class Client {
                 .handler(new ChannelInitializer<NioSocketChannel>() {
                     @Override
                     protected void initChannel(NioSocketChannel ch) throws Exception {
-                        ch.pipeline().addLast(new ClientHandler());
+                        ch.pipeline().addLast(new PacketDecoder());
+                        ch.pipeline().addLast(new LoginResponseHandler());
+                        ch.pipeline().addLast(new MessageResponseHandler());
+                        ch.pipeline().addLast(new PacketEncoder());
                     }
                 });
 
@@ -76,7 +83,7 @@ public class Client {
                     MessageRequestPacket packet = new MessageRequestPacket();
                     packet.setMessage(line);
 
-                    channel.writeAndFlush(PacketCodeC.INSTANCE.encode(channel.alloc(), packet));
+                    channel.writeAndFlush(packet);
                 }
             }
         }).start();
