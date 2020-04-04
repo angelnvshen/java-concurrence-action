@@ -7,11 +7,13 @@ import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelOption;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioSocketChannel;
+import io.netty.handler.codec.LengthFieldBasedFrameDecoder;
 import own.stu.netty.lecture.action.chat_one.FirstClientHandler;
 import own.stu.netty.lecture.action.chat_two.client.handler.LoginResponseHandler;
 import own.stu.netty.lecture.action.chat_two.client.handler.MessageResponseHandler;
 import own.stu.netty.lecture.action.chat_two.codec.PacketDecoder;
 import own.stu.netty.lecture.action.chat_two.codec.PacketEncoder;
+import own.stu.netty.lecture.action.chat_two.codec.Spliter;
 import own.stu.netty.lecture.action.chat_two.protocal.command.PacketCodeC;
 import own.stu.netty.lecture.action.chat_two.protocal.request.MessageRequestPacket;
 import own.stu.netty.lecture.action.chat_two.util.LoginUtil;
@@ -38,6 +40,8 @@ public class Client {
                 .handler(new ChannelInitializer<NioSocketChannel>() {
                     @Override
                     protected void initChannel(NioSocketChannel ch) throws Exception {
+//                        ch.pipeline().addLast(new LengthFieldBasedFrameDecoder(Integer.MAX_VALUE, 7, 4));
+                        ch.pipeline().addLast(new Spliter());
                         ch.pipeline().addLast(new PacketDecoder());
                         ch.pipeline().addLast(new LoginResponseHandler());
                         ch.pipeline().addLast(new MessageResponseHandler());
