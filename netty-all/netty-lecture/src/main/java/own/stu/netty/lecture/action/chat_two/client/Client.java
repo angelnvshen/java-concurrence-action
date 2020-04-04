@@ -7,16 +7,14 @@ import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelOption;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioSocketChannel;
-import io.netty.handler.codec.LengthFieldBasedFrameDecoder;
-import own.stu.netty.lecture.action.chat_one.FirstClientHandler;
 import own.stu.netty.lecture.action.chat_two.client.handler.LoginResponseHandler;
 import own.stu.netty.lecture.action.chat_two.client.handler.MessageResponseHandler;
 import own.stu.netty.lecture.action.chat_two.codec.PacketDecoder;
 import own.stu.netty.lecture.action.chat_two.codec.PacketEncoder;
 import own.stu.netty.lecture.action.chat_two.codec.Spliter;
-import own.stu.netty.lecture.action.chat_two.protocal.command.PacketCodeC;
+import own.stu.netty.lecture.action.chat_two.protocal.request.LoginRequestPacket;
 import own.stu.netty.lecture.action.chat_two.protocal.request.MessageRequestPacket;
-import own.stu.netty.lecture.action.chat_two.util.LoginUtil;
+import own.stu.netty.lecture.action.chat_two.util.SessionUtil;
 
 import java.util.Date;
 import java.util.Scanner;
@@ -40,7 +38,6 @@ public class Client {
                 .handler(new ChannelInitializer<NioSocketChannel>() {
                     @Override
                     protected void initChannel(NioSocketChannel ch) throws Exception {
-//                        ch.pipeline().addLast(new LengthFieldBasedFrameDecoder(Integer.MAX_VALUE, 7, 4));
                         ch.pipeline().addLast(new Spliter());
                         ch.pipeline().addLast(new PacketDecoder());
                         ch.pipeline().addLast(new LoginResponseHandler());
@@ -77,19 +74,45 @@ public class Client {
     }
 
     private static void startConsoleThread(Channel channel) {
+
+        Scanner scanner = new Scanner(System.in);
+        LoginRequestPacket loginRequestPacket = new LoginRequestPacket();
+
         new Thread(() -> {
             while (!Thread.interrupted()) {
-                if (LoginUtil.hasLogin(channel)) {
-                    System.out.println("输入消息发送至服务端: ");
-                    Scanner scanner = new Scanner(System.in);
+                if (!SessionUtil.hasLogin(channel)) {
+                    System.out.print("输入用户名登录: ");
                     String line = scanner.nextLine();
+                    loginRequestPacket.setUserName(line);
+
+                    // 密码使用默认的
+                    loginRequestPacket.setPassword("pwd");
+
+                    // 发送登录数据包
+                    channel.writeAndFlush(loginRequestPacket);
+                    waitForLoginResponse();
+
+                }else{
+                    System.out.print("输入toUserId: ");
+                    String toUserId = scanner.next();
+                    System.out.print("输入消息内容: ");
+                    String message = scanner.next();
 
                     MessageRequestPacket packet = new MessageRequestPacket();
-                    packet.setMessage(line);
+                    packet.setToUserId(toUserId);
+                    packet.setMessage(message);
 
                     channel.writeAndFlush(packet);
                 }
             }
         }).start();
+    }
+
+    private static void waitForLoginResponse() {
+        try {
+            TimeUnit.SECONDS.sleep(1);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 }

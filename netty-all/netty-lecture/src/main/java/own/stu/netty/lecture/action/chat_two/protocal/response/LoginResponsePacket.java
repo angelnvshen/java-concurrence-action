@@ -7,6 +7,10 @@ import own.stu.netty.lecture.action.chat_two.protocal.command.Packet;
 @Data
 public class LoginResponsePacket extends Packet {
 
+    private String userId;
+
+    private String userName;
+
     private boolean success;
 
     private String message;

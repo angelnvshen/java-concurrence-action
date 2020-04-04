@@ -7,6 +7,8 @@ import own.stu.netty.lecture.action.chat_two.protocal.command.Packet;
 @Data
 public class MessageRequestPacket extends Packet {
 
+    private String toUserId;
+
     private String message;
 
     @Override

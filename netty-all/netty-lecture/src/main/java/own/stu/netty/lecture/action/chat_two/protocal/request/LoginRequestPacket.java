@@ -7,7 +7,7 @@ import own.stu.netty.lecture.action.chat_two.protocal.command.Packet;
 @Data
 public class LoginRequestPacket extends Packet {
 
-    private String userId;
+//    private String userId;
 
     private String userName;
 

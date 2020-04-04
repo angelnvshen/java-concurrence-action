@@ -4,9 +4,11 @@ import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 import own.stu.netty.lecture.action.chat_two.protocal.request.LoginRequestPacket;
 import own.stu.netty.lecture.action.chat_two.protocal.response.LoginResponsePacket;
-import own.stu.netty.lecture.action.chat_two.util.LoginUtil;
+import own.stu.netty.lecture.action.chat_two.session.Session;
+import own.stu.netty.lecture.action.chat_two.util.SessionUtil;
 
 import java.util.Date;
+import java.util.UUID;
 
 public class LoginRequestHandler extends SimpleChannelInboundHandler<LoginRequestPacket> {
     @Override
@@ -17,8 +19,11 @@ public class LoginRequestHandler extends SimpleChannelInboundHandler<LoginReques
         loginResponsePacket.setVersion(msg.getVersion());
         if (valid(msg)) {
             loginResponsePacket.setSuccess(true);
-            System.out.println(new Date() + ": 登录成功!");
-            LoginUtil.markAsLogin(ctx.channel());
+            loginResponsePacket.setUserId(randomUserId());
+            loginResponsePacket.setUserName(msg.getUserName());
+            System.out.println(new Date() + " -> " + loginResponsePacket.getUserName() + " : 登录成功!");
+            SessionUtil.bindSession(
+                    new Session(loginResponsePacket.getUserId(), loginResponsePacket.getUserName()), ctx.channel());
         } else {
             loginResponsePacket.setMessage("账号密码校验失败");
             loginResponsePacket.setSuccess(false);
@@ -31,5 +36,14 @@ public class LoginRequestHandler extends SimpleChannelInboundHandler<LoginReques
 
     private boolean valid(LoginRequestPacket loginRequestPacket) {
         return true;
+    }
+
+    private static String randomUserId() {
+        return UUID.randomUUID().toString().split("-")[0];
+    }
+
+    @Override
+    public void channelInactive(ChannelHandlerContext ctx) throws Exception {
+        SessionUtil.unBindSession(ctx.channel());
     }
 }
