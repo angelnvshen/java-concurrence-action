@@ -4,7 +4,7 @@ import java.util.concurrent.*;
 
 public class FutureTaskTest {
 
-    public static void main(String[] args) throws ExecutionException, InterruptedException, TimeoutException {
+    public static void main1(String[] args) throws ExecutionException, InterruptedException, TimeoutException {
 //        get();
 //        getWithTimeOut();
 //        getWithTimeOutInterrupted(); // future caller thread can be interrupted, not influence the executors
@@ -110,7 +110,7 @@ public class FutureTaskTest {
         System.out.println(Thread.currentThread().getName() + " -> " + futureTask.get());
     }
 
-    public static void main2(String[] args) {
+    public static void main(String[] args) {
 
         FutureTask futureTask = new FutureTask(() -> {
             System.out.println(" run the task ");
@@ -124,6 +124,7 @@ public class FutureTaskTest {
         try {
             TimeUnit.SECONDS.sleep(3);
             System.out.println(futureTask.cancel(true));
+//            System.out.println(futureTask.cancel(false));
             System.out.println(futureTask.get());
         } catch (InterruptedException | ExecutionException e) {
             e.printStackTrace();

@@ -1,6 +1,7 @@
 package own.leetcode;
 
 import org.junit.Test;
+import own.jdk.OwnSyn.ListNode;
 import own.leetcode.other.uf.QuickUnion;
 
 import java.io.BufferedReader;
@@ -244,7 +245,7 @@ public class FakeTest {
             p = id[p];
         }
         return p;
-//        return id[p] == p ? p : (id[p] = find(id[p]);
+//        return id[p] == p ? p : (id[p] = find(id[p]));
     }
 
     boolean connected(int p, int q) {
@@ -817,11 +818,6 @@ public class FakeTest {
         nums[j] = temp;
     }
 
-    @Test
-    public void test1() {
-        System.out.println(findDuplicate(new int[]{5, 5, 4, 3, 2, 1}));
-    }
-
     public int findDuplicate(int[] nums) {
         // write your code here
         if (nums == null || nums.length == 0) return 0;
@@ -851,35 +847,596 @@ public class FakeTest {
 
     public void sortIntegers(int[] A) {
         // write your code here
-        if(A == null || A.length == 0) return;
+        if (A == null || A.length == 0) return;
 
         // quick-sort
-        quickSort(A, 0, A.length -1);
+        quickSort(A, 0, A.length - 1);
     }
 
-    private void quickSort(int[] A, int start, int end){
-        if(start >= end) return;
+    private void quickSort(int[] A, int start, int end) {
+        if (start >= end) return;
 
         int left = start, right = end;
         int pivot = A[(start + end) / 2];
 
-        while(left <= right){
-            while(left <= right && A[left] < pivot){
-                left ++;
+        while (left <= right) {
+            while (left <= right && A[left] < pivot) {
+                left++;
             }
-            while(left <= right && A[right] > pivot){
-                right --;
+            while (left <= right && A[right] > pivot) {
+                right--;
             }
-            if(left <= right){
+            if (left <= right) {
                 int temp = A[left];
                 A[left] = A[right];
                 A[right] = temp;
-                left ++;
-                right --;
+                left++;
+                right--;
             }
         }
+
+        System.out.print("[" + start + " , " + end + "]: ");
+        printArray(A);
+        System.out.print(" => [" + left + " , " + right + "] ");
+        System.out.println();
 
         quickSort(A, start, right);
         quickSort(A, left, end);
     }
+
+    @Test
+    public void test1() {
+        int[] nums = new int[]{3, 5, 4, 1, 2};
+        printArray(nums);
+//        System.out.println(partition(nums, 0 , nums.length - 1));
+        quickSort_ii(nums, 0, nums.length - 1);
+        printArray(nums);
+//        sortIntegers(nums);
+//        System.out.println(kthLargestElement( 2, nums));
+    }
+
+
+    public int kthLargestElement(int k, int[] nums) {
+        // write your code here
+        if (nums == null || nums.length == 0) return 0;
+
+        int n = nums.length, start = 0, end = n - 1, pivot = 0;
+        while (true) {
+            pivot = partition(nums, start, end);
+            if (pivot == n - k) return nums[k - 1];
+            if (pivot < n - k) start = pivot + 1;
+            else end = pivot - 1;
+        }
+    }
+
+    private void quickSort_ii(int[] a, int start, int end) {
+        if (end <= start) return;
+
+        int v = partition(a, start, end);
+        printArray(a);
+        quickSort_ii(a, start, v - 1);
+        quickSort_ii(a, v + 1, end);
+    }
+
+    private int partition(int[] a, int start, int end) {
+
+        int pivot = a[start];
+        int l = start, r = end + 1;
+        while (true) {
+            while (a[++l] < pivot) {
+                if (l == end) break;
+            }
+            while (a[--r] > pivot) {
+                if (r == start) break;
+            }
+            if (l >= r) break;
+
+            swap(a, l, r);
+        }
+        swap(a, start, r);
+        return r;
+    }
+
+    public int thirdMax(int[] nums) {
+        if (nums == null || nums.length == 0) return 0;
+
+        Map<Integer, Integer> map = new TreeMap<>(Comparator.comparingInt((Integer a) -> a).reversed());
+        for (int i : nums) {
+            map.put(i, map.getOrDefault(i, 0) + 1);
+        }
+        int index = 0, ans = 0;
+        for (int i : map.keySet()) {
+            if (index == 0) {
+                ans = i;
+            }
+            if (index == 2) {
+                ans = i;
+            }
+            index++;
+        }
+        return ans;
+    }
+
+
+    public TreeNode constructMaximumBinaryTree(int[] nums) {
+        if (nums == null || nums.length == 0) return null;
+
+        // 单调栈(递减)，当前节点的左边或者右边的第一次出现的最大值中，较小的一个就是它的parent节点
+        Map<Integer, TreeNode> valueMap = new HashMap<>(); // index <-> node
+        Stack<Integer> stack = new Stack<>(); // 索引
+        int n = nums.length;
+        int curIdx = -1, leftIdx = -1, rootIdx = -1;
+        int rootValue = 0;
+
+        for (int i = 0; i < n; i++) {
+            while (!stack.isEmpty() && nums[stack.peek()] < nums[i]) {
+                curIdx = stack.pop();
+
+                TreeNode node = valueMap.get(curIdx);
+
+                // rightIdx,leftIdx 对应的元素是大于当前元素
+                if (stack.size() <= 0) {
+
+                    // 当前节点只有右边的节点比它大，
+                    TreeNode parent = valueMap.get(i);
+                    if (parent == null) {
+                        parent = new TreeNode(nums[i]);
+                        valueMap.put(i, parent);
+                    }
+                    parent.left = node;
+                } else {
+                    leftIdx = stack.peek();
+
+                    if (nums[leftIdx] > nums[i]) {
+                        rootValue = nums[i];
+                        rootIdx = i;
+                    } else {
+                        rootValue = nums[leftIdx];
+                        rootIdx = leftIdx;
+                    }
+
+                    TreeNode parent = valueMap.get(rootIdx);
+                    if (parent == null) {
+                        parent = new TreeNode(rootValue);
+                        valueMap.put(rootIdx, parent);
+                    }
+
+                    if (nums[leftIdx] > nums[i]) { // parentIdx == rightIdx ,当前节点在父节点的左边
+                        parent.left = node;
+                    } else {
+                        parent.right = node;
+                    }
+                }
+
+            }
+            stack.push(i);
+            valueMap.putIfAbsent(i, new TreeNode(nums[i]));
+        }
+
+        while (!stack.isEmpty() && nums[stack.peek()] < Integer.MAX_VALUE) {
+
+            if (stack.size() <= 1) { //最后一个节点就是root节点
+                return valueMap.get(stack.peek());
+            }
+
+            curIdx = stack.pop();
+            leftIdx = stack.peek();
+
+            // 此时，parent节点比cur节点大，而且parent在cur节点的左边
+            TreeNode node = valueMap.get(curIdx);
+            TreeNode parent = valueMap.get(leftIdx);
+
+            parent.right = node;
+        }
+
+        return null;
+    }
+
+    @Test
+    public void test2() {
+//        System.out.println(threeSumClosest(new int[]{-1, 2, 1, -4}, 1));
+//        findSubstring("bafotfoban", new String[]{"fo", "ba"});
+//        findSubstring("barfoofoobarthefoobarman", new String[]{"bar", "foo", "the"});
+//        findSubstring("wordgoodgoodgoodbestword", new String[]{"word", "good", "best", "word"});
+
+        System.out.println(findSubstring("abc", 2));
+//        System.out.println(findSubstring("abacb", 1));
+    }
+
+    public boolean judgeSquareSum(int c) {
+        if (c < 0) {
+            return false;
+        }
+        if (c <= 1) return true;
+
+        int l = 0, r = (int) Math.sqrt(c), temp = 0;
+
+        while (l <= r) {
+            temp = l * l + r * r;
+            if (temp == c) {
+                return true;
+            } else if (temp < c) {
+                l++;
+            } else {
+                r--;
+            }
+        }
+
+        return false;
+    }
+
+    public ListNode partition(ListNode head, int x) {
+        if (head == null) return head;
+
+        ListNode smaller = new ListNode(Integer.MIN_VALUE);
+        ListNode cs = smaller;
+        ListNode bigger = new ListNode(Integer.MAX_VALUE);
+        ListNode cb = bigger;
+
+        while (head != null) {
+            if (head.val < x) {
+                cs.next = head;
+                cs = cs.next;
+            } else {
+                cb.next = head;
+                cb = cb.next;
+            }
+            head = head.next;
+        }
+        cb.next = null;
+
+        cs.next = bigger.next;
+        return smaller.next;
+    }
+
+    /**
+     * 返回长度为k的无重复字符的子串个数
+     *
+     * @param s
+     * @param k
+     * @return
+     */
+    public int findSubstring(String s, int k) {
+        if (s == null || s.length() < k) {
+            return 0;
+        }
+
+        int n = s.length();
+        int r = 0, count = 0;
+        char c = ' ';
+        Map<Character, Integer> map = new HashMap<>();
+        Set<String> ans = new HashSet<>();
+
+        //built window
+        for (r = 0; r < k; r++) {
+            c = s.charAt(r);
+            map.put(c, map.getOrDefault(c, 0) + 1);
+            if (map.get(c) == 1) {
+                count += 1;
+            }
+        }
+//        if (repeated(map)) {
+        if (count == k) {
+            ans.add(s.substring(0, k));
+        }
+
+        // slide window
+        for (r = k; r < n; r++) {
+            c = s.charAt(r);
+            map.put(c, map.getOrDefault(c, 0) + 1);
+            if (map.get(c) == 1) {
+                count += 1;
+            }
+            c = s.charAt(r - k);
+            map.put(c, map.get(c) - 1);
+            if (map.get(c) == 0) {
+                count -= 1;
+            }
+
+//            if (repeated(map)) {
+            if (count == k) {
+                ans.add(s.substring(r - k + 1, r + 1));
+            }
+        }
+        System.out.println(ans);
+        return ans.size();
+    }
+
+    private boolean repeated(Map<Character, Integer> map) {
+        for (int k : map.values()) {
+            if (k > 1) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    /**
+     * s = "barfoothefoobarman",
+     * words = ["foo","bar"]
+     *
+     * @param s
+     * @param words
+     * @return
+     */
+    public List<Integer> findSubstring(String s, String[] words) {
+        List<Integer> ans = new ArrayList<>();
+
+        if (s == null || s.length() == 0 || words.length == 0) {
+            return ans;
+        }
+
+        int n = s.length();
+        char[] target = String.join("", words).toCharArray();
+        int m = target.length;
+        if (n < m) return ans;
+
+        int count = 0;
+        Map<Character, Integer> countMap = new HashMap<>();
+        for (char c : target) {
+            countMap.put(c, countMap.getOrDefault(c, 0) + 1);
+            count += 1;
+        }
+
+        int curCount = count;
+        int l = 0, r = 0;
+        char temp = ' ';
+
+        while (r < n) {
+
+            temp = s.charAt(r);
+            if (countMap.getOrDefault(temp, 0) > 0) {
+                countMap.put(temp, countMap.get(temp) - 1);
+                curCount -= 1;
+            }
+
+            if (curCount == 0) {
+                ans.add(r - m + 1); // r - (m - 1)
+            }
+            r++;
+            if (r - m >= l) {
+
+                temp = s.charAt(l);
+                if (countMap.containsKey(temp)) {
+                    countMap.put(temp, countMap.get(temp) + 1);
+                    curCount += 1;
+                }
+
+                l++;
+            }
+        }
+
+        System.out.println(ans);
+
+        // filter index cause the words may be not right
+        /*Iterator<Integer> iterator = ans.iterator();
+        while (iterator.hasNext()) {
+            int idx = iterator.next();
+            String t = s.substring(idx, idx + m);
+            for (String w : words) {
+                if (t.indexOf(w) < 0) {
+                    iterator.remove();
+                    break;
+                }
+            }
+        }*/
+
+        return ans;
+    }
+
+    public int threeSumClosest(int[] nums, int target) {
+        if (nums == null || nums.length == 0) {
+            return 0;
+        }
+
+        int n = nums.length;
+        Arrays.sort(nums);
+        int[] twoSum = new int[n];
+        for (int i = 0; i < n; i++) {
+            twoSum[i] = target - nums[i];
+        }
+
+        int l = 0, r = n - 1;
+        int count = 0; // 当前值如果重复，count加1，记录一下。
+        int ans = 0, deta = 0, temp = 0;
+        for (int i = 0; i < n; i++) {
+            deta = twoSum[i];
+            l = 0;
+            r = n - 1;
+            while (l < r) {
+                //处理重复元素
+                if (nums[l] == target - twoSum[i]) {
+                    if (count == 0) {
+                        count += 1;
+                        l++;
+                        continue;
+                    }
+                }
+                if (nums[r] == target - twoSum[i]) {
+                    if (count == 0) {
+                        count += 1;
+                        r--;
+                        continue;
+                    }
+                }
+
+                temp = nums[l] + nums[r];
+                if (temp == twoSum[i]) {
+                    return temp - twoSum[i] + target;//isAnswer;
+                } else if (temp < twoSum[i]) {
+                    if (Math.abs(twoSum[i] - temp) < deta) {
+                        deta = Math.abs(twoSum[i] - temp);
+                        ans = temp - twoSum[i] + target;
+                    }
+                    l++;
+                } else {
+                    if (Math.abs(twoSum[i] - temp) < deta) {
+                        deta = Math.abs(twoSum[i] - temp);
+                        ans = temp - twoSum[i] + target;
+                    }
+                    r--;
+                }
+            }
+        }
+        return ans;
+    }
+
+
+    @Test
+    public void test3() {
+        System.out.println(getMinRiskValue(5, 7, new int[]{0, 0, 1, 2, 3, 3, 4}, new int[]{1, 2, 3, 4, 4, 5, 5}, new int[]{2, 5, 3, 4, 3, 4, 1}));
+    }
+
+    public int getMinRiskValue(int n, int m, int[] x, int[] y, int[] w) {
+        // 最小生成树, Kruskal
+
+        if (x == null || y == null || w == null || x.length != y.length ||
+                x.length != w.length) {
+            return 0;
+        }
+
+        UF uf = new UF(51); // 最多是51个顶点
+        List<Edge> edges = new ArrayList<>();
+        for (int i = 0; i < m; i++) {
+            edges.add(new Edge(x[i], y[i], w[i]));
+        }
+
+        // 将边的权重按照从小到大排序
+        Collections.sort(edges, (e1, e2) -> e1.weight - e2.weight);
+        Edge edge = null;
+
+        // 求出最小生成树，中最大权重的边就是答案,但是不用求出完整的生成树
+        int s = 0, e = 0, ans = 0, count = 0;
+        for (int i = 0; i < m; i++) {
+            edge = edges.get(i);
+            s = edge.start;
+            e = edge.end;
+
+            if (uf.connected(s, e)) {
+                continue;
+            }
+            System.out.println(s + ", " + e + ", " + edge.weight);
+            uf.union(s, e);
+
+            ans = Math.max(ans, edge.weight);
+            count += 1;
+            //注意顶点个数为 n + 1;
+            // System.out.println(uf.find(0) + ", " + uf.find(5));
+            if (uf.connected(0, n)) {
+                break;
+            }
+        }
+        return ans;
+    }
+
+    class Edge {
+        int start;
+        int end;
+        int weight;
+
+        Edge(int start, int end, int weight) {
+            this.start = start;
+            this.end = end;
+            this.weight = weight;
+        }
+    }
+
+    class UF {
+        int[] id;
+
+        public UF(int n) {
+            id = new int[n];
+            for (int i = 0; i < n; i++) {
+                id[i] = i;
+            }
+        }
+
+        public int find(int p) {
+            return p == id[p] ? p : (id[p] = find(id[p]));
+        }
+
+        public void union(int p, int q) {
+            int pid = find(p);
+            int qid = find(q);
+            if (pid == qid) return;
+            id[pid] = qid;
+        }
+
+        public boolean connected(int p, int q) {
+            return find(p) == find(q);
+        }
+    }
 }
+
+class Trie {
+    private TrieNode root;
+
+    public Trie() {
+        root = new TrieNode();
+    }
+
+    public void insert(String word) {
+        if (word == null) return;
+
+        char[] words = word.toCharArray();
+        TrieNode cur = root;
+        Map<Character, TrieNode> curChildren = root.children;
+
+        for (int i = 0; i < words.length; i++) {
+            char wc = words[i];
+            if (curChildren.containsKey(wc)) {
+                cur = curChildren.get(wc);
+            } else {
+                TrieNode node = new TrieNode(wc);
+                curChildren.put(wc, node);
+                cur = node;
+            }
+            curChildren = cur.children;
+            if (i == words.length - 1) {
+                cur.hasWord = true;
+            }
+        }
+    }
+
+    public boolean search(String s) {
+        TrieNode trieNode = searchWordNodePos(s);
+        if (trieNode == null) return false;
+        return trieNode.hasWord;
+    }
+
+    public boolean startsWith(String s) {
+        TrieNode trieNode = searchWordNodePos(s);
+        return trieNode != null;
+    }
+
+    public TrieNode searchWordNodePos(String s) {
+        Map<Character, TrieNode> curChildren = root.children;
+        char[] chars = s.toCharArray();
+        TrieNode cur = null;
+        for (int i = 0; i < chars.length; i++) {
+            char wc = chars[i];
+            if (!curChildren.containsKey(wc)) {
+                return null;
+            }
+            cur = curChildren.get(wc);
+            curChildren = cur.children;
+        }
+
+        return cur;
+    }
+
+}
+
+class TrieNode {
+    char c;
+    Map<Character, TrieNode> children = new HashMap<>();
+    boolean hasWord;
+
+    public TrieNode() {
+    }
+
+    public TrieNode(char c) {
+        this.c = c;
+    }
+}
+

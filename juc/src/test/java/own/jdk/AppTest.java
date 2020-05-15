@@ -5,10 +5,7 @@ import org.junit.Test;
 import java.io.Serializable;
 import java.lang.ref.ReferenceQueue;
 import java.lang.ref.SoftReference;
-import java.util.IdentityHashMap;
-import java.util.LinkedHashMap;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 import static org.junit.Assert.assertTrue;
 
@@ -133,6 +130,19 @@ public class AppTest {
         for (Map.Entry<K, V> e : entrySet)
             System.out.println(e.getKey() + " : " + e.getValue());
         System.out.println("===========");
+    }
+
+    @Test
+    public void test7() {
+        Map<Integer, Integer> map = new HashMap<>(4);
+        map.put(1, 1);
+        map.put(2, 2);
+        map.put(3, 3);
+        map.put(4, 4);
+        map.entrySet().forEach(e -> {
+            System.out.print(e.getKey() + ", " + e.getValue() + ", " + e.hashCode());
+            System.out.println();
+        });
     }
 }
 

@@ -582,19 +582,19 @@ public class OwnSyn extends AbstractQueuedSynchronizer {
     }
 
     public static class ListNode {
-        int val;
-        ListNode next;
+        public int val;
+        public ListNode next;
 
-        ListNode(int x) {
+        public ListNode(int x) {
             val = x;
         }
 
-        ListNode next(ListNode next) {
+        public ListNode next(ListNode next) {
             this.next = next;
             return next;
         }
 
-        static void print(ListNode head) {
+        public static void print(ListNode head) {
             while (head != null) {
                 System.out.print(head.val + ", ");
                 head = head.next;
