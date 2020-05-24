@@ -1,52 +1,65 @@
 package own.leetcode;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
-public class LetterCasePermutation {
+public class LetterCasePermutation_II {
 
     public static void main(String[] args) {
-        LetterCasePermutation casePermutation = new LetterCasePermutation();
-        System.out.println(casePermutation.letterCasePermutation("JcTNPT1AsvC"));
+        LetterCasePermutation_II casePermutation = new LetterCasePermutation_II();
+//        System.out.println(casePermutation.letterCasePermutation("JcTNPT1AsvC"));
+        System.out.println(casePermutation.letterCasePermutation("Jw"));
     }
+
+    int dis = 'A' - 'a';
 
     public List<String> letterCasePermutation(String S) {
         List<String> ans = new ArrayList<>();
-        if(S == null || S.length() == 0) return ans;
-        Set<String> set = new HashSet<>();
+        if (S == null || S.length() == 0) return ans;
 
-        helper(S.toCharArray(), 0, set, S.toCharArray());
-        ans.addAll(set);
+        helper(S.toCharArray(), 0, ans);
+
         return ans;
     }
 
-    private void helper(
-        char[] chars, int index, Set<String> ans, char[] result){
 
-            ans.add(new String(result));
+    private void helper(char[] chars, int index, List<String> ans){
 
-            for(int i = index; i < chars.length; i ++){
-                char c = chars[i];
-                if(isNum(c)) continue;                
-                result[i] = (c = changeWord(c));
-                helper(chars, index + 1, ans, result);
-                result[i] = changeWord(c);
+        ans.add(new String(chars));
+
+        for (int i = index; i < chars.length; i++) {
+            char c = chars[i];
+            if (!Character.isLetter(c)) continue;
+
+            if (Character.isLowerCase(c)) {
+                chars[i] = (c = (char) (c + dis));
+                helper(chars, i + 1, ans);
+                chars[i] = (char) (c - dis);
+            } else {
+                chars[i] = (c = (char) (c - dis));
+                helper(chars, i + 1, ans);
+                chars[i] = (char) (c + dis);
             }
-    }
-
-    private char changeWord(char c){
-        int distance = c - 'a';
-        if(distance >= 0 && distance <= 26){
-            return (char)(distance + 'A');
-        }else{
-            distance = c - 'A';
-            return (char)(distance + 'a');
         }
     }
 
-    private boolean isNum(char c){
-        return c - '0' >= 0 && c - '0' <= 9;
-    }
+    /*private void helper(char[] chars, int index, List<String> ans) {
+
+        ans.add(String.valueOf(chars));
+
+        for (int i = index; i < chars.length; i++) {
+            if (!Character.isLetter(chars[i])) continue;
+
+            if (Character.isLowerCase(chars[i])) {
+                chars[i] = (char) (chars[i] + dis);
+                helper(chars, i + 1, ans);
+                chars[i] = (char) (chars[i]- dis);
+            } else {
+                chars[i] = (char) (chars[i] - dis);
+                helper(chars, i + 1, ans);
+                chars[i] = (char) (chars[i] + dis);
+            }
+
+        }
+    }*/
 }

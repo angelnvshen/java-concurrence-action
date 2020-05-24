@@ -6,6 +6,12 @@ import java.util.List;
 import java.util.Set;
 
 public class LetterCasePermutation {
+
+    public static void main(String[] args) {
+        LetterCasePermutation casePermutation = new LetterCasePermutation();
+        System.out.println(casePermutation.letterCasePermutation("JcTNPT1AsvC"));
+    }
+
     public List<String> letterCasePermutation(String S) {
         List<String> ans = new ArrayList<>();
         if(S == null || S.length() == 0) return ans;
