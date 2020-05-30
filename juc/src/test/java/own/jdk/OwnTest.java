@@ -1,7 +1,7 @@
 package own.jdk;
 
 import org.junit.Test;
-import own.leetcode.Codec;
+import own.leetcode.StringGeneratorTree;
 import own.leetcode.TreeNode;
 
 import java.util.*;
@@ -316,8 +316,8 @@ public class OwnTest {
 
     @Test
     public void test8() {
-        Codec codec = new Codec();
-        own.leetcode.TreeNode deserialize = codec.deserialize("1,2,3,#,4");
+        StringGeneratorTree stringGeneratorTree = new StringGeneratorTree();
+        own.leetcode.TreeNode deserialize = stringGeneratorTree.deserialize("1,2,3,#,4");
         String s = tree2str(deserialize);
         System.out.println(s);
     }
@@ -659,7 +659,7 @@ public class OwnTest {
     @Test
     public void test13() {
         char c = ' ';
-        Codec cod = new Codec();
+        StringGeneratorTree cod = new StringGeneratorTree();
         TreeNode deserialize = cod.deserialize("10,5,#,1,100");
         System.out.println(isValidBST(deserialize));
     }

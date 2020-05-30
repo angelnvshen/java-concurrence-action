@@ -14,12 +14,12 @@ import java.util.List;
  * TreeNode(int x) { val = x; }
  * }
  */
-public class Codec {
+public class StringGeneratorTree {
 
     private static String NULL = "#";
 
     // Encodes a tree to a single string.
-    public String serialize(TreeNode root) {
+    public static String serialize(TreeNode root) {
         if (root == null) {
             return "";
         }
@@ -42,18 +42,23 @@ public class Codec {
             }
         }
         int index = dataList.size() - 1;
-        while (dataList.size() > 0){
-            if(dataList.get(index).equals(NULL)){
+        while (dataList.size() > 0) {
+            if (dataList.get(index).equals(NULL)) {
                 index -= 1;
-            }else{
+            } else {
                 break;
             }
         }
         return String.join(",", dataList.subList(0, index + 1));
     }
 
+    public static TreeNode deserialize(String data) {
+        return deserialize(data, NULL);
+    }
+
     // Decodes your encoded data to tree.
-    public TreeNode deserialize(String data) {
+    public static TreeNode deserialize(String data, String nullStr) {
+
         if (data == null || data.length() == 0) {
             return null;
         }
@@ -83,7 +88,7 @@ public class Codec {
                     continue;
                 }
                 String left = nodes.pop();
-                if (!NULL.equals(left)) {
+                if (!nullStr.equals(left)) {
                     cur.left = new TreeNode(Integer.valueOf(left));
                     parentList.add(cur.left);
                 }
@@ -92,7 +97,7 @@ public class Codec {
                     continue;
                 }
                 String right = nodes.pop();
-                if (!NULL.equals(right)) {
+                if (!nullStr.equals(right)) {
                     cur.right = new TreeNode(Integer.valueOf(right));
                     parentList.add(cur.right);
                 }
@@ -102,9 +107,9 @@ public class Codec {
     }
 
     public static void main(String[] args) {
-        Codec codec = new Codec();
+        StringGeneratorTree stringGeneratorTree = new StringGeneratorTree();
 //        codec.deserialize(codec.serialize(root));
-        String serialize = codec.serialize(codec.deserialize("1,2"));
+        String serialize = stringGeneratorTree.serialize(stringGeneratorTree.deserialize("1,2"));
         System.out.println(serialize);
     }
 }

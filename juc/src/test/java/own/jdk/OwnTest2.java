@@ -1,7 +1,7 @@
 package own.jdk;
 
 import org.junit.Test;
-import own.leetcode.Codec;
+import own.leetcode.StringGeneratorTree;
 import own.leetcode.TreeNode;
 
 import java.util.*;
@@ -476,7 +476,7 @@ public class OwnTest2 {
     @Test
     public void test10() {
 //4,2,6,3,1,5
-        Codec code = new Codec();
+        StringGeneratorTree code = new StringGeneratorTree();
         boolean subtree = isSubtree(code.deserialize("12"),
                 code.deserialize("2"));
         System.out.println(subtree);

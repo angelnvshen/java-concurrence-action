@@ -13,8 +13,8 @@ public class FlattenSolution {
 
     public static void main(String[] args) {
 
-        Codec codec = new Codec();
-        TreeNode treeNode = codec.deserialize("1,2,5,3,4,#,6");
+        StringGeneratorTree stringGeneratorTree = new StringGeneratorTree();
+        TreeNode treeNode = stringGeneratorTree.deserialize("1,2,5,3,4,#,6");
 
         FlattenSolution solution = new FlattenSolution();
         solution.flatten(treeNode);

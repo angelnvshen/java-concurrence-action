@@ -2,7 +2,7 @@ package own.leetcode;
 
 public class TreeNode {
 
-    private static Codec cod = new Codec();
+    private static StringGeneratorTree cod = new StringGeneratorTree();
 
     public int val;
     public TreeNode left;

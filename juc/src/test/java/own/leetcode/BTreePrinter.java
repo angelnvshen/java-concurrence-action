@@ -9,10 +9,10 @@ import java.util.List;
 
 public class BTreePrinter {
 
-    static Codec codec = new Codec();
+    static StringGeneratorTree stringGeneratorTree = new StringGeneratorTree();
 
     public static void printNode(String strs) {
-        own.leetcode.TreeNode root = codec.deserialize(strs);
+        own.leetcode.TreeNode root = stringGeneratorTree.deserialize(strs);
         printNode(root);
     }
 

@@ -45,8 +45,8 @@ public class Root2LeaveSumSolution {
 
     public static void main(String[] args) {
 
-        Codec codec = new Codec();
-        TreeNode treeNode = codec.deserialize("4,9,0,#,1");
+        StringGeneratorTree stringGeneratorTree = new StringGeneratorTree();
+        TreeNode treeNode = stringGeneratorTree.deserialize("4,9,0,#,1");
 
         Root2LeaveSumSolution solution = new Root2LeaveSumSolution();
         System.out.println(solution.sumNumbers(treeNode));
