@@ -1,6 +1,12 @@
 package own.leetcode.dp.split;
 
 public class PalinDromePartition {
+
+    public static void main(String[] args) {
+        PalinDromePartition partition = new PalinDromePartition();
+        System.out.println(partition.minCut("a"));
+    }
+
     /**
      * @param s: A string
      * @return: An integer
@@ -24,7 +30,7 @@ public class PalinDromePartition {
         for (int i = 1; i <= n; i++) {
             dp[i] = Integer.MAX_VALUE;
             for (int j = 0; j < i; j++) {
-                if (isPalin[j][i]) {
+                if (isPalin[j][i - 1]) {
                     dp[i] = Math.min(dp[i], dp[j] + 1);
                 }
             }
@@ -44,8 +50,8 @@ public class PalinDromePartition {
             i = j = c;
             while (i >= 0 && j < n && s[i] == s[j]) {
                 isPalin[i][j] = true;
-                i++;
-                j--;
+                i--;
+                j++;
             }
         }
 
@@ -56,8 +62,8 @@ public class PalinDromePartition {
             j = c + 1;
             while (i >= 0 && j < n && s[i] == s[j]) {
                 isPalin[i][j] = true;
-                i++;
-                j--;
+                i--;
+                j++;
             }
         }
 
