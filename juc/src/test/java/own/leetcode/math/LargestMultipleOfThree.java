@@ -7,6 +7,7 @@ public class LargestMultipleOfThree {
 
     public static void main(String[] args) {
         LargestMultipleOfThree three = new LargestMultipleOfThree();
+
         System.out.println(three.largestMultipleOfThree(new int[]{8, 6, 7, 1, 0}));
     }
 

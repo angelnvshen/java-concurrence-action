@@ -11,7 +11,7 @@ public class HashFunction {
     }
 
     public static void insert(ListNode[] listTable, ListNode node, int table_len) {
-        int key = hash_func(node.value, table_len);
+        int key = hash_func(node.val, table_len);
         node.next = listTable[key];
         listTable[key] = node;
     }
@@ -20,7 +20,7 @@ public class HashFunction {
         int key = hash_func(value, table_len);
         ListNode nodeHead = listTable[key];
         while (nodeHead != null) {
-            if (nodeHead.value == value) {
+            if (nodeHead.val == value) {
                 return true;
             }
             nodeHead = nodeHead.next;
@@ -118,12 +118,12 @@ public class HashFunction {
         System.out.println(lengthOfLongestSubString("abcbadab"));
     }
 
-    static class ListNode {
-        int value;
-        ListNode next;
+    public static class ListNode {
+        public int val;
+        public ListNode next;
 
-        public ListNode(int value) {
-            this.value = value;
+        public ListNode(int val) {
+            this.val = val;
             next = null;
         }
     }

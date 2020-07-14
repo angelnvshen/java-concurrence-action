@@ -1,7 +1,7 @@
 package own.leetcode;
 
 import org.junit.Test;
-import own.jdk.OwnSyn.ListNode;
+import own.jdk.ListNode;
 import own.leetcode.other.uf.QuickUnion;
 
 import java.io.BufferedReader;
