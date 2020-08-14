@@ -3,8 +3,8 @@ package own.stu.highConcurrence.cacheconsistence_bak.serivce;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
-import own.stu.highConcurrence.cacheconsistence.dao.ProductDao;
-import own.stu.highConcurrence.cacheconsistence.model.Product;
+import own.stu.highConcurrence.cacheconsistence_bak.dao.ProductDao;
+import own.stu.highConcurrence.cacheconsistence_bak.model.Product;
 
 @Service
 public class ProductService {

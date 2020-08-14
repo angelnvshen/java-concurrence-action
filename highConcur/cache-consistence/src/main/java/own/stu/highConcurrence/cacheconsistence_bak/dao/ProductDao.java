@@ -7,9 +7,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
-import own.stu.highConcurrence.cacheconsistence.model.Product;
-
-import java.util.Optional;
+import own.stu.highConcurrence.cacheconsistence_bak.model.Product;
 
 @Repository
 public interface ProductDao extends JpaRepository<Product, Integer> {

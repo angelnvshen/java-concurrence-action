@@ -4,17 +4,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import own.stu.highConcurrence.cacheconsistence.model.Product;
-import own.stu.highConcurrence.cacheconsistence.serivce.ProductService;
+import own.stu.highConcurrence.cacheconsistence.service.IProductService;
 
 @RequestMapping("/product")
 @RestController
 public class ProductController {
     @Autowired
-    private ProductService productService;
+    private IProductService productService;
 
     @RequestMapping("/get")
     public Product get(Integer productId) {
-        Product product = productService.get(productId);
+        Product product = productService.getById(productId);
         return product;
     }
 

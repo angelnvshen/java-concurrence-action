@@ -3,8 +3,8 @@ package own.stu.highConcurrence.cacheconsistence_bak.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import own.stu.highConcurrence.cacheconsistence.model.Product;
-import own.stu.highConcurrence.cacheconsistence.serivce.ProductService;
+import own.stu.highConcurrence.cacheconsistence_bak.model.Product;
+import own.stu.highConcurrence.cacheconsistence_bak.serivce.ProductService;
 
 @RequestMapping("/product")
 @RestController

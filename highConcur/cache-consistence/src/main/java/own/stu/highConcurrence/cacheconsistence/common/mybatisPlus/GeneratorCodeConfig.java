@@ -52,9 +52,10 @@ public class GeneratorCodeConfig {
 //        pc.setModuleName(scanner("模块名"));
         pc.setParent("own.stu.highConcurrence.cacheconsistence");
         pc.setEntity("model");
-        pc.setMapper("mapper");
+        pc.setMapper("dao");
         pc.setService("service");
         pc.setServiceImpl("service.impl");
+
         mpg.setPackageInfo(pc);
 
         // 自定义配置
@@ -121,7 +122,8 @@ public class GeneratorCodeConfig {
 //        strategy.setSuperEntityColumns("id");
         strategy.setInclude(scanner("表名，多个英文逗号分割").split(","));
         strategy.setControllerMappingHyphenStyle(true);
-        strategy.setTablePrefix(pc.getModuleName() + "_");
+//        strategy.setTablePrefix(pc.getModuleName() + "_");
+        strategy.setTablePrefix("t_");
 
         mpg.setStrategy(strategy);
         mpg.setTemplateEngine(new FreemarkerTemplateEngine());

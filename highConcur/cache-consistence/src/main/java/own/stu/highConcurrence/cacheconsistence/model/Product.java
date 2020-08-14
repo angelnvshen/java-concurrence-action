@@ -1,27 +1,32 @@
 package own.stu.highConcurrence.cacheconsistence.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.baomidou.mybatisplus.annotation.TableName;
+import com.baomidou.mybatisplus.extension.activerecord.Model;
 import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.extern.java.Log;
-import org.hibernate.annotations.NotFound;
-import org.hibernate.annotations.NotFoundAction;
+import lombok.EqualsAndHashCode;
+import lombok.experimental.Accessors;
 
-import javax.persistence.*;
-
-@Log
-@Table(name = "t_product")
-@Entity
-@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+/**
+ * <p>
+ * 
+ * </p>
+ *
+ * @author HW
+ * @since 2020-08-14
+ */
 @Data
-public class Product {
+@EqualsAndHashCode(callSuper = true)
+@Accessors(chain = true)
+@TableName("t_product")
+public class Product extends Model {
 
-    @Id
-    @GeneratedValue
+    private static final long serialVersionUID = 1L;
+
     private Integer id;
 
     private String name;
 
     private Integer store;
+
 
 }

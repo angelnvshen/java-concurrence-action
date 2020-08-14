@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="own.stu.highConcurrence.cacheconsistence.dao.ProductMapper">
+
+    <!--<select id="findAllUser" resultType="com.example.model.auto.User">
+        select * from user
+    </select>-->
+
+    <!--<update id = "updateStore" parameterType = "own.stu.highConcurrence.cacheconsistence.model.Product">-->
+    <update id = "updateStore">
+
+        update t_product p
+            set p.store = p.store - #{num}
+        where p.id = #{productId} and p.store >= #{num}
+    </update>
+
+</mapper>
