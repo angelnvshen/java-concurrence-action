@@ -8,7 +8,9 @@ public class CanPartitionKSubsets {
         CanPartitionKSubsets subsets = new CanPartitionKSubsets();
 //        System.out.println(subsets.canPartitionKSubsets(new int[]{4, 3, 1}, 2));
 //        System.out.println(subsets.canPartitionKSubsets(new int[]{4, 3, 2, 3, 5, 2, 1}, 4));
-        System.out.println(subsets.canPartitionKSubsets(new int[]{18, 20, 39, 73, 96, 99, 101, 111, 114, 190, 207, 295, 471, 649, 700, 1037}, 4));
+//        System.out.println(subsets.canPartitionKSubsets(new int[]{18, 20, 39, 73, 96, 99, 101, 111, 114, 190, 207, 295, 471, 649, 700, 1037}, 4));
+
+        System.out.println((char)(1 + 'A') + "");
     }
 
     public boolean canPartitionKSubsets(int[] nums, int k) {
