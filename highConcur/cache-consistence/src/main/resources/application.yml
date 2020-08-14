@@ -5,12 +5,19 @@ spring:
     password: 123456
     driver-class-name: com.mysql.cj.jdbc.Driver
 
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+    time-zone: GMT+8
+    serialization:
+      write-dates-as-timestamps: false
 
-  #配置自动建表：updata:没有表新建，有表更新操作,控制台显示建表语句
-  jpa:
-    #    hibernate:
-    #      ddl-auto: update
-    show-sql: true
+
+#  ================ jpa ================
+#  配置自动建表：updata:没有表新建，有表更新操作,控制台显示建表语句
+#  jpa:
+#        hibernate:
+#          ddl-auto: update
+#    show-sql: true
 
   redis:
     database: 0       # Redis数据库索引（默认为0）
@@ -24,3 +31,18 @@ spring:
         max-idle: 10    # 连接池中的最大空闲连接
         min-idle: 0     # 连接池中的最小空闲连接
     timeout: 1000 # 连接超时时间（毫秒）
+
+# ================  mybatis - plus ================
+mybatis-plus:
+  configuration:
+    map-underscore-to-camel-case: true
+    auto-mapping-behavior: full
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+  mapper-locations: classpath*:mapper/**/*Mapper.xml
+  global-config:
+    # 逻辑删除配置
+    db-config:
+      # 删除前
+      logic-not-delete-value: 1
+      # 删除后
+      logic-delete-value: 0

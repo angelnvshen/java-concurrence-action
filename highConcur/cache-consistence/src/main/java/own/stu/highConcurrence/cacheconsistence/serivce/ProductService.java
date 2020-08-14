@@ -1,12 +1,10 @@
-package own.stu.highConcurrence.cacheconsistence.serivec;
+package own.stu.highConcurrence.cacheconsistence.serivce;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import own.stu.highConcurrence.cacheconsistence.dao.ProductDao;
 import own.stu.highConcurrence.cacheconsistence.model.Product;
-
-import java.io.Serializable;
 
 @Service
 public class ProductService {
