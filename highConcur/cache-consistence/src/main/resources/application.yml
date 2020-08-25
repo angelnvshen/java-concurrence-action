@@ -46,3 +46,18 @@ mybatis-plus:
       logic-not-delete-value: 1
       # 删除后
       logic-delete-value: 0
+
+
+server:
+  port: 8080
+#  tomcat:
+#    threads:
+#      max: 2
+#    max-connections: 4
+#    acceptCount: 4
+
+netty:
+  url: 127.0.0.1
+  port: 10010
+
+

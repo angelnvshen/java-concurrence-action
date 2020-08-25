@@ -12,5 +12,8 @@ import com.baomidou.mybatisplus.extension.service.IService;
  * @since 2020-08-14
  */
 public interface IProductService extends IService<Product> {
+
+    Product getById(Integer id);
+
     int updateStore(Integer productId, Integer num);
 }
