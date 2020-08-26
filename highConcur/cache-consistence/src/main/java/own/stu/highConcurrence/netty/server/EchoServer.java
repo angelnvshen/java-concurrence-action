@@ -1,15 +1,15 @@
 package own.stu.highConcurrence.netty.server;
 
 import io.netty.bootstrap.ServerBootstrap;
-import io.netty.channel.Channel;
-import io.netty.channel.ChannelFuture;
-import io.netty.channel.ChannelInitializer;
-import io.netty.channel.EventLoopGroup;
+import io.netty.channel.*;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
+import io.netty.handler.timeout.IdleStateHandler;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
+import own.stu.highConcurrence.netty.codec.MsgPckDecode;
+import own.stu.highConcurrence.netty.codec.MsgPckEncode;
 
 import java.net.InetSocketAddress;
 
@@ -44,7 +44,7 @@ public class EchoServer {
      */
     public ChannelFuture start(String hostname, int port) throws Exception {
 
-        final EchoServerHandler serverHandler = new EchoServerHandler();
+//        final EchoServerHandler serverHandler = new EchoServerHandler();
         ChannelFuture f = null;
         try {
             //ServerBootstrap负责初始化netty服务器，并且开始监听端口的socket请求
@@ -56,7 +56,13 @@ public class EchoServer {
                         @Override
                         protected void initChannel(SocketChannel socketChannel) throws Exception {
 //                            为监听客户端read/write事件的Channel添加用户自定义的ChannelHandler
-                            socketChannel.pipeline().addLast(serverHandler);
+//                            socketChannel.pipeline().addLast(serverHandler);
+
+                            ChannelPipeline pipeline = socketChannel.pipeline();
+                            pipeline.addLast(new IdleStateHandler(10, 0, 0));
+                            pipeline.addLast(new MsgPckDecode());
+                            pipeline.addLast(new MsgPckEncode());
+                            pipeline.addLast(new Server3Handler());
                         }
                     });
 

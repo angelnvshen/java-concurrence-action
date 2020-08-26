@@ -1,4 +1,4 @@
-package own.stu.highConcurrence.cacheconsistence.common.disruptor;
+package own.stu.highConcurrence.cacheconsistence.disruptor;
 
 import com.lmax.disruptor.RingBuffer;
 

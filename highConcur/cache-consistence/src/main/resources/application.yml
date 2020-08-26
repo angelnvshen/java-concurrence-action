@@ -61,3 +61,6 @@ netty:
   port: 10010
 
 
+
+
+debug: true
