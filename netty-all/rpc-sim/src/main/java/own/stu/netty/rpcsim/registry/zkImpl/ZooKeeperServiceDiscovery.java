@@ -1,9 +1,10 @@
 package own.stu.netty.rpcsim.registry.zkImpl;
 
 import lombok.extern.slf4j.Slf4j;
-import org.I0Itec.zkclient.ZkClient;
+import org.apache.curator.framework.CuratorFramework;
 import org.springframework.util.CollectionUtils;
 import own.stu.netty.rpcsim.registry.ServiceDiscovery;
+import own.stu.netty.rpcsim.registry.zkImpl.curator.CuratorClientFactory;
 
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
@@ -21,17 +22,17 @@ public class ZooKeeperServiceDiscovery implements ServiceDiscovery {
     public String discover(String serviceName) {
 
         // 创建 ZooKeeper 客户端
-        ZkClient zkClient = new ZkClient(zkAddress, Constant.ZK_SESSION_TIMEOUT, Constant.ZK_CONNECTION_TIMEOUT);
+        CuratorFramework zkClient = CuratorClientFactory.INSTANCE.getClient(zkAddress);
         log.debug("connect zookeeper");
 
         try {
             // 获取 service 节点
             String servicePath = Constant.ZK_REGISTRY_PATH + "/" + serviceName;
-            if (!zkClient.exists(servicePath)) {
+            if (zkClient.checkExists().forPath(servicePath) == null) {
                 throw new RuntimeException(String.format("can not find any service node on path: %s", servicePath));
             }
 
-            List<String> addressList = zkClient.getChildren(servicePath);
+            List<String> addressList = zkClient.getChildren().forPath(servicePath);
             if (CollectionUtils.isEmpty(addressList)) {
                 throw new RuntimeException(String.format("can not find any address node on path: %s", servicePath));
             }
@@ -51,8 +52,12 @@ public class ZooKeeperServiceDiscovery implements ServiceDiscovery {
 
             // 获取 address 节点的值
             String addressPath = servicePath + "/" + address;
-            return zkClient.readData(addressPath);
+            return new String(zkClient.getData().forPath(addressPath));
 
+        } catch (Exception e) {
+            e.printStackTrace();
+            log.error("discover {} error {}", serviceName, e.getMessage());
+            return "";
         } finally {
             zkClient.close();
         }

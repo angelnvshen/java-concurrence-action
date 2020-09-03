@@ -9,4 +9,6 @@ public interface ServiceRegistry {
      * @param serviceAddress 服务地址
      */
     void register(String serviceName, String serviceAddress);
+
+    void registerAllEphemeralServiceNameTo(String serviceAddress) throws Exception;
 }
