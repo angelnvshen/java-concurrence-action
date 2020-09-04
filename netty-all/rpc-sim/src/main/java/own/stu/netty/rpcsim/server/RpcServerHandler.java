@@ -1,14 +1,17 @@
 package own.stu.netty.rpcsim.server;
 
+import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelFutureListener;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
+import io.netty.handler.timeout.IdleStateEvent;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cglib.reflect.FastClass;
 import org.springframework.cglib.reflect.FastMethod;
 import org.springframework.util.StringUtils;
 import own.stu.netty.rpcsim.common.bean.RpcRequest;
 import own.stu.netty.rpcsim.common.bean.RpcResponse;
+import own.stu.netty.rpcsim.common.codec.heartBeat.Beat;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.Map;
@@ -28,6 +31,12 @@ public class RpcServerHandler extends SimpleChannelInboundHandler<RpcRequest> {
     @Override
     protected void channelRead0(ChannelHandlerContext ctx, RpcRequest rpcRequest) throws Exception {
 
+        // filter beat ping
+        if (Beat.BEAT_ID.equalsIgnoreCase(rpcRequest.getRequestId())) {
+            log.info("Server read heartbeat ping");
+            return;
+        }
+
         // 创建并初始化 RPC 响应对象
         RpcResponse response = new RpcResponse();
         response.setRequestId(rpcRequest.getRequestId());
@@ -41,9 +50,11 @@ public class RpcServerHandler extends SimpleChannelInboundHandler<RpcRequest> {
             response.setException(e);
         }
 
-        // 写入 RPC 响应对象并自动关闭连接
+        // 写入 RPC 响应对象
 
-        ctx.writeAndFlush(response).addListener(ChannelFutureListener.CLOSE);
+        ctx.writeAndFlush(response)
+                .addListener((ChannelFutureListener) channelFuture ->
+                        log.info("Send response for request " + rpcRequest.getRequestId()));
     }
 
     private Object handle(RpcRequest request) throws InvocationTargetException {
@@ -57,6 +68,7 @@ public class RpcServerHandler extends SimpleChannelInboundHandler<RpcRequest> {
         Object serviceBean = handlerMap.get(serviceName);
 
         if (serviceBean == null) {
+            System.out.println(request);
             throw new RuntimeException(String.format("can not find service bean by key: %s", serviceName));
         }
 
@@ -80,6 +92,16 @@ public class RpcServerHandler extends SimpleChannelInboundHandler<RpcRequest> {
     @Override
     public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) {
         log.error("server caught exception", cause);
-        ctx.close();
+        // ctx.close();
+    }
+
+    @Override
+    public void userEventTriggered(ChannelHandlerContext ctx, Object evt) throws Exception {
+        if (evt instanceof IdleStateEvent) {
+            ctx.channel().close();
+            log.warn("Channel idle in last {} seconds, close it", Beat.BEAT_TIMEOUT);
+        } else {
+            super.userEventTriggered(ctx, evt);
+        }
     }
 }

@@ -12,4 +12,6 @@ public interface ServiceDiscovery {
      * @return 服务地址
      */
     String discover(String serviceName);
+
+    void clear();
 }

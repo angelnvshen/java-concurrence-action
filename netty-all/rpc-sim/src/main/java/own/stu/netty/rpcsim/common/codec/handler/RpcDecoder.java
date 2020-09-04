@@ -1,4 +1,4 @@
-package own.stu.netty.rpcsim.common.codec;
+package own.stu.netty.rpcsim.common.codec.handler;
 
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;

@@ -1,5 +1,7 @@
 package own.stu.netty.rpcsim.registry;
 
+import java.util.Set;
+
 public interface ServiceRegistry {
 
     /**
@@ -10,5 +12,5 @@ public interface ServiceRegistry {
      */
     void register(String serviceName, String serviceAddress);
 
-    void registerAllEphemeralServiceNameTo(String serviceAddress) throws Exception;
+    void register(Set<String> serviceNameSet, String serviceAddress);
 }

@@ -2,11 +2,11 @@ package own.stu.netty.rpcsim.registry.zkImpl;
 
 import lombok.extern.slf4j.Slf4j;
 import org.apache.curator.framework.CuratorFramework;
-import org.apache.zookeeper.CreateMode;
-import org.apache.zookeeper.data.Stat;
+import org.apache.curator.framework.state.ConnectionState;
+import org.apache.curator.framework.state.ConnectionStateListener;
 import org.springframework.util.CollectionUtils;
 import own.stu.netty.rpcsim.registry.ServiceRegistry;
-import own.stu.netty.rpcsim.registry.zkImpl.curator.CuratorClientFactory;
+import own.stu.netty.rpcsim.registry.zkImpl.curator.CuratorClient;
 
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
@@ -17,57 +17,94 @@ import java.util.concurrent.ConcurrentHashMap;
 @Slf4j
 public class ZooKeeperServiceRegistry implements ServiceRegistry {
 
-    private CuratorFramework zkClient;
+    private CuratorClient zkClient;
 
-    private Map<String, Set<String>> map;
+    private Map<String, Set<String>> map; // serviceAddress : set<serviceName>
 
     public ZooKeeperServiceRegistry(String zkAddress) {
         // 创建 ZooKeeper 客户端
-        this.zkClient = CuratorClientFactory.INSTANCE.getClient(zkAddress);
+        this.zkClient = new CuratorClient(zkAddress);
+
         map = new ConcurrentHashMap<>();
+
         log.debug("connect zookeeper");
+
+        initSpaceNodeCheck();
+    }
+
+    private void initSpaceNodeCheck() {
+        try {
+            // 创建 registry 节点（持久）
+            String registryPath = Constant.ZK_REGISTRY_PATH;
+
+            if (!zkClient.pathExists(registryPath)) {
+                zkClient.createPathData(registryPath, null);
+                log.debug("create registry node: {}", registryPath);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            log.error("ZooKeeperServiceRegistry initCheck error, {}", e.getMessage());
+        }
+    }
+
+    @Override
+    public void register(Set<String> serviceNameSet, String serviceAddress) {
+
+        serviceNameSet.stream().forEach((serviceName) -> register(serviceName, serviceAddress));
+
+        zkClient.addConnectionStateListener(new ConnectionStateListener() {
+            @Override
+            public void stateChanged(CuratorFramework curatorFramework, ConnectionState connectionState) {
+                if (connectionState == ConnectionState.RECONNECTED) {
+                    log.info("Connection state: {}, register service after reconnected", connectionState);
+                    try {
+                        registerAllServiceAddressEphemeral(serviceAddress);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        log.error("reRegister registerAllServiceAddressEphemeral in {} , error: {}", serviceAddress, e.getMessage());
+                    }
+                }
+            }
+        });
     }
 
     @Override
     public void register(String serviceName, String serviceAddress) {
 
         try {
-
-            // 创建 registry 节点（持久）
-            String registryPath = Constant.ZK_REGISTRY_PATH;
-
-            Stat stat = zkClient.checkExists().forPath(registryPath);
-            if (stat == null) {
-                zkClient.create().creatingParentContainersIfNeeded().withMode(CreateMode.PERSISTENT)
-                        .forPath(registryPath);
-                log.debug("create registry node: {}", registryPath);
-            }
-
             // 创建 service 节点（持久）
-            String servicePath = registryPath + "/" + serviceName;
-            stat = zkClient.checkExists().forPath(servicePath);
-            if (stat == null) {
-                zkClient.create().creatingParentContainersIfNeeded().withMode(CreateMode.PERSISTENT)
-                        .forPath(servicePath);
+            String servicePath = Constant.ZK_REGISTRY_PATH + "/" + serviceName;
+
+            if (!zkClient.pathExists(servicePath)) {
+                zkClient.createPathData(servicePath, null);
                 log.debug("create service node: {}", servicePath);
             }
 
             // 创建 address 节点（临时）
-            String addressPath = servicePath + "/address-";
-            stat = zkClient.checkExists().forPath(addressPath);
-            if (stat == null) {
-                String addressNode = zkClient.create().creatingParentContainersIfNeeded().withMode(CreateMode.PERSISTENT)
-                        .forPath(addressPath, serviceAddress.getBytes());
-
-                log.debug("create address node: {}", addressNode);
-            }
-            /*serviceNameToCache(addressPath, serviceAddress);
-            registerEphemeralAddress(addressPath, serviceAddress);*/
+            registerServiceAddressEphemeral(servicePath, serviceAddress);
 
         } catch (Exception e) {
             e.printStackTrace();
             log.error("register serviceName {} in {} , {}", serviceName, serviceAddress, e.getMessage());
         }
+    }
+
+    private void registerAllServiceAddressEphemeral(String serviceAddress) throws Exception {
+        Set<String> serviceNames = map.get(serviceAddress);
+        if (CollectionUtils.isEmpty(serviceNames)) {
+            return;
+        }
+        synchronized (serviceAddress) {
+            for (String serviceName : serviceNames) {
+                registerServiceAddressEphemeral(serviceName, serviceAddress);
+            }
+        }
+    }
+
+    private void registerServiceAddressEphemeral(String servicePath, String serviceAddress) throws Exception {
+        String addressPath = servicePath + "/address-";
+        serviceNameToCache(servicePath, serviceAddress);
+        registerEphemeralAddress(addressPath, serviceAddress);
     }
 
     private void serviceNameToCache(String serviceNamePath, String serviceAddress) {
@@ -79,22 +116,10 @@ public class ZooKeeperServiceRegistry implements ServiceRegistry {
         serviceNames.add(serviceNamePath);
     }
 
-    public void registerAllEphemeralServiceNameTo(String serviceAddress) throws Exception {
-        Set<String> serviceNames = map.get(serviceAddress);
-        if (CollectionUtils.isEmpty(serviceNames)) {
-            return;
-        }
-        for (String serviceName : serviceNames) {
-            registerEphemeralAddress(serviceName, serviceAddress);
-        }
-    }
-
     private void registerEphemeralAddress(String serviceNamePath, String serviceAddress) throws Exception {
-        Stat stat = zkClient.checkExists().forPath(serviceNamePath);
-        if (stat == null) {
-            String addressNode = zkClient.create().creatingParentContainersIfNeeded().withMode(CreateMode.EPHEMERAL_SEQUENTIAL)
-                    .forPath(serviceNamePath, serviceAddress.getBytes());
-
+        if (!zkClient.pathExists(serviceNamePath)) {
+            String addressNode = zkClient.createEphemeralSequentialPathData(
+                    serviceNamePath, serviceAddress.getBytes());
             log.debug("create address node: {}", addressNode);
         }
     }

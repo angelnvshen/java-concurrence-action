@@ -1,12 +1,11 @@
 package own.stu.netty.rpcsim.server;
 
-import com.google.common.collect.Maps;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.*;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
-import io.netty.util.internal.StringUtil;
+import io.netty.handler.timeout.IdleStateHandler;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.InitializingBean;
@@ -15,12 +14,14 @@ import org.springframework.context.ApplicationContextAware;
 import org.springframework.util.StringUtils;
 import own.stu.netty.rpcsim.common.bean.RpcRequest;
 import own.stu.netty.rpcsim.common.bean.RpcResponse;
-import own.stu.netty.rpcsim.common.codec.RpcDecoder;
-import own.stu.netty.rpcsim.common.codec.RpcEncoder;
+import own.stu.netty.rpcsim.common.codec.handler.RpcDecoder;
+import own.stu.netty.rpcsim.common.codec.handler.RpcEncoder;
+import own.stu.netty.rpcsim.common.codec.heartBeat.Beat;
 import own.stu.netty.rpcsim.registry.ServiceRegistry;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 @Slf4j
 public class RpcServer implements ApplicationContextAware, InitializingBean {
@@ -62,6 +63,7 @@ public class RpcServer implements ApplicationContextAware, InitializingBean {
                 @Override
                 public void initChannel(SocketChannel channel) throws Exception {
                     ChannelPipeline pipeline = channel.pipeline();
+                    pipeline.addLast(new IdleStateHandler(0, 0, Beat.BEAT_TIMEOUT, TimeUnit.SECONDS));
                     pipeline.addLast(new RpcDecoder(RpcRequest.class)); // 解码 RPC 请求
                     pipeline.addLast(new RpcEncoder(RpcResponse.class)); // 编码 RPC 响应
                     pipeline.addLast(new RpcServerHandler(handlerMap)); // 处理 RPC 请求
@@ -80,10 +82,8 @@ public class RpcServer implements ApplicationContextAware, InitializingBean {
 
             // 注册 RPC 服务地址
             if (serviceRegistry != null) {
-                for (String interfaceName : handlerMap.keySet()) {
-                    serviceRegistry.register(interfaceName, serviceAddress);
-                    log.debug("register service: {} => {}", interfaceName, serviceAddress);
-                }
+                serviceRegistry.register(handlerMap.keySet(), serviceAddress);
+                log.debug("register service: {} => {}", handlerMap.keySet(), serviceAddress);
             }
 
             log.debug("server started on port {}", port);

@@ -1,6 +1,7 @@
 package own.stu.netty.rpcsim.registry.zkImpl.curator;
 
 import org.apache.curator.framework.CuratorFramework;
+import org.apache.curator.framework.api.ACLBackgroundPathAndBytesable;
 import org.apache.curator.framework.recipes.cache.PathChildrenCache;
 import org.apache.curator.framework.recipes.cache.PathChildrenCacheListener;
 import org.apache.curator.framework.recipes.cache.TreeCache;
@@ -8,6 +9,7 @@ import org.apache.curator.framework.recipes.cache.TreeCacheListener;
 import org.apache.curator.framework.state.ConnectionStateListener;
 import org.apache.zookeeper.CreateMode;
 import org.apache.zookeeper.Watcher;
+import own.stu.netty.rpcsim.registry.zkImpl.Constant;
 
 import java.util.List;
 
@@ -16,21 +18,41 @@ public class CuratorClient {
 
     public CuratorClient(String zkAddress) {
         client = CuratorClientFactory.INSTANCE.getClient(zkAddress);
-        client.start();
+    }
+
+    public static void main(String[] args) throws Exception {
+        CuratorClient client = new CuratorClient(Constant.ADDRESS);
+        client.pathExists("/registry/xxxx");
+        client.close();
     }
 
     public CuratorFramework getClient() {
         return client;
     }
 
+    public boolean pathExists(String path) throws Exception {
+        return client.checkExists().forPath(path) != null;
+    }
+
     public void addConnectionStateListener(ConnectionStateListener connectionStateListener) {
         client.getConnectionStateListenable().addListener(connectionStateListener);
     }
 
-    public void createPathData(String path, byte[] data) throws Exception {
-        client.create().creatingParentsIfNeeded()
-                .withMode(CreateMode.EPHEMERAL_SEQUENTIAL)
-                .forPath(path, data);
+    public String createEphemeralSequentialPathData(String path, byte[] data) throws Exception {
+        return createPathData(path, data, CreateMode.EPHEMERAL_SEQUENTIAL);
+    }
+
+    public String createPathData(String path, byte[] data) throws Exception {
+        return createPathData(path, data, CreateMode.PERSISTENT);
+    }
+
+    public String createPathData(String path, byte[] data, CreateMode createMode) throws Exception {
+        ACLBackgroundPathAndBytesable<String> byteAble = client.create().creatingParentsIfNeeded()
+                .withMode(createMode);
+        if (data == null)
+            return byteAble.forPath(path);
+        else
+            return byteAble.forPath(path, data);
     }
 
     public void updatePathData(String path, byte[] data) throws Exception {

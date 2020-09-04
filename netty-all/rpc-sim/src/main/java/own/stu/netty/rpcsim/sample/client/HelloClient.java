@@ -1,6 +1,6 @@
 package own.stu.netty.rpcsim.sample.client;
 
-import own.stu.netty.rpcsim.client.RpcProxy;
+import own.stu.netty.rpcsim.client.discoryProxy.RpcProxy;
 import own.stu.netty.rpcsim.registry.zkImpl.Constant;
 import own.stu.netty.rpcsim.registry.zkImpl.ZooKeeperServiceDiscovery;
 import own.stu.netty.rpcsim.sample.api.HelloService;
@@ -14,8 +14,7 @@ public class HelloClient {
 
     public static void main(String[] args) {
 
-        ZooKeeperServiceDiscovery discovery = new ZooKeeperServiceDiscovery(Constant.ADDRESS);
-        RpcProxy rpcProxy = new RpcProxy(discovery);
+        RpcProxy rpcProxy = new RpcProxy(Constant.ADDRESS);
 
         int threadNum = 10;
         int loopCount = 100;
@@ -48,6 +47,7 @@ public class HelloClient {
             e.printStackTrace();
         } finally {
             executor.shutdown();
+            rpcProxy.stop();
         }
     }
 
@@ -74,8 +74,7 @@ public class HelloClient {
 
     public static void main3(String[] args) {
 
-        ZooKeeperServiceDiscovery discovery = new ZooKeeperServiceDiscovery(Constant.ADDRESS);
-        RpcProxy rpcProxy = new RpcProxy(discovery);
+        RpcProxy rpcProxy = new RpcProxy(Constant.ADDRESS);
 
         HelloService helloService = rpcProxy.create(HelloService.class);
         String result = helloService.hello(new Person("Yong", "Huang"));
@@ -84,15 +83,23 @@ public class HelloClient {
 
     public static void main2(String[] args) throws Exception {
 
-        ZooKeeperServiceDiscovery discovery = new ZooKeeperServiceDiscovery(Constant.ADDRESS);
-        RpcProxy rpcProxy = new RpcProxy(discovery);
 
-        HelloService helloService = rpcProxy.create(HelloService.class);
-        String result = helloService.hello("World");
-        System.out.println(result);
+        RpcProxy rpcProxy = new RpcProxy(Constant.ADDRESS);
 
-        HelloService helloService2 = rpcProxy.create(HelloService.class, "sample.hello2");
-        String result2 = helloService2.hello("世界");
-        System.out.println(result2);
+        try {
+            HelloService helloService = rpcProxy.create(HelloService.class);
+            HelloService helloService2 = rpcProxy.create(HelloService.class, "sample.hello2");
+            for (int i = 0; i < 100; i++) {
+                String result = helloService.hello("World");
+                System.out.println(result);
+
+                String result2 = helloService2.hello("世界");
+                System.out.println(result2);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            rpcProxy.stop();
+        }
     }
 }
