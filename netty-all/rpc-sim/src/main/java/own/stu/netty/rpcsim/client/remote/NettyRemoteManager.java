@@ -12,7 +12,6 @@ import own.stu.netty.rpcsim.client.handler.RpcClientHandler;
 import own.stu.netty.rpcsim.client.handler.RpcClientInitializer;
 
 import java.net.InetSocketAddress;
-import java.net.SocketAddress;
 import java.util.Iterator;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.LinkedBlockingQueue;
@@ -123,7 +122,7 @@ public class NettyRemoteManager {
             Bootstrap b = new Bootstrap();
             b.group(workerGroup)
                     .channel(NioSocketChannel.class)
-                    .handler(new RpcClientInitializer());
+                    .handler(new RpcClientInitializer(workerGroup));
 
             ChannelFuture channelFuture = b.connect(remotePeer);
 

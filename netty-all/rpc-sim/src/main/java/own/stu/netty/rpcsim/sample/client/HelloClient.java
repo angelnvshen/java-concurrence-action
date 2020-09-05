@@ -12,7 +12,7 @@ import java.util.concurrent.Executors;
 
 public class HelloClient {
 
-    public static void main(String[] args) {
+    public static void main5(String[] args) {
 
         RpcProxy rpcProxy = new RpcProxy(Constant.ADDRESS);
 
@@ -81,7 +81,7 @@ public class HelloClient {
         System.out.println(result);
     }
 
-    public static void main2(String[] args) throws Exception {
+    public static void main(String[] args) throws Exception {
 
 
         RpcProxy rpcProxy = new RpcProxy(Constant.ADDRESS);

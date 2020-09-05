@@ -2,6 +2,7 @@ package own.stu.netty.rpcsim.client.handler;
 
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelPipeline;
+import io.netty.channel.EventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.handler.codec.LengthFieldBasedFrameDecoder;
 import io.netty.handler.timeout.IdleStateHandler;
@@ -24,6 +25,12 @@ public class RpcClientInitializer extends ChannelInitializer<SocketChannel> {
         cp.addLast(new RpcEncoder(RpcRequest.class));
         // cp.addLast(new LengthFieldBasedFrameDecoder(65536, 0, 4, 0, 0));
         cp.addLast(new RpcDecoder(RpcResponse.class));
-        cp.addLast(new RpcClientHandler());
+        cp.addLast(workerGroup, new RpcClientHandler());
     }
+
+    public RpcClientInitializer(EventLoopGroup workerGroup) {
+        this.workerGroup = workerGroup;
+    }
+
+    private EventLoopGroup workerGroup;
 }

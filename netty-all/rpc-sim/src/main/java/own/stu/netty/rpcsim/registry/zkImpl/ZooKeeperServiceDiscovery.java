@@ -66,7 +66,7 @@ public class ZooKeeperServiceDiscovery implements ServiceDiscovery {
 
     public static void main2(String[] args) throws Exception {
         CuratorClient client = new CuratorClient("192.168.0.128:2181");
-        List<String> children = client.getChildren(Constant.ZK_REGISTRY_PATH);
+        /*List<String> children = client.getChildren(Constant.ZK_REGISTRY_PATH);
         System.out.println(children);
         String childPath = null;
         for (String child : children) {
@@ -75,8 +75,8 @@ public class ZooKeeperServiceDiscovery implements ServiceDiscovery {
             for (String addr : addressList) {
                 System.out.println(new String(client.getData(childPath + "/" + addr)));
             }
-        }
-        client.watchPathChildrenNode("/registry/own.stu.netty.rpcsim.sample.api.HelloService", (client1, event) -> {
+        }*/
+        client.watchPathChildrenNode("/registry/own", (client1, event) -> {
             PathChildrenCacheEvent.Type type = event.getType();
             System.out.println(new String(event.getData().getData()));
             switch (type) {
@@ -94,6 +94,7 @@ public class ZooKeeperServiceDiscovery implements ServiceDiscovery {
                     break;
             }
         });
+        System.out.println("========");
         TimeUnit.HOURS.sleep(1);
     }
 
