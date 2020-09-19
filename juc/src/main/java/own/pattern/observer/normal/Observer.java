@@ -1,4 +1,8 @@
 package own.pattern.observer.normal;
 
-public interface Observer {
+/*
+ * 观察者
+ * */
+public interface Observer<T> {
+    void update(T t);
 }
