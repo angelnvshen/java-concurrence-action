@@ -1,6 +1,5 @@
-//package own.jdk.bit;
-//
-//
+package own.jdk.bit;
+
 //import sun.jvm.hotspot.utilities.BitMap;
 //
 ///**

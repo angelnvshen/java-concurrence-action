@@ -2,7 +2,6 @@ package own.jdk;
 
 import org.junit.Test;
 import own.TreeNode;
-import own.jdk.OwnSyn.ListNode;
 
 import java.util.*;
 import java.util.stream.Collectors;

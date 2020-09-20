@@ -581,28 +581,6 @@ public class OwnSyn extends AbstractQueuedSynchronizer {
         System.out.println(11 & 1);
     }
 
-    public static class ListNode {
-        public int val;
-        public ListNode next;
-
-        public ListNode(int x) {
-            val = x;
-        }
-
-        public ListNode next(ListNode next) {
-            this.next = next;
-            return next;
-        }
-
-        public static void print(ListNode head) {
-            while (head != null) {
-                System.out.print(head.val + ", ");
-                head = head.next;
-            }
-            System.out.println();
-        }
-    }
-
     public static boolean isPalindrome(ListNode head) {
         if (head == null) {
             return true;
