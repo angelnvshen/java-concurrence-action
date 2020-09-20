@@ -1,6 +1,6 @@
 package own.jdk.executorService.forkAndJoin;
 
-import com.sun.tools.javac.util.Assert;
+//import com.sun.tools.javac.util.Assert;
 
 import java.util.List;
 import java.util.Random;
@@ -50,14 +50,14 @@ public class ForkAndJoinSimpleDemo {
         private List<Integer> data;
 
         public ForkAndJoinRequest(List<Integer> data) {
-            Assert.checkNonNull(data);
+//            Assert.checkNonNull(data);
             this.start = 0;
             this.end = data.size();
             this.data = data;
         }
 
         public ForkAndJoinRequest(int start, int end, List<Integer> data) {
-            Assert.checkNonNull(data);
+//            Assert.checkNonNull(data);
             this.start = start;
             this.end = end;
             this.data = data;

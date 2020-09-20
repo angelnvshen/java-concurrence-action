@@ -1,6 +1,6 @@
 package own.jdk.executorService.forkAndJoin;
 
-import com.sun.tools.javac.util.Assert;
+//import com.sun.tools.javac.util.Assert;
 
 import java.util.List;
 import java.util.concurrent.CountedCompleter;
@@ -14,14 +14,14 @@ public class CountedCompleterTest {
         private List<Integer> data;
 
         public CountedCompleterRequest(List<Integer> data) {
-            Assert.checkNonNull(data);
+//            Assert.checkNonNull(data);
             this.start = 0;
             this.end = data.size();
             this.data = data;
         }
 
         public CountedCompleterRequest(int start, int end, List<Integer> data) {
-            Assert.checkNonNull(data);
+//            Assert.checkNonNull(data);
             this.start = start;
             this.end = end;
             this.data = data;
