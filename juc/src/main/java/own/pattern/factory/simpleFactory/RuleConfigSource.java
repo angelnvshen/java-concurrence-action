@@ -1,6 +1,8 @@
 package own.pattern.factory.simpleFactory;
 
 
+import own.pattern.factory.simpleFactory.parser.IRuleConfigParser;
+
 public class RuleConfigSource {
     public RuleConfig load(String ruleConfigFilePath) {
         String ruleConfigFileExtension = getFileExtension(ruleConfigFilePath);
