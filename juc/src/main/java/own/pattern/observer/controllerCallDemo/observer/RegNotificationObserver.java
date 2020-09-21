@@ -7,14 +7,14 @@ public class RegNotificationObserver implements RegObserver {
     private NotificationService notificationService;
     @Override
     public void handleRegSuccess(long userId) {
-//        notificationService.sendInboxMessage(userId, "Welcome...");
+        notificationService.sendInboxMessage(userId, "Welcome...");
 
-        Thread thread = new Thread(new Runnable() {
+        /*Thread thread = new Thread(new Runnable() {
             @Override
             public void run() {
                 notificationService.sendInboxMessage(userId, "Welcome...");
             }
         });
-        thread.start();
+        thread.start();*/
     }
 }
