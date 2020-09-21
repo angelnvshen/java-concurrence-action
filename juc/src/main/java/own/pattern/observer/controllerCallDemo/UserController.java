@@ -1,38 +1,38 @@
 package own.pattern.observer.controllerCallDemo;
 
 import own.pattern.observer.controllerCallDemo.observer.RegObserver;
+import own.pattern.observer.eventBus.AsyncEventBus;
+import own.pattern.observer.eventBus.EventBus;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
 
 public class UserController {
 
     private UserService userService; // 依赖注入
 
-    // 一次性设置好，之后也不可能动态的修改
-    private List<RegObserver> regObservers = new ArrayList<>();
+    private EventBus eventBus;
 
-    private Executor executor;
+    private static final int DEFAULT_EVENTBUS_THREAD_POOL_SIZE = 20;
 
-    public UserController(Executor executor) {
-        this.executor = executor;
+    public UserController() {
+        this.eventBus = new EventBus();
+        this.eventBus = new AsyncEventBus(Executors.newFixedThreadPool(DEFAULT_EVENTBUS_THREAD_POOL_SIZE));
+    }
+
+    public void setRegObservers(List<Object> observers) {
+        for (Object observer : observers) {
+            eventBus.register(observer);
+        }
     }
 
     public Long register(String telephone, String password) {
         //省略输入参数的校验代码
         //省略userService.register()异常的try-catch代码
         long userId = userService.register(telephone, password);
-        for(RegObserver observer : regObservers){
-//            observer.handleRegSuccess(userId);
-
-            executor.execute(new Runnable() {
-                @Override
-                public void run() {
-                    observer.handleRegSuccess(userId);
-                }
-            });
-        }
+        eventBus.post(userId);
         return userId;
     }
 }
