@@ -2,13 +2,11 @@ package own.pattern.chain;
 
 public class HandlerA extends Handler {
     @Override
-    public void handle() {
+    public boolean doHandle() {
 
         boolean handle = false;
 
         //...
-        if (!handle && successor != null) {
-            successor.handle();
-        }
+        return handle;
     }
 }
