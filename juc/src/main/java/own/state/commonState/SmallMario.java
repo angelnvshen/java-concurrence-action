@@ -1,4 +1,7 @@
-package own.state;
+package own.state.commonState;
+
+import own.state.IMario;
+import own.state.State;
 
 public class SmallMario implements IMario {
 

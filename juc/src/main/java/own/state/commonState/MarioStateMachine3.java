@@ -1,4 +1,7 @@
-package own.state;
+package own.state.commonState;
+
+import own.state.IMario;
+import own.state.State;
 
 //状态模式通过将事件触发的状态转移和动作执行，拆分到不同的状态类中，来避免分支判断
 //逻辑。

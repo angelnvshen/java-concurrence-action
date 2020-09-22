@@ -1,10 +1,13 @@
-package own.state;
+package own.state.commonState;
 
-public class FireMario implements IMario {
+import own.state.IMario;
+import own.state.State;
+
+public class CapeMario implements IMario {
 
     private MarioStateMachine3 stateMachine;
 
-    public FireMario(MarioStateMachine3 stateMachine) {
+    public CapeMario(MarioStateMachine3 stateMachine) {
         this.stateMachine = stateMachine;
     }
 
@@ -31,6 +34,6 @@ public class FireMario implements IMario {
     @Override
     public void meetMonster() {
         stateMachine.setCurrentState(new SmallMario(stateMachine));
-        stateMachine.setScore(stateMachine.getScore() - 200);
+        stateMachine.setScore(stateMachine.getScore() - 300);
     }
 }
