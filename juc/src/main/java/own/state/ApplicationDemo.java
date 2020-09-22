@@ -2,7 +2,8 @@ package own.state;
 
 public class ApplicationDemo {
     public static void main(String[] args) {
-        MarioStateMachine mario = new MarioStateMachine();
+//        MarioStateMachine mario = new MarioStateMachine();
+        MarioStateMachine2 mario = new MarioStateMachine2();
         mario.obtainMushRoom();
         int score = mario.getScore();
         State state = mario.getCurrentState();
