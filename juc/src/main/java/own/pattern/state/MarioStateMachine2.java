@@ -1,6 +1,6 @@
-package own.state;
+package own.pattern.state;
 
-import static own.state.State.*;
+import static own.pattern.state.State.*;
 
 //实现方法有点类似 hard code，对于复杂的状态机来说不适用
 public class MarioStateMachine2 {

@@ -1,34 +1,33 @@
-package own.state.commonState;
+package own.pattern.state.singletonCommonState;
 
-import own.state.IMario;
-import own.state.State;
+import own.pattern.state.State;
 
-//状态模式通过将事件触发的状态转移和动作执行，拆分到不同的状态类中，来避免分支判断
-//逻辑。
-public class MarioStateMachine3 {
+//上面的代码还可以继续优化，我们可以将状态类设计成单例，毕竟状态类中不包含
+//任何成员变量。
+public class MarioStateMachine4 {
 
     private int score;
     private IMario currentState;
 
-    public MarioStateMachine3() {
+    public MarioStateMachine4() {
         this.score = 0;
-        this.currentState = new SmallMario(this);
+        this.currentState = SmallMario.getInstance();
     }
 
     public void obtainMushRoom() {
-        this.currentState.obtainMushRoom();
+        this.currentState.obtainMushRoom(this);
     }
 
     public void obtainCape() {
-        this.currentState.obtainCape();
+        this.currentState.obtainCape(this);
     }
 
     public void obtainFireFlower() {
-        this.currentState.obtainFireFlower();
+        this.currentState.obtainFireFlower(this);
     }
 
     public void meetMonster() {
-        this.currentState.meetMonster();
+        this.currentState.meetMonster(this);
     }
 
     public int getScore() {

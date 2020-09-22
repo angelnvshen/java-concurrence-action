@@ -1,4 +1,4 @@
-package own.state;
+package own.pattern.state;
 
 public class MarioStateMachine {
     private int score;

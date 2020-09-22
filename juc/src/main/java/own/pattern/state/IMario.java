@@ -1,4 +1,4 @@
-package own.state;
+package own.pattern.state;
 
 public interface IMario { //所有状态类的接口
     State getName();

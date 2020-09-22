@@ -1,7 +1,7 @@
-package own.state.commonState;
+package own.pattern.state.commonState;
 
-import own.state.IMario;
-import own.state.State;
+import own.pattern.state.IMario;
+import own.pattern.state.State;
 
 public class SuperMario implements IMario {
 

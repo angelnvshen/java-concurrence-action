@@ -1,21 +1,21 @@
-package own.state.singletonCommonState;
+package own.pattern.state.singletonCommonState;
 
-import own.state.State;
+import own.pattern.state.State;
 
-public class CapeMario implements IMario {
+public class FireMario implements IMario {
 
-    private static final CapeMario instance = new CapeMario();
+    private static final FireMario instance = new FireMario();
 
-    private CapeMario() {
+    private FireMario(){
     }
 
-    public static CapeMario getInstance() {
+    public static FireMario getInstance(){
         return instance;
     }
 
     @Override
     public State getName() {
-        return State.CAPE;
+        return State.FIRE;
     }
 
     @Override

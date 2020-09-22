@@ -1,6 +1,6 @@
-package own.state.singletonCommonState;
+package own.pattern.state.singletonCommonState;
 
-import own.state.State;
+import own.pattern.state.State;
 
 public interface IMario {
     State getName();
