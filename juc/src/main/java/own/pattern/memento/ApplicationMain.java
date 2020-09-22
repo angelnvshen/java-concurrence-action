@@ -13,10 +13,10 @@ public class ApplicationMain {
             if (input.equals(":list")) {
                 System.out.println(text.getText());
             } else if (input.equals(":undo")) {
-                InputText snapshot = holder.popSnapshot();
-                text.setText(snapshot.getText());
+                Snapshot snapshot = holder.popSnapshot();
+                text.restoreSnapshot(snapshot);
             } else {
-                holder.pushSnapshot(text);
+                holder.pushSnapshot(text.createSnapshot());
                 text.append(input);
             }
         }

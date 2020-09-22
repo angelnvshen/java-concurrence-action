@@ -4,16 +4,14 @@ import java.util.Stack;
 
 public class SnapshotHolder {
 
-    Stack<InputText> stack = new Stack<>();
+    Stack<Snapshot> stack = new Stack<>();
 
-    public InputText popSnapshot(){
+    public Snapshot popSnapshot(){
         if(stack.isEmpty()) throw new RuntimeException("no element");
         return stack.pop();
     }
 
-    public void pushSnapshot(InputText text) {
-        InputText deepClonedInputText = new InputText();
-        deepClonedInputText.setText(text.getText());
-        stack.push(deepClonedInputText);
+    public void pushSnapshot(Snapshot snapshot) {
+        stack.push(snapshot);
     }
 }

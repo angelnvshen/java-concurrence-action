@@ -12,7 +12,11 @@ public class InputText {
         text.append(input);
     }
 
-    public void setText(String text) {
-        this.text.replace(0, this.text.length(), text);
+    public Snapshot createSnapshot() {
+        return new Snapshot(this.text.toString());
+    }
+
+    public void restoreSnapshot(Snapshot snapshot) {
+        this.text.replace(0, this.text.length(), snapshot.getText());
     }
 }
