@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+
+    <!-- 注意 plugins 在配置文件中的位置
+       properties?, settings?, typeAliases?, typeHandlers?, objectFactory?, objectWrapperFactory?, plugins?, environments?, databaseIdProvider?, mappers? -->
+    <plugins>
+        <plugin interceptor="own.pattern.chain.mysqlPlugin.SqlCostTimeInterceptor">
+            <property name="someProperty" value="100"/>
+        </plugin>
+    </plugins>
+
+    <environments default="dev">
+        <environment id="dev">
+            <transactionManager type="JDBC"></transactionManager>
+            <dataSource type="POOLED">
+                <property name="driver" value="com.mysql.jdbc.Driver" />
+                <property name="url" value="jdbc:mysql://localhost:3309/higt_concurrence?useUnicode=true"/>
+                <property name="username" value="admin" />
+                <property name="password" value="123456" />
+            </dataSource>
+        </environment>
+    </environments>
+    <mappers>
+        <mapper resource="mybatis/mapper_xml/ProductMapper.xml"/>
+    </mappers>
+
+
+</configuration>

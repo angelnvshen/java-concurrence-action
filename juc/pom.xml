@@ -137,6 +137,20 @@
             <version>1.2.62</version>
         </dependency>
 
+        <dependency>
+            <groupId>org.mybatis</groupId>
+            <artifactId>mybatis</artifactId>
+            <version>3.5.5</version>
+        </dependency>
+
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+            <version>8.0.21</version>
+        </dependency>
+
+
+
     </dependencies>
 
     <repositories>
@@ -201,6 +215,7 @@
                 <includes>
                     <include>**/*.properties</include>
                     <include>**/*.txt</include>
+                    <include>**/*.xml</include>
                 </includes>
             </resource>
             <resource>
@@ -208,6 +223,7 @@
                 <includes>
                     <include>**/*.properties</include>
                     <include>**/*.txt</include>
+                    <include>**/*.xml</include>
                 </includes>
             </resource>
         </resources>
