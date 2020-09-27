@@ -1,0 +1,47 @@
+// groovy 编程语言 demo
+//println ("hello world");
+//1 : 可以省略末尾的分号
+//println ("hello world")
+//2 :可以省略括号
+//println "hello world"
+
+//3 : 定义变量
+//def i = 3;
+//println i
+//def i = "你好"
+//println
+
+//4 ：定义集合
+//def list = ["a", "b"]
+//list << "c"
+//list << 'v'
+//println list
+//5 ： 定义map
+//def map = ['k1':'v1', 'k2':'v2'];
+//map.k3 = 'v3'
+//println map
+//println map.k3
+//println map['k3']
+//println map.get('k3')
+
+
+// 6: 闭包
+//def b1 = {
+//    println "hello world"
+//}
+//
+//def method1(Closure closure){
+//    closure()
+//}
+//
+//method1(b1)
+//
+//def b2 = {
+//    v -> println "hello $v"
+//}
+//
+//def method2(Closure closure){
+//    closure("QQ")
+//}
+//
+//method2(b2)
