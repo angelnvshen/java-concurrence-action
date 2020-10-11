@@ -1,7 +1,7 @@
 package own.rxjava2.operator.create;
 
-import io.reactivex.Observable;
-import io.reactivex.ObservableSource;
+import io.reactivex.*;
+import io.reactivex.disposables.Disposable;
 
 import java.util.concurrent.Callable;
 import java.util.concurrent.TimeUnit;
@@ -27,7 +27,37 @@ public class CreateDemo {
         Observable.just(1,2,3,4).subscribe(a -> System.out.println(a + System.currentTimeMillis()));*/
 
         // TODO
-        getInterval().subscribe(System.out::println);
+//        getInterval().subscribe(System.out::println);
+
+        Observable.create(new ObservableOnSubscribe<String>() {
+            @Override
+            public void subscribe(ObservableEmitter<String> emitter) throws Exception {
+                if(!emitter.isDisposed()){
+                    emitter.onNext("test");
+                    emitter.onComplete();
+                }
+            }
+        }).subscribe(new Observer<String>() {
+            @Override
+            public void onSubscribe(Disposable d) {
+                System.out.println("onSubscribe");
+            }
+
+            @Override
+            public void onNext(String s) {
+                System.out.println("onNext: " + s);
+            }
+
+            @Override
+            public void onError(Throwable e) {
+
+            }
+
+            @Override
+            public void onComplete() {
+
+            }
+        });
     }
 
     /**

@@ -227,6 +227,8 @@
                     <include>**/*.properties</include>
                     <include>**/*.txt</include>
                     <include>**/*.xml</include>
+                    <include>**/*.dat</include>
+                    <include>**/*.log</include>
                 </includes>
             </resource>
             <resource>
