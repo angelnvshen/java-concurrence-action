@@ -1,12 +1,9 @@
 package own.jdk.multiThreadInAction.util;
 
-import java.io.BufferedInputStream;
-import java.io.ByteArrayInputStream;
-import java.io.Closeable;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
+import lombok.extern.slf4j.Slf4j;
+import sun.misc.Unsafe;
+
+import java.io.*;
 import java.lang.reflect.Field;
 import java.math.BigInteger;
 import java.security.DigestInputStream;
@@ -15,9 +12,6 @@ import java.security.NoSuchAlgorithmException;
 import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
-import lombok.extern.slf4j.Slf4j;
-import sun.misc.Unsafe;
 
 @Slf4j
 public final class Tools {
@@ -166,6 +160,16 @@ public final class Tools {
     public static Object newInstanceOf(String className) throws InstantiationException,
             IllegalAccessException, ClassNotFoundException {
         return Class.forName(className).newInstance();
+    }
+
+    public static String getWorkingDir(String subDir) {
+        if (null == subDir) {
+            subDir = "";
+        }
+        String dir = System.getProperty("user.dir");
+        dir = dir.replaceAll("\\\\", "/");
+        dir += "/jcpia_out/" + subDir + "/";
+        return dir;
     }
 
 }
