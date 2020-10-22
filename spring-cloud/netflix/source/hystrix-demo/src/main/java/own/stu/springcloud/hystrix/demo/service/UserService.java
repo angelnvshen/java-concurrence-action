@@ -1,4 +1,4 @@
-package com.netflix.hystrix.examples.own.service;
+package own.stu.springcloud.hystrix.demo.service;
 
 public interface UserService {
     String getNameById(Integer id);

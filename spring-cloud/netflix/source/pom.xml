@@ -26,6 +26,7 @@
         <module>product</module>
         <module>hystrix-demo</module>
         <module>zuul</module>
+        <module>ribbon-on</module>
     </modules>
 
     <dependencyManagement>
@@ -36,6 +37,18 @@
                 <version>${spring-cloud.version}</version>
                 <type>pom</type>
                 <scope>import</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>com.google.guava</groupId>
+                <artifactId>guava</artifactId>
+                <version>19.0</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.springframework.cloud</groupId>
+                <artifactId>spring-cloud-starter-ribbon</artifactId>
+                <version>1.4.7.RELEASE</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

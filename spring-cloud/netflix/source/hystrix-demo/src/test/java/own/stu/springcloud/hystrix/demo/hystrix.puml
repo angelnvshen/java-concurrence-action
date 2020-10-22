@@ -1,7 +1,47 @@
 @startuml
-Alice -> Bob: Authentication Request
-Bob --> Alice: Authentication Response
+'Alice -> Bob: Authentication Request
+'Bob --> Alice: Authentication Response
+'
+'Alice -> Bob: Another authentication Request
+'Alice <-- Bob: another authentication Response
 
-Alice -> Bob: Another authentication Request
-Alice <-- Bob: another authentication Response
+interface HystrixInvokable<R> {
+
+}
+
+
+interface HystrixObservable<R>{
+    + Observable<R> observe();
+
+    + Observable<R> toObservable();
+}
+
+HystrixInvokable <|-- HystrixObservable
+HystrixInvokable <|-- HystrixExecutable
+
+interface HystrixExecutable<R>{
+    + R execute();
+
+    + Future<R> queue();
+
+    + Observable<R> observe();
+}
+
+interface HystrixInvokableInfo<R> {
+}
+
+abstract class AbstractCommand<R>{
+
+}
+
+HystrixObservable <|.. AbstractCommand
+HystrixInvokableInfo <|.. AbstractCommand
+
+abstract class HystrixCommand<R>{
+}
+
+AbstractCommand <|-- HystrixCommand
+HystrixExecutable <|.. HystrixCommand
+HystrixInvokableInfo <|.. HystrixCommand
+HystrixObservable <|.. HystrixCommand
 @enduml

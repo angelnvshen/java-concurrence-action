@@ -1,9 +1,9 @@
-package com.netflix.hystrix.examples.own.command;
+package own.stu.springcloud.hystrix.demo.command;
 
 import com.netflix.hystrix.HystrixCommand;
 import com.netflix.hystrix.HystrixCommandGroupKey;
 import com.netflix.hystrix.HystrixCommandKey;
-import com.netflix.hystrix.examples.own.service.UserService;
+import own.stu.springcloud.hystrix.demo.service.UserService;
 
 public class UserServiceGetNameByIdCommand extends HystrixCommand<String> {
 
